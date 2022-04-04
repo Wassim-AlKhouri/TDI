@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:rotation="111"
+    android:rotationX="129"
+    android:rotationY="-146"
     tools:context=".MainActivity">
 
     <TextView
@@ -20,7 +23,7 @@
         android:layout_width="126dp"
         android:layout_height="92dp"
         android:text="Button"
-        tools:layout_editor_absoluteX="168dp"
-        tools:layout_editor_absoluteY="125dp" />
+        tools:layout_editor_absoluteX="245dp"
+        tools:layout_editor_absoluteY="202dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
