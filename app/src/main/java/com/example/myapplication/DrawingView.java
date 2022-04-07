@@ -1,4 +1,7 @@
 package com.example.myapplication;
 
-public class DrawingView {
+import kotlin.jvm.JvmOverloads;
+/*
+public class DrawingView @JvmOverloads{
 }
+*/
