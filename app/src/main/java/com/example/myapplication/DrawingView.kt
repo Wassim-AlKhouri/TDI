@@ -19,7 +19,9 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     val backgroundPaint = Paint()
     lateinit var thread: Thread
     var drawing: Boolean = true
-    val map:Map = Map(7,7)
+    val Col = 7
+    val Li = 7
+    val map:Map = Map(Col,Li)
 
     init {
         backgroundPaint.color = Color.WHITE
@@ -27,8 +29,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
 
     override fun onSizeChanged(w: Int,h: Int,oldw: Int,oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        val width = w
-        val height = h
+        map.Step = kotlin.math.min(w/Li,h/Col).toFloat()
         val canvasH = (h - 500).toFloat()
         val canvasW = (w - 25).toFloat()
     }
@@ -59,7 +60,6 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             MotionEvent.ACTION_DOWN -> {
                 val x = e.rawX.toInt() - 100
                 val y = e.rawY.toInt() - 300
-
             }
         }
         return true
@@ -67,7 +67,6 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
 
     override fun run() {
         while (drawing) {
-
             draw()
         }
     }

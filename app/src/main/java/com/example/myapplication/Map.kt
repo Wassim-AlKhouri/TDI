@@ -3,14 +3,14 @@ package com.example.myapplication
 import android.graphics.Canvas
 import kotlin.math.min
 
-class Map(Col:Int,Li:Int) {
+class Map(Col:Int,Li:Int)  {
     val matrix: Array<IntArray> = Array(Li) { IntArray(Col) }
-    val Step=50F
+    var Step = 0F
     val Cells = ArrayList<Cell>()
+    val map = map_generator(matrix)
+    val Col = Col
+    val Li = Li
 
-    init {
-        val map = map_generator(matrix)
-    }
     fun map_generator(matrix: Array<IntArray>):Array<IntArray> {
         val height:Int = matrix.size
         val width:Int = matrix[0].size
@@ -40,8 +40,8 @@ class Map(Col:Int,Li:Int) {
         return map
     }
     fun draw(canvas: Canvas){
-        for (y in 0..7){
-            for(x in 0..7){
+        for (y in 0..Col){
+            for(x in 0..Li){
                 val cell = Cell(x,y,Step)
                 cell.draw(canvas)
                 Cells.add(cell)

@@ -4,9 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:rotation="111"
-    android:rotationX="129"
-    android:rotationY="-146"
     tools:context=".MainActivity">
 
     <com.example.myapplication.DrawingView
