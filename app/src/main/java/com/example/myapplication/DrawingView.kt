@@ -19,6 +19,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     val backgroundPaint = Paint()
     lateinit var thread: Thread
     var drawing: Boolean = true
+    val map:Map = Map(7,7)
 
     init {
         backgroundPaint.color = Color.WHITE
@@ -48,7 +49,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             canvas = holder.lockCanvas()
             canvas.drawRect(0F, 0F, canvas.getWidth()*1F,
                 canvas.getHeight()*1F, backgroundPaint)
-
+            map.draw(canvas)
             holder.unlockCanvasAndPost(canvas)
         }
     }
