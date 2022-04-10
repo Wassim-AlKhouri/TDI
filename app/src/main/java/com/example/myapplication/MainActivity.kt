@@ -10,4 +10,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         drawingView = findViewById(R.id.MainView)
     }
+
+    override fun onPause() {
+        super.onPause()
+        drawingView.pause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        drawingView.resume()
+    }
 }

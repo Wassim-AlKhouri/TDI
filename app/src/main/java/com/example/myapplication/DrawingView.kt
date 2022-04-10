@@ -50,7 +50,8 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             canvas = holder.lockCanvas()
             canvas.drawRect(0F, 0F, canvas.getWidth()*1F,
                 canvas.getHeight()*1F, backgroundPaint)
-            map.draw(canvas)
+            //map.draw(canvas)
+            canvas.drawCircle(120F,120F,30F,backgroundPaint)
             holder.unlockCanvasAndPost(canvas)
         }
     }
