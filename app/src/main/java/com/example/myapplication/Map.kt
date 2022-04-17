@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.graphics.Canvas
+import android.util.Log
 import java.util.ArrayList
 import kotlin.math.min
 
@@ -10,13 +11,12 @@ class Map(val Col: Int, val Li: Int)  {
     var Cells = ArrayList<Cell>()
 
     init {
-        creat_Cells()
         map_generate()
     }
 
     fun creat_Cells(){
-        for (y in 0..Col){
-            for(x in 0..Li){
+        for (y in 0 until Col){
+            for(x in 0 until Li){
                 val cell = Cell(x,y,Step)
                 this.Cells.add(cell)
             }

@@ -12,6 +12,7 @@ import android.view.SurfaceView
 import android.view.View
 import android.widget.Toast
 import java.util.*
+import android.util.Log
 
 class DrawingView @JvmOverloads
 constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0): SurfaceView(context, attributes,defStyleAttr), SurfaceHolder.Callback,Runnable {
@@ -30,6 +31,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     override fun onSizeChanged(w: Int,h: Int,oldw: Int,oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         map.Step = kotlin.math.min(w/Li,h/Col).toFloat()
+        map.creat_Cells()
         val canvasH = (h - 200).toFloat()
         val canvasW = (w - 25).toFloat()
     }
