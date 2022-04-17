@@ -17,7 +17,7 @@ class Map(val Col: Int, val Li: Int)  {
     fun creat_Cells(){
         for (y in 0 until Col){
             for(x in 0 until Li){
-                val cell = Cell(x,y,Step)
+                val cell = Cell(x,y,Step,this.map[y][x])
                 this.Cells.add(cell)
             }
         }
