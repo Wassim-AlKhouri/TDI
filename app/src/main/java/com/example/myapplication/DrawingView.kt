@@ -30,7 +30,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     override fun onSizeChanged(w: Int,h: Int,oldw: Int,oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         map.Step = kotlin.math.min(w/Li,h/Col).toFloat()
-        val canvasH = (h - 500).toFloat()
+        val canvasH = (h - 200).toFloat()
         val canvasW = (w - 25).toFloat()
     }
 
@@ -50,8 +50,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             canvas = holder.lockCanvas()
             canvas.drawRect(0F, 0F, canvas.getWidth()*1F,
                 canvas.getHeight()*1F, backgroundPaint)
-            //map.draw(canvas)
-            canvas.drawCircle(120F,120F,30F,backgroundPaint)
+            map.draw(canvas)
             holder.unlockCanvasAndPost(canvas)
         }
     }
