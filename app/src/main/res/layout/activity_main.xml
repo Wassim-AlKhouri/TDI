@@ -15,9 +15,9 @@
         tools:layout_editor_absoluteY="34dp" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/button"
         android:layout_width="407dp"
-        android:layout_height="94dp"
+        android:layout_height="100dp"
         android:text="Button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

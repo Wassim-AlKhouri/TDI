@@ -22,17 +22,17 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     var drawing: Boolean = true
     val Col = 7
     lateinit var map:Map
-
+    var Step:Float = 0f
     init {
         backgroundPaint.color = Color.WHITE
     }
 
     override fun onSizeChanged(w: Int,h: Int,oldw: Int,oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        val Step = (w/Col).toFloat()
-        val Li = ((h/Step)-1).toInt()
+        this.Step = (w/Col).toFloat()
+        val Li = ((h/this.Step)-1).toInt()
         this.map= Map(Col,Li)
-        map.Step = Step
+        map.Step = this.Step
         map.creat_Cells()
         val canvasH = (h-200).toFloat()
         val canvasW = (w - 25).toFloat()
@@ -62,8 +62,17 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     override fun onTouchEvent(e: MotionEvent): Boolean {
         when (e.action) {
             MotionEvent.ACTION_DOWN -> {
-                val x = e.rawX.toInt() - 100
-                val y = e.rawY.toInt() - 300
+                if (buttonpushed) {
+                    val x = e.rawX.toInt()
+                    val y = e.rawY.toInt() - 300
+                    val stepx = (x / Step).toInt()
+                    val stepy = (y / Step).toInt()
+                    if (map.Cells[(Col * stepy) + stepx].type != 1) {
+                        map.Cells[(Col * stepy) + stepx].type = 2
+                        buttonpushed = false
+                    }
+
+                }
             }
         }
         return true
