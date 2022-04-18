@@ -21,7 +21,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     lateinit var thread: Thread
     var drawing: Boolean = true
     val Col = 7
-    lateinit var  map:Map
+    lateinit var map:Map
 
     init {
         backgroundPaint.color = Color.WHITE
@@ -31,7 +31,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
         super.onSizeChanged(w, h, oldw, oldh)
         val Step = (w/Col).toFloat()
         val Li = (h/Step).toInt()
-        val map:Map = Map(Col,Li)
+        this.map= Map(Col,Li)
         map.Step = Step
         map.creat_Cells()
         val canvasH = (h).toFloat()
