@@ -21,8 +21,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     lateinit var thread: Thread
     var drawing: Boolean = true
     val Col = 7
-    val Li = 7
-    val map:Map = Map(Col,Li)
+    lateinit var  map:Map
 
     init {
         backgroundPaint.color = Color.WHITE
@@ -30,9 +29,12 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
 
     override fun onSizeChanged(w: Int,h: Int,oldw: Int,oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        map.Step = kotlin.math.min(w/Li,h/Col).toFloat()
+        val Step = (w/Col).toFloat()
+        val Li = (h/Step).toInt()
+        val map:Map = Map(Col,Li)
+        map.Step = Step
         map.creat_Cells()
-        val canvasH = (h - 200).toFloat()
+        val canvasH = (h).toFloat()
         val canvasW = (w - 25).toFloat()
     }
 
