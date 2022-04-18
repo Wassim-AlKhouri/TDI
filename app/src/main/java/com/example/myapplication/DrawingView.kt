@@ -30,11 +30,11 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     override fun onSizeChanged(w: Int,h: Int,oldw: Int,oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         val Step = (w/Col).toFloat()
-        val Li = (h/Step).toInt()
+        val Li = ((h/Step)-1).toInt()
         this.map= Map(Col,Li)
         map.Step = Step
         map.creat_Cells()
-        val canvasH = (h).toFloat()
+        val canvasH = (h-200).toFloat()
         val canvasW = (w - 25).toFloat()
     }
 

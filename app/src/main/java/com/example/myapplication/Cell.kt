@@ -10,8 +10,8 @@ class Cell (coordX : Int, coordY : Int, val step: Float, val type:Int) {
     val Y = coordY*step
     val R = RectF(coordX*step,coordY*step,(coordX+1)*step,(coordY+1)*step)
     val paint = Paint()
-    val green = Color.argb(255, 0,255, 0)
-    val red = Color.argb(255, 255,0, 0)
+    val green = Color.argb(255, 64,160, 22)
+    val red = Color.argb(255, 155,103, 60)
     val black = Color.argb(255, 0,0, 0)
     fun draw(canvas: Canvas){
         if (type == 0) paint.color = green
