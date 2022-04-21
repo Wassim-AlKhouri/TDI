@@ -92,7 +92,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                 Monster.move()
                 if (Monster.end){drawing = false}
             }
-            Thread.sleep(200)
+            Thread.sleep(300)
         }
     }
 
