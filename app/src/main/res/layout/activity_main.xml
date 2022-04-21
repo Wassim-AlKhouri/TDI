@@ -16,11 +16,18 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="407dp"
-        android:layout_height="100dp"
-        android:text="Button"
+        android:layout_width="167dp"
+        android:layout_height="71dp"
+        android:text="tower"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="155dp"
+        android:layout_height="71dp"
+        android:text="monster"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

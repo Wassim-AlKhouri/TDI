@@ -9,6 +9,8 @@ class Map(val Col: Int, val Li: Int)  {
     var map: Array<IntArray> = Array(Li) { IntArray(Col) }
     var Step = 0F
     var Cells = ArrayList<Cell>()
+    var startx = 0
+    var road =ArrayList<Array<Int>>()
 
     init {
         map_generate()
@@ -29,6 +31,7 @@ class Map(val Col: Int, val Li: Int)  {
         var x: Int = (0 until width).random()
         var y: Int = 0
         this.map[y][x] = 1
+        this.road.add(arrayOf(x,y))
         var left: Boolean = true
         var right: Boolean = true
         while (y < (height - 1)) {
@@ -47,6 +50,7 @@ class Map(val Col: Int, val Li: Int)  {
                 right = false
             }
             this.map[y][x] = 1
+            this.road.add(arrayOf(x,y))
         }
     }
 

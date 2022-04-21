@@ -13,6 +13,9 @@ import android.view.View
 import android.widget.Toast
 import java.util.*
 import android.util.Log
+import android.widget.Button
+import java.util.logging.Handler
+import kotlin.collections.ArrayList
 
 class DrawingView @JvmOverloads
 constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0): SurfaceView(context, attributes,defStyleAttr), SurfaceHolder.Callback,Runnable {
@@ -23,6 +26,8 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     val Col = 7
     lateinit var map:Map
     var Step:Float = 0f
+    var Monsters = ArrayList<Monster>()
+
     init {
         backgroundPaint.color = Color.WHITE
     }
@@ -34,6 +39,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
         this.map= Map(Col,Li)
         map.Step = this.Step
         map.creat_Cells()
+        this.Monsters.add(Monster(this.Step,this.map.road))
         val canvasH = (h-200).toFloat()
         val canvasW = (w - 25).toFloat()
     }
@@ -55,6 +61,8 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             canvas.drawRect(0F, 0F, canvas.getWidth()*1F,
                 canvas.getHeight()*1F, backgroundPaint)
             map.draw(canvas)
+            for (Monster in Monsters){Monster.draw(canvas)}
+
             holder.unlockCanvasAndPost(canvas)
         }
     }
@@ -71,7 +79,6 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                         map.Cells[(Col * stepy) + stepx].type = 2
                         buttonpushed = false
                     }
-
                 }
             }
         }
@@ -81,6 +88,11 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     override fun run() {
         while (drawing) {
             draw()
+            for(Monster in Monsters){
+                Monster.move()
+                if (Monster.end){drawing = false}
+            }
+            Thread.sleep(200)
         }
     }
 
