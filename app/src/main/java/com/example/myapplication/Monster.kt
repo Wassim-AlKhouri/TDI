@@ -20,9 +20,10 @@ class Monster(val time_birth:Double, var view: DrawingView) {
     fun draw(canvas: Canvas){
         val red = Paint()
         red.color = Color.argb(255, 255,0, 0)
-        canvas.drawCircle((x+0.5f)*Step,(y+0.5f)*Step,30f,red)
+        canvas.drawCircle(x,y,30f,red)
     }
-    fun move(totaltime:Double){
+    fun move(){
+         val totaltime = view.totaltime
         pos = ((totaltime-time_birth)*speed/Step).toInt()
         //val time_in_Cell = (totaltime-time_birth) - (pos*Step)/speed
         val d =( (totaltime-time_birth)*speed - pos*Step ).toFloat()

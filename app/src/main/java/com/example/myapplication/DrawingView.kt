@@ -64,11 +64,11 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             canvas.drawRect(0F, 0F, canvas.getWidth()*1F,
                 canvas.getHeight()*1F, backgroundPaint)
             map.draw(canvas)
-            for (Monster in Monsters){Monster.draw(canvas)}
-            if (this.totaltime > 1000 && monstercreated){
+            if (monstercreated){
                 this.Monsters.add(Monster(this.totaltime,this))
                 monstercreated = false
             }
+            for (Monster in Monsters){Monster.draw(canvas)}
             holder.unlockCanvasAndPost(canvas)
         }
     }
@@ -103,17 +103,14 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     }
 
     fun Move_Monseters(){
-        if(button2pushed) {
             for (Monster in this.Monsters) {
-                Monster.move(this.totaltime)
+                Monster.move()
                 /*
                 if (Monster.end) {
                     drawing = false
                 }
-
                  */
             }
-        }
     }
 
     override fun surfaceChanged(
