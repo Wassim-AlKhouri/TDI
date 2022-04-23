@@ -31,7 +31,8 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     var buttonpushed = false
     var button2pushed = false
     var totaltime = 0.0
-    var monstercreated = true
+    var monstercreated = false
+
     init {
         backgroundPaint.color = Color.WHITE
     }
@@ -64,10 +65,11 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             canvas.drawRect(0F, 0F, canvas.getWidth()*1F,
                 canvas.getHeight()*1F, backgroundPaint)
             map.draw(canvas)
-            if (monstercreated){
+            if ( (totaltime/1000).toInt()%50 == 0 && !monstercreated){
                 this.Monsters.add(Monster(this.totaltime,this))
-                monstercreated = false
+                monstercreated = true
             }
+            monstercreated = false
             for (Monster in Monsters){Monster.draw(canvas)}
             holder.unlockCanvasAndPost(canvas)
         }
@@ -83,6 +85,8 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                     val stepy = (y / Step).toInt()
                     if (map.Cells[(Col * stepy) + stepx].type != 1) {
                         map.Cells[(Col * stepy) + stepx].type = 2
+                        val position:List<Int> = listOf(stepx,stepy)
+                        Towers.add(Tower(position,this ))
                         buttonpushed = false
                     }
                 }
@@ -98,19 +102,25 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             var elapsedTimeMS:Double=(currentTime-previousFrameTime).toDouble()
             totaltime+=elapsedTimeMS
             draw()
-            Move_Monseters()
+            Move_Monsters()
+            Move_Projectile()
         }
     }
 
-    fun Move_Monseters(){
-            for (Monster in this.Monsters) {
-                Monster.move()
-                /*
-                if (Monster.end) {
-                    drawing = false
+    fun Move_Monsters(){
+            for (monster in this.Monsters) {
+                monster.move()
+                if(monster.dead){Monsters.remove(monster)}
+                for (tower in Towers){
+                    tower.detect_monster(monster)
                 }
-                 */
             }
+    }
+
+    fun Move_Projectile() {
+        for (tower in Towers){
+            tower.move_projectile()
+        }
     }
 
     override fun surfaceChanged(
