@@ -27,8 +27,8 @@ class Monster(val step:Float, val road: ArrayList<Array<Int>>) {
         }
         else if (pos == road.size){end = true}
     }
-    fun hit(damage:Int){
-        health-=damage
+    fun detect_choc(damage:Int){
+        health -= damage
     }
 }
 

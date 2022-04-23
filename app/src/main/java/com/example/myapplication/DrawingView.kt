@@ -27,6 +27,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     lateinit var map:Map
     var Step:Float = 0f
     var Monsters = ArrayList<Monster>()
+    var Towers = ArrayList<Tower>()
 
     init {
         backgroundPaint.color = Color.WHITE
