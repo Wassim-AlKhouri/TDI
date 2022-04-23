@@ -28,21 +28,23 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     var Step:Float = 0f
     var Monsters = ArrayList<Monster>()
     var Towers = ArrayList<Tower>()
-
+    var buttonpushed = false
+    var button2pushed = false
+    var totaltime = 0.0
+    var monstercreated = true
     init {
         backgroundPaint.color = Color.WHITE
     }
 
     override fun onSizeChanged(w: Int,h: Int,oldw: Int,oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        this.Step = (w/Col).toFloat()
-        val Li = ((h/this.Step)-1).toInt()
-        this.map= Map(Col,Li)
-        map.Step = this.Step
+        val canvasH = (h-250).toFloat()
+        val canvasW = (w).toFloat()
+        this.Step = (canvasW/Col).toFloat()
+        val Li = ((canvasH/this.Step)).toInt()
+        this.map= Map(Col,Li,this)
         map.creat_Cells()
-        this.Monsters.add(Monster(this.Step,this.map.road))
-        val canvasH = (h-200).toFloat()
-        val canvasW = (w - 25).toFloat()
+
     }
 
     fun pause() {
@@ -63,7 +65,10 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                 canvas.getHeight()*1F, backgroundPaint)
             map.draw(canvas)
             for (Monster in Monsters){Monster.draw(canvas)}
-
+            if (this.totaltime > 1000 && monstercreated){
+                this.Monsters.add(Monster(this.totaltime,this))
+                monstercreated = false
+            }
             holder.unlockCanvasAndPost(canvas)
         }
     }
@@ -87,13 +92,27 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     }
 
     override fun run() {
+        var previousFrameTime = System.currentTimeMillis()
         while (drawing) {
+            val currentTime = System.currentTimeMillis()
+            var elapsedTimeMS:Double=(currentTime-previousFrameTime).toDouble()
+            totaltime+=elapsedTimeMS
             draw()
-            for(Monster in Monsters){
-                Monster.move()
-                if (Monster.end){drawing = false}
+            Move_Monseters()
+        }
+    }
+
+    fun Move_Monseters(){
+        if(button2pushed) {
+            for (Monster in this.Monsters) {
+                Monster.move(this.totaltime)
+                /*
+                if (Monster.end) {
+                    drawing = false
+                }
+
+                 */
             }
-            Thread.sleep(300)
         }
     }
 

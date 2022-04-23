@@ -16,7 +16,7 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="167dp"
+        android:layout_width="155dp"
         android:layout_height="71dp"
         android:text="tower"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -29,5 +29,13 @@
         android:text="monster"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:text="II"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

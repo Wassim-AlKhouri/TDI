@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
-var buttonpushed = false
 
 class MainActivity : AppCompatActivity() {
     lateinit var drawingView: DrawingView
@@ -13,10 +12,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         drawingView = findViewById(R.id.MainView)
-        val Button2 = findViewById<Button>(R.id.button2)
-        val Button = findViewById<Button>(R.id.button)
-        Button2.setOnClickListener {}
-        Button.setOnClickListener{OnClick()}
+        val btn_tower = findViewById<Button>(R.id.button)
+        val btn_play = findViewById<Button>(R.id.button2)
+        val btn_pause = findViewById<Button>(R.id.button3)
+        btn_tower.setOnClickListener{OnClick(drawingView)}
+        btn_play.setOnClickListener { OnClick2(drawingView)}
+        btn_pause.setOnClickListener {}
     }
 
     override fun onPause() {
@@ -32,10 +33,10 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this@MainActivity,text, Toast.LENGTH_LONG).show()
     }
 }
-fun OnClick2(step:Float,road: java.util.ArrayList<Array<Int>>){
-
+fun OnClick2(drawingView: DrawingView){
+    drawingView.button2pushed = !drawingView.button2pushed
 }
 
-fun OnClick(){
-    buttonpushed = !buttonpushed
+fun OnClick(drawingView: DrawingView){
+    drawingView.buttonpushed = !drawingView.buttonpushed
 }

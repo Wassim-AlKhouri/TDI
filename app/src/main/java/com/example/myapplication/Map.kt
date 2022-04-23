@@ -5,9 +5,9 @@ import android.util.Log
 import java.util.ArrayList
 import kotlin.math.min
 
-class Map(val Col: Int, val Li: Int)  {
+class Map(val Col: Int, val Li: Int, var view: DrawingView)  {
     var map: Array<IntArray> = Array(Li) { IntArray(Col) }
-    var Step = 0F
+    var Step = view.Step
     var Cells = ArrayList<Cell>()
     var startx = 0
     var road =ArrayList<Array<Int>>()
@@ -19,7 +19,7 @@ class Map(val Col: Int, val Li: Int)  {
     fun creat_Cells(){
         for (y in 0 until Li){
             for(x in 0 until Col){
-                val cell = Cell(x,y,Step,this.map[y][x])
+                val cell = Cell(x,y,this.Step,this.map[y][x])
                 this.Cells.add(cell)
             }
         }

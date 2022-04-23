@@ -5,7 +5,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.PointF
 
-class TowerProjectile (var view: DrawingView, var step :Float, val x :Int, val y :Int) {
+class Projectile (var view: DrawingView, var step :Float, val x :Int, val y :Int) {
     var canonball = PointF()
     var canonballVitesse = 0f
     var canonballVitesseX = 0f
@@ -15,7 +15,7 @@ class TowerProjectile (var view: DrawingView, var step :Float, val x :Int, val y
 
     fun launch(angle: Double) {
         canonball.x = canonballRadius
-        canonball.y = view.screenHeight / 2f
+        //canonball.y = view.screenHeight / 2f
         canonballVitesseX=(canonballVitesse*Math.sin(angle)).toFloat()
         canonballVitesseY=(-canonballVitesse*Math.cos(angle)).toFloat()
         canonballOnScreen = true
