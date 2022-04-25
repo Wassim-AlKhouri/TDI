@@ -9,7 +9,6 @@ class Map(val Col: Int, val Li: Int, var view: DrawingView)  {
     var map: Array<IntArray> = Array(Li) { IntArray(Col) }
     var Step = view.Step
     var Cells = ArrayList<Cell>()
-    var startx = 0
     var road =ArrayList<Array<Int>>()
 
     init {
@@ -28,29 +27,32 @@ class Map(val Col: Int, val Li: Int, var view: DrawingView)  {
     fun map_generate() {
         val height: Int = this.map.size
         val width: Int = this.map[0].size
-        var x: Int = (0 until width).random()
+        var x: Int = 3
         var y: Int = 0
         this.map[y][x] = 1
         this.road.add(arrayOf(x,y))
         var left: Boolean = true
         var right: Boolean = true
-        var r = (1..3).random()
+        var r =  (1..3).random()
         while (y < (height - 1)) {
             if (r == 1) {
                 y += 1
                 left = true
                 right = true
-                r = (1..3).random()
             }
-            if (r == 2 && right && x < (width - 1)) {
+            else if (r == 2 && right && x < (width - 1)) {
                 x += 1
                 left = false
-                r = (1..2).random()
             }
-            if (r == 3 && left && x > 0) {
+            else if (r == 3 && left && x > 0) {
                 x -= 1
                 right = false
-                r = arrayOf(1,3).random()
+            }
+            else{y+=1}
+            when(r){
+                1->r=(1..3).random()
+                2->r=(1..2).random()
+                3->r= arrayOf(1,3).random()
             }
             this.map[y][x] = 1
             this.road.add(arrayOf(x,y))
