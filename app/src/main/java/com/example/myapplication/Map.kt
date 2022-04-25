@@ -34,20 +34,23 @@ class Map(val Col: Int, val Li: Int, var view: DrawingView)  {
         this.road.add(arrayOf(x,y))
         var left: Boolean = true
         var right: Boolean = true
+        var r = (1..3).random()
         while (y < (height - 1)) {
-            val r = (1..3).random()
             if (r == 1) {
                 y += 1
                 left = true
                 right = true
+                r = (1..3).random()
             }
             if (r == 2 && right && x < (width - 1)) {
                 x += 1
                 left = false
+                r = (1..2).random()
             }
             if (r == 3 && left && x > 0) {
                 x -= 1
                 right = false
+                r = arrayOf(1,3).random()
             }
             this.map[y][x] = 1
             this.road.add(arrayOf(x,y))
