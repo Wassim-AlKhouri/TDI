@@ -7,7 +7,7 @@ import kotlin.math.pow
 class Tower (val Position: List<Int>, var view: DrawingView) {
     var attacking = false
     var projectile:Projectile? = null
-    var distanceattack = 250f
+    var distanceattack = 500f
     var damage :Int = 30
     var cible : Monster? = null
     val Step = view.Step
@@ -30,6 +30,7 @@ class Tower (val Position: List<Int>, var view: DrawingView) {
         }
     }
     fun move_projectile(){
+        if(cible!=null){ if((cible!!.health <=0)){cible = null;attacking=false} }
         if(projectile?.Colision == true){projectile = null}
         else{projectile?.move()}
     }

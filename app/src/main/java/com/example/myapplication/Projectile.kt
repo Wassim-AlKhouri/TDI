@@ -16,6 +16,7 @@ class Projectile (var view: DrawingView,val start_Position: List<Int>,val cible:
     var vx = 0.0
     var vy = 0.0
     var Colision = false
+    val tf = 100
     /*
     fun launch(angle: Double) {
         canonball.x = canonballRadius
@@ -28,18 +29,24 @@ class Projectile (var view: DrawingView,val start_Position: List<Int>,val cible:
     init {this.calculate_speed()}
 
     fun calculate_speed(){
+/*
         angle =Math.atan( Math.abs((y-cible.y)/(x-cible.x)))
         if (x >= cible.x && y <= cible.y){angle+=Math.PI/2}
         else if (x <= cible.x && y < cible.y){angle+=Math.PI}
         else if (x < cible.x && y >= cible.y){angle+=3*Math.PI/2}
         vx = v*Math.sin(angle+Math.PI)
         vy = v*Math.sin(angle+Math.PI)
+        */
 
+        vx = (cible.x - x)/tf
+        vy = (cible.y - y)/tf
     }
 
     fun move(){
-        x += vx.toFloat() * (SystemClock.elapsedRealtime() - last_time).toFloat()
-        y += vy.toFloat() * (SystemClock.elapsedRealtime() - last_time).toFloat()
+        //x += vx.toFloat() * (SystemClock.elapsedRealtime() - last_time).toFloat()
+        //y += vy.toFloat() * (SystemClock.elapsedRealtime() - last_time).toFloat()
+        x += vx*(SystemClock.elapsedRealtime()-last_time)
+        y += vy*(SystemClock.elapsedRealtime()-last_time)
         last_time = SystemClock.elapsedRealtime()
         if (Math.abs(x - cible.x) < 30 && Math.abs(y - cible.y) < 30){
             Colision = true

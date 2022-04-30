@@ -15,7 +15,7 @@ class Monster(val Birth_time:Long, var view: DrawingView) {
     var speed = 0.05f
     var pos = 0
     var end = false
-    var health = 100
+    var health = 2000
     var dead = false
 
     fun draw(canvas: Canvas){

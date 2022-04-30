@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.os.SystemClock
+import android.widget.TextView
 
 class Time(val initial_time:Long):Runnable {
     lateinit var thread: Thread

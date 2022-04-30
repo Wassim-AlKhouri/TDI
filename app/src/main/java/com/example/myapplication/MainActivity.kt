@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 var TotalTime:Long = 0
 class MainActivity : AppCompatActivity() {

@@ -35,6 +35,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
 
     init {
         backgroundPaint.color = Color.WHITE
+        backgroundPaint.textSize = 50f
     }
 
     override fun onSizeChanged(w: Int,h: Int,oldw: Int,oldh: Int) {
@@ -65,12 +66,14 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             canvas.drawRect(0F, 0F, canvas.getWidth()*1F,
                 canvas.getHeight()*1F, backgroundPaint)
             map.draw(canvas)
-            if ( (TotalTime).toInt() < 10 && !monstercreated){
+            if ( !monstercreated && Monsters.size < 1){
                 this.Monsters.add(Monster(SystemClock.elapsedRealtime(),this))
                 monstercreated = true
             }
             for (monster in Monsters){monster.draw(canvas)}
             for (tower in Towers){tower.draw(canvas)}
+            monstercreated = false
+            draw_time(canvas)
             holder.unlockCanvasAndPost(canvas)
         }
     }
@@ -105,11 +108,11 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
 
     fun Move_Monsters(){
             for (monster in this.Monsters) {
-                monster.move()
-                if(monster.dead){Monsters.remove(monster)}
-                for (tower in Towers){
-                    tower.detect_monster(monster)
-                }
+                    monster.move()
+                    for (tower in Towers) {
+                        tower.detect_monster(monster)
+                    }
+                    if (monster.dead) { this.Monsters.remove(monster) }
             }
     }
 
@@ -119,7 +122,9 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             tower.move_projectile()
         }
     }
-
+    fun draw_time(canvas: Canvas){
+        canvas.drawText(TotalTime.toString(),5f,50f,backgroundPaint)
+    }
     override fun surfaceChanged(
         holder: SurfaceHolder, format: Int,
         width: Int, height: Int) {
