@@ -70,7 +70,8 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                 monstercreated = true
             }
             monstercreated = false
-            for (Monster in Monsters){Monster.draw(canvas)}
+            for (monster in Monsters){monster.draw(canvas)}
+            for (tower in Towers){tower.draw(canvas)}
             holder.unlockCanvasAndPost(canvas)
         }
     }
@@ -119,6 +120,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
 
     fun Move_Projectile() {
         for (tower in Towers){
+            tower.attack()
             tower.move_projectile()
         }
     }
