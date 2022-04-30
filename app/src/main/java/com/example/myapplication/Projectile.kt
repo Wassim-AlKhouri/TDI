@@ -25,13 +25,16 @@ class Projectile (var view: DrawingView,val start_Position: List<Int>,val cible:
         canonballOnScreen = true
     }
      */
-    init {this.calculate_speed() }
+    init {this.calculate_speed()}
+
     fun calculate_speed(){
-        angle =Math.atan( Math.abs((y-cible.y)/(x-cible.x)).toDouble())
+        angle =Math.atan( Math.abs((y-cible.y)/(x-cible.x)))
+        if (x >= cible.x && y <= cible.y){angle+=Math.PI/2}
+        else if (x <= cible.x && y < cible.y){angle+=Math.PI}
+        else if (x < cible.x && y >= cible.y){angle+=3*Math.PI/2}
         vx = v*Math.sin(angle+Math.PI)
         vy = v*Math.sin(angle+Math.PI)
-        if (x < cible.x){vx=-vx}
-        if (y < cible.y){vy=-vy}
+
     }
 
     fun move(){
