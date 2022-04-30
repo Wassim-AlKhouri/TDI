@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.os.SystemClock
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.SurfaceHolder
@@ -30,7 +31,6 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     var Towers = ArrayList<Tower>()
     var buttonpushed = false
     var button2pushed = false
-    var totaltime = 0.0
     var monstercreated = false
 
     init {
@@ -65,11 +65,10 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             canvas.drawRect(0F, 0F, canvas.getWidth()*1F,
                 canvas.getHeight()*1F, backgroundPaint)
             map.draw(canvas)
-            if ( (totaltime/1000).toInt()%50 == 0 && !monstercreated){
-                this.Monsters.add(Monster(this.totaltime,this))
+            if ( (TotalTime).toInt() < 10 && !monstercreated){
+                this.Monsters.add(Monster(SystemClock.elapsedRealtime(),this))
                 monstercreated = true
             }
-            monstercreated = false
             for (monster in Monsters){monster.draw(canvas)}
             for (tower in Towers){tower.draw(canvas)}
             holder.unlockCanvasAndPost(canvas)
@@ -97,11 +96,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     }
 
     override fun run() {
-        var previousFrameTime = System.currentTimeMillis()
         while (drawing) {
-            val currentTime = System.currentTimeMillis()
-            var elapsedTimeMS:Double=(currentTime-previousFrameTime).toDouble()
-            totaltime+=elapsedTimeMS
             draw()
             Move_Monsters()
             Move_Projectile()

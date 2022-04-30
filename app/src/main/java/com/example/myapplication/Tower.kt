@@ -1,19 +1,20 @@
 package com.example.myapplication
 
 import android.graphics.Canvas
+import android.os.SystemClock
 import kotlin.math.pow
 
 class Tower (val Position: List<Int>, var view: DrawingView) {
     var attacking = false
     var projectile:Projectile? = null
-    var distanceattack = 500f
+    var distanceattack = 250f
     var damage :Int = 30
     var cible : Monster? = null
     val Step = view.Step
 
     fun attack(){
         if (projectile == null && cible != null){
-            projectile = Projectile(view,Position, cible!!, view.totaltime, damage)
+            projectile = Projectile(view,Position, cible!!, SystemClock.elapsedRealtime(), damage)
         }
     }
 
@@ -29,7 +30,8 @@ class Tower (val Position: List<Int>, var view: DrawingView) {
         }
     }
     fun move_projectile(){
-        projectile?.move()
+        if(projectile?.Colision == true){projectile = null}
+        else{projectile?.move()}
     }
     fun draw(canvas: Canvas) {projectile?.draw(canvas)}
 }

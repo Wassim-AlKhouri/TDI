@@ -4,19 +4,15 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.PointF
+import android.os.SystemClock
+import kotlin.concurrent.thread
 
-class Projectile (var view: DrawingView,val start_Position: List<Int>,val cible:Monster,var last_time:Double,val damage:Int) {
-    var canonball = PointF()
-    var canonballVitesse = 0f
-    var canonballVitesseX = 0f
-    var canonballVitesseY = 0f
-    var canonballOnScreen = true
-    var canonballRadius = 0f
+class Projectile (var view: DrawingView,val start_Position: List<Int>,val cible:Monster,var last_time:Long,val damage:Int) {
     val Step = view.Step
-    var x = start_Position[0]*Step
-    var y = start_Position[1]*Step
+    var x = (start_Position[0]+0.5)*Step
+    var y = (start_Position[1]+0.5)*Step
     var angle = 0.0
-    val v = 0.01f
+    val v = 2f
     var vx = 0.0
     var vy = 0.0
     var Colision = false
@@ -29,19 +25,20 @@ class Projectile (var view: DrawingView,val start_Position: List<Int>,val cible:
         canonballOnScreen = true
     }
      */
-
+    init {this.calculate_speed() }
     fun calculate_speed(){
-        angle = Math.atan(( (y-cible.y) / (x-cible.x) ).toDouble())
-        vx = v*Math.sin(angle)
-        vy = v*Math.sin(angle)
+        angle =Math.atan( Math.abs((y-cible.y)/(x-cible.x)).toDouble())
+        vx = v*Math.sin(angle+Math.PI)
+        vy = v*Math.sin(angle+Math.PI)
+        if (x < cible.x){vx=-vx}
+        if (y < cible.y){vy=-vy}
     }
 
     fun move(){
-        calculate_speed()
-        x += vx.toFloat() * (view.totaltime - last_time).toFloat()
-        y += vy.toFloat() * (view.totaltime - last_time).toFloat()
-        last_time = view.totaltime
-        if (Math.abs(x - cible.x) < 5 && Math.abs(y - cible.y) < 5){
+        x += vx.toFloat() * (SystemClock.elapsedRealtime() - last_time).toFloat()
+        y += vy.toFloat() * (SystemClock.elapsedRealtime() - last_time).toFloat()
+        last_time = SystemClock.elapsedRealtime()
+        if (Math.abs(x - cible.x) < 30 && Math.abs(y - cible.y) < 30){
             Colision = true
             cible.attacked(damage)
         }
@@ -51,7 +48,7 @@ class Projectile (var view: DrawingView,val start_Position: List<Int>,val cible:
         if(!Colision) {
             val green = Paint()
             green.color = Color.argb(255, 0, 255, 0)
-            canvas.drawCircle(x, y, 15f, green)
+            canvas.drawCircle(x.toFloat(), y.toFloat(), 15f, green)
         }
     }
 
