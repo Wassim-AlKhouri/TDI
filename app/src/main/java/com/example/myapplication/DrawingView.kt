@@ -31,11 +31,15 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     var Towers = ArrayList<Tower>()
     var buttonpushed = false
     var button2pushed = false
-    var monstercreated = false
+    //var monstercreated = false
 
     init {
         backgroundPaint.color = Color.WHITE
         backgroundPaint.textSize = 50f
+    }
+
+    override fun run() {
+        while (drawing) { draw() }
     }
 
     override fun onSizeChanged(w: Int,h: Int,oldw: Int,oldh: Int) {
@@ -49,30 +53,14 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
 
     }
 
-    fun pause() {
-        drawing = false
-        thread.join()
-    }
-
-    fun resume() {
-        drawing = true
-        thread = Thread(this)
-        thread.start()
-    }
-
     fun draw() {
         if (holder.surface.isValid) {
             canvas = holder.lockCanvas()
-            canvas.drawRect(0F, 0F, canvas.getWidth()*1F,
-                canvas.getHeight()*1F, backgroundPaint)
+            canvas.drawRect(0F, 0F, canvas.getWidth()*1F, canvas.getHeight()*1F, backgroundPaint)
             map.draw(canvas)
-            if ( !monstercreated && Monsters.size < 1){
-                this.Monsters.add(Monster(SystemClock.elapsedRealtime(),this))
-                monstercreated = true
-            }
             for (monster in Monsters){monster.draw(canvas)}
             for (tower in Towers){tower.draw(canvas)}
-            monstercreated = false
+            //monstercreated = false
             draw_time(canvas)
             holder.unlockCanvasAndPost(canvas)
         }
@@ -98,33 +86,21 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
         return true
     }
 
-    override fun run() {
-        while (drawing) {
-            draw()
-            Move_Monsters()
-            Move_Projectile()
-        }
-    }
-
-    fun Move_Monsters(){
-            for (monster in this.Monsters) {
-                    monster.move()
-                    for (tower in Towers) {
-                        tower.detect_monster(monster)
-                    }
-                    if (monster.dead) { this.Monsters.remove(monster) }
-            }
-    }
-
-    fun Move_Projectile() {
-        for (tower in Towers){
-            tower.attack()
-            tower.move_projectile()
-        }
-    }
     fun draw_time(canvas: Canvas){
         canvas.drawText(TotalTime.toString(),5f,50f,backgroundPaint)
     }
+
+    fun pause() {
+        drawing = false
+        thread.join()
+    }
+
+    fun resume() {
+        drawing = true
+        thread = Thread(this)
+        thread.start()
+    }
+
     override fun surfaceChanged(
         holder: SurfaceHolder, format: Int,
         width: Int, height: Int) {

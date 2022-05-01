@@ -11,38 +11,60 @@ var TotalTime:Long = 0
 class MainActivity : AppCompatActivity() {
     lateinit var drawingView: DrawingView
     lateinit var time: Time
+    lateinit var monster_creator: Monster_Creator
+    lateinit var tower_manager: Tower_Manager
+    var playing = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         drawingView = findViewById(R.id.MainView)
         time = Time(SystemClock.elapsedRealtime())
+        monster_creator = Monster_Creator(drawingView)
+        tower_manager = Tower_Manager(drawingView)
         val btn_tower = findViewById<Button>(R.id.button)
         val btn_play = findViewById<Button>(R.id.button2)
         val btn_pause = findViewById<Button>(R.id.button3)
-        btn_tower.setOnClickListener{OnClick(drawingView)}
-        btn_play.setOnClickListener { OnClick2(drawingView)}
-        btn_pause.setOnClickListener {}
+        btn_tower.setOnClickListener { OnClick(drawingView) }
+        btn_play.setOnClickListener { OnClick2(drawingView) }
+        btn_pause.setOnClickListener { OnClick3(playing) }
     }
 
     override fun onPause() {
         super.onPause()
         drawingView.pause()
         time.pause()
+        monster_creator.pause()
+        monster_creator.monster_manager.pause()
+        tower_manager.pause()
     }
 
     override fun onResume() {
         super.onResume()
         drawingView.resume()
         time.resume()
+        monster_creator.resume()
+        monster_creator.monster_manager.resume()
+        tower_manager.resume()
     }
-    fun toast(text:String){
-        Toast.makeText(this@MainActivity,text, Toast.LENGTH_LONG).show()
-    }
-}
-fun OnClick2(drawingView: DrawingView){
-    drawingView.button2pushed = !drawingView.button2pushed
-}
 
-fun OnClick(drawingView: DrawingView){
-    drawingView.buttonpushed = !drawingView.buttonpushed
+    fun toast(text: String) {
+        Toast.makeText(this@MainActivity, text, Toast.LENGTH_LONG).show()
+    }
+
+    fun OnClick(drawingView: DrawingView) {
+        drawingView.buttonpushed = !drawingView.buttonpushed
+    }
+
+    fun OnClick2(drawingView: DrawingView) {
+        drawingView.button2pushed = !drawingView.button2pushed
+    }
+
+    fun OnClick3(playing: Boolean) {
+        if (playing) {
+            this.onPause()
+        } else {
+            this.onResume()
+        }
+    }
 }

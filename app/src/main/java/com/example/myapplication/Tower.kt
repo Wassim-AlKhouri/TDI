@@ -22,7 +22,7 @@ class Tower (val Position: List<Int>, var view: DrawingView) {
         if (!attacking) {
             val xm = monster.x
             val ym = monster.y
-            val distance = Math.sqrt( ((Math.abs( (Position[0]*Step) - xm) ).pow(2) + (Math.abs( (Position[1]*Step) - ym) ).pow(2)).toDouble() )
+            val distance = Math.sqrt( ((Math.abs( ((Position[0]+0.5)*Step) - xm) ).pow(2) + (Math.abs( ((Position[1]+0.5)*Step) - ym) ).pow(2)).toDouble() )
             if (distance <= distanceattack) {
                 attacking = true
                 cible = monster
