@@ -7,22 +7,23 @@ import android.graphics.RectF
 import android.os.SystemClock
 
 class Monster(val Birth_time:Long, var view: DrawingView) {
-    val R =RectF(30f,30f,30f,30f)
+
     var road = view.map.road
     val Step = view.Step
     var x = road[0][0]*Step
     var y = 0f
+    var r =RectF(0f,0f,0f,0f)
+    val radius = 30f
     var speed = 0.05f
     var pos = 0
-    var end = false
-    var health = 2000
+    var health = 1000
     var dead = false
 
     fun draw(canvas: Canvas){
         if (!dead) {
-                val red = Paint()
-                red.color = Color.argb(255, 255, 0, 0)
-                canvas.drawCircle(x, y, 30f, red)
+                val redpaint = Paint()
+                redpaint.color = Color.RED
+                canvas.drawRect(r,redpaint)
             }
     }
 
@@ -39,7 +40,9 @@ class Monster(val Birth_time:Long, var view: DrawingView) {
             } else if (road[pos][1] - road[pos+1][1] < 0) {
                 y += d
             }
+            this.r = RectF(x,y,x+radius,y+radius)
         }
+
         /*
         if (pos < (road.size - 1)){
             if ( ( this.x-road[pos+1][0] ) < 0) {this.x+=1}

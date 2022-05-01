@@ -22,6 +22,7 @@ class DrawingView @JvmOverloads
 constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0): SurfaceView(context, attributes,defStyleAttr), SurfaceHolder.Callback,Runnable {
     lateinit var canvas: Canvas
     val backgroundPaint = Paint()
+    val blackPaint = Paint()
     lateinit var thread: Thread
     var drawing: Boolean = true
     val Col = 7
@@ -31,11 +32,13 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     var Towers = ArrayList<Tower>()
     var buttonpushed = false
     var button2pushed = false
+    var money = 100
     //var monstercreated = false
 
     init {
         backgroundPaint.color = Color.WHITE
-        backgroundPaint.textSize = 50f
+        blackPaint.color = Color.BLACK
+        blackPaint.textSize = 50f
     }
 
     override fun run() {
@@ -56,12 +59,13 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     fun draw() {
         if (holder.surface.isValid) {
             canvas = holder.lockCanvas()
-            canvas.drawRect(0F, 0F, canvas.getWidth()*1F, canvas.getHeight()*1F, backgroundPaint)
+            canvas.drawRect(0F, 0F, canvas.getWidth()*1F, canvas.getHeight()*1F,backgroundPaint)
             map.draw(canvas)
             for (monster in Monsters){monster.draw(canvas)}
             for (tower in Towers){tower.draw(canvas)}
             //monstercreated = false
             draw_time(canvas)
+            draw_money(canvas)
             holder.unlockCanvasAndPost(canvas)
         }
     }
@@ -69,15 +73,16 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     override fun onTouchEvent(e: MotionEvent): Boolean {
         when (e.action) {
             MotionEvent.ACTION_DOWN -> {
-                if (buttonpushed) {
-                    val x = e.rawX.toInt()
-                    val y = e.rawY.toInt() - 300
-                    val stepx = (x / Step).toInt()
-                    val stepy = (y / Step).toInt()
+                val x = e.rawX.toInt()
+                val y = e.rawY.toInt() - 300
+                val stepx = (x / Step).toInt()
+                val stepy = (y / Step).toInt()
+                if (buttonpushed && (money-50) >= 0) {
                     if (map.Cells[(Col * stepy) + stepx].type != 1) {
                         map.Cells[(Col * stepy) + stepx].type = 2
                         val position:List<Int> = listOf(stepx,stepy)
                         Towers.add(Tower(position,this ))
+                        money-=50
                         buttonpushed = false
                     }
                 }
@@ -87,7 +92,11 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     }
 
     fun draw_time(canvas: Canvas){
-        canvas.drawText(TotalTime.toString(),5f,50f,backgroundPaint)
+        canvas.drawText(TotalTime.toString(),5f,50f,blackPaint)
+    }
+
+    fun draw_money(canvas: Canvas){
+        canvas.drawText(money.toString(),(canvas.width/2).toFloat(),(canvas.height - 100).toFloat(),blackPaint)
     }
 
     fun pause() {

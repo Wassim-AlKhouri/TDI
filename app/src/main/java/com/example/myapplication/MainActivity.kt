@@ -11,7 +11,7 @@ var TotalTime:Long = 0
 class MainActivity : AppCompatActivity() {
     lateinit var drawingView: DrawingView
     lateinit var time: Time
-    lateinit var monster_creator: Monster_Creator
+    lateinit var monster_manager: Monster_Manager
     lateinit var tower_manager: Tower_Manager
     var playing = true
 
@@ -20,22 +20,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         drawingView = findViewById(R.id.MainView)
         time = Time(SystemClock.elapsedRealtime())
-        monster_creator = Monster_Creator(drawingView)
+        monster_manager = Monster_Manager(drawingView)
         tower_manager = Tower_Manager(drawingView)
         val btn_tower = findViewById<Button>(R.id.button)
         val btn_play = findViewById<Button>(R.id.button2)
         val btn_pause = findViewById<Button>(R.id.button3)
         btn_tower.setOnClickListener { OnClick(drawingView) }
         btn_play.setOnClickListener { OnClick2(drawingView) }
-        btn_pause.setOnClickListener { OnClick3(playing) }
+        btn_pause.setOnClickListener {  }
     }
 
     override fun onPause() {
         super.onPause()
         drawingView.pause()
         time.pause()
-        monster_creator.pause()
-        monster_creator.monster_manager.pause()
+        monster_manager.pause()
         tower_manager.pause()
     }
 
@@ -43,8 +42,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         drawingView.resume()
         time.resume()
-        monster_creator.resume()
-        monster_creator.monster_manager.resume()
+        monster_manager.resume()
         tower_manager.resume()
     }
 
@@ -67,4 +65,5 @@ class MainActivity : AppCompatActivity() {
             this.onResume()
         }
     }
+
 }

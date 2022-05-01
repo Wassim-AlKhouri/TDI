@@ -19,6 +19,7 @@ class Tower (val Position: List<Int>, var view: DrawingView) {
     }
 
     fun detect_monster(monster: Monster){
+        if(cible == null){attacking = false}
         if (!attacking) {
             val xm = monster.x
             val ym = monster.y
@@ -30,7 +31,7 @@ class Tower (val Position: List<Int>, var view: DrawingView) {
         }
     }
     fun move_projectile(){
-        if(cible!=null){ if((cible!!.health <=0)){cible = null;attacking=false} }
+        if((cible!!.health <=0)){cible = null;attacking=false}
         if(projectile?.Colision == true){projectile = null}
         else{projectile?.move()}
     }
