@@ -20,6 +20,7 @@ import kotlin.collections.ArrayList
 
 class DrawingView @JvmOverloads
 constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0): SurfaceView(context, attributes,defStyleAttr), SurfaceHolder.Callback,Runnable {
+
     lateinit var canvas: Canvas
     val backgroundPaint = Paint()
     val blackPaint = Paint()
@@ -34,7 +35,6 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     var buttonpushed = false
     var button2pushed = false
     var money = 500
-    //var monstercreated = false
 
     init {
         backgroundPaint.color = Color.WHITE
@@ -54,7 +54,6 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
         val Li = ((canvasH/this.Step)).toInt()
         this.map= Map(Col,Li,this)
         map.creat_Cells()
-
     }
 
     fun draw() {
