@@ -18,7 +18,7 @@
         android:id="@+id/button"
         android:layout_width="155dp"
         android:layout_height="71dp"
-        android:text="tower"
+        android:text="AttackTower:50"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -26,7 +26,7 @@
         android:id="@+id/button2"
         android:layout_width="155dp"
         android:layout_height="71dp"
-        android:text="monster"
+        android:text="MoneyTower 100"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

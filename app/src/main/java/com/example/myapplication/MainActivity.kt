@@ -3,9 +3,7 @@ package com.example.myapplication
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
-import android.util.Log
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 var TotalTime:Long = 0
 class MainActivity : AppCompatActivity() {
@@ -25,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         val btn_tower = findViewById<Button>(R.id.button)
         val btn_play = findViewById<Button>(R.id.button2)
         val btn_pause = findViewById<Button>(R.id.button3)
-        btn_tower.setOnClickListener { OnClick(drawingView) }
+        btn_tower.setOnClickListener { OnClick(drawingView,btn_tower) }
         btn_play.setOnClickListener { OnClick2(drawingView) }
         btn_pause.setOnClickListener {  }
     }
@@ -50,8 +48,13 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this@MainActivity, text, Toast.LENGTH_LONG).show()
     }
 
-    fun OnClick(drawingView: DrawingView) {
-        drawingView.buttonpushed = !drawingView.buttonpushed
+    fun OnClick(drawingView: DrawingView, button: Button) {
+        drawingView.tower_type+=1
+        when(drawingView.tower_type){
+            3->{button.text="MoneyTower:100"}
+            4->{button.text="IceTower:300"}
+            5->{drawingView.tower_type=2;button.text="AttackTower:50"}
+        }
     }
 
     fun OnClick2(drawingView: DrawingView) {

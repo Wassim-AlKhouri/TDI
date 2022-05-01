@@ -12,13 +12,16 @@ class Cell (coordX : Int, coordY : Int, val step: Float, var type:Int) {
     val paint = Paint()
     val green = Color.argb(255, 64,160, 22)
     val brown = Color.argb(255, 155,103, 60)
-    val black = Color.argb(255, 0,0, 0)
     fun draw(canvas: Canvas){
-        if (type == 0) paint.color = green
-        else if (type == 1) paint.color = brown
-        else if (type == 2)paint.color = black
+        when(type){
+            0->paint.color = green
+            1->paint.color = brown
+            2->paint.color = Color.BLACK
+            3->paint.color = Color.GRAY
+            4->paint.color = Color.BLUE
+        }
         canvas.drawRect(R,paint)
-        paint.color = black
+        paint.color = Color.BLACK
         canvas.drawLine(X,Y,X+step,Y,paint)
         canvas.drawLine(X,Y,X,Y+step,paint)
         canvas.drawLine(X+step,Y,X+step,Y+step,paint)

@@ -30,9 +30,10 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     var Step:Float = 0f
     var Monsters = ArrayList<Monster>()
     var Towers = ArrayList<Tower>()
+    var tower_type = 2
     var buttonpushed = false
     var button2pushed = false
-    var money = 100
+    var money = 500
     //var monstercreated = false
 
     init {
@@ -77,12 +78,22 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                 val y = e.rawY.toInt() - 300
                 val stepx = (x / Step).toInt()
                 val stepy = (y / Step).toInt()
-                if (buttonpushed && (money-50) >= 0) {
+                var price=0
+                when(tower_type){
+                    2->price=50
+                    3->price=100
+                    4->price=300
+                }
+                if ((money-price) >= 0) {
                     if (map.Cells[(Col * stepy) + stepx].type != 1) {
-                        map.Cells[(Col * stepy) + stepx].type = 2
+                        map.Cells[(Col * stepy) + stepx].type = tower_type
                         val position:List<Int> = listOf(stepx,stepy)
-                        Towers.add(Tower(position,this ))
-                        money-=50
+                        when(tower_type){
+                            2->Towers.add(Attack_Tower(position,this))
+                            3->Towers.add(Money_Tower(position,this,SystemClock.elapsedRealtime()))
+                            4->Towers.add(Ice_Tower(position,this))
+                        }
+                        money-=price
                         buttonpushed = false
                     }
                 }

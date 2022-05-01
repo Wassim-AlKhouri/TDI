@@ -4,19 +4,16 @@ import android.graphics.Canvas
 import android.os.SystemClock
 import kotlin.math.pow
 
-class Tower (val Position: List<Int>, var view: DrawingView) {
+abstract class Tower (open val Position: List<Int>, open val view: DrawingView) {
     var attacking = false
     var projectile:Projectile? = null
-    var distanceattack = 500f
-    var damage :Int = 30
+    var distanceattack :Float =50f
+    abstract val damage :Int
+    abstract val price:Int
     var cible : Monster? = null
-    val Step = view.Step
+    abstract val Step :Float
 
-    fun attack(){
-        if (projectile == null && cible != null){
-            projectile = Projectile(view,Position, cible!!, SystemClock.elapsedRealtime(), damage)
-        }
-    }
+    abstract fun attack()
 
     fun detect_monster(monster: Monster){
         if(cible == null){attacking = false}
@@ -30,11 +27,50 @@ class Tower (val Position: List<Int>, var view: DrawingView) {
             }
         }
     }
+
     fun move_projectile(){
-        if((cible!!.health <=0)){cible = null;attacking=false}
+        if(cible!=null){ if((cible!!.health <=0)){cible = null;attacking=false} }
         if(projectile?.Colision == true){projectile = null}
         else{projectile?.move()}
     }
+
     fun draw(canvas: Canvas) {projectile?.draw(canvas)}
+
 }
 
+class Money_Tower(override val Position: List<Int>, override val view: DrawingView, var last_time:Long):Tower(Position,view){
+    override val Step = view.Step
+    override var damage: Int = 10
+    override val price: Int = 100
+    val attack_interval: Long = 2000
+
+    override fun attack(){
+        if ((SystemClock.elapsedRealtime()-last_time) >= attack_interval){
+            last_time = SystemClock.elapsedRealtime()
+            view.money+=damage
+        }
+    }
+
+}
+
+class Ice_Tower(override val Position: List<Int>,override val view: DrawingView):Tower(Position, view){
+    override val Step = view.Step
+    override val damage: Int = 10
+    override val price: Int = 300
+    override fun attack() {
+        if (projectile == null && cible != null){
+            projectile = Projectile(view,Position, cible!!, SystemClock.elapsedRealtime(), damage, 1)
+        }
+    }
+}
+
+class Attack_Tower(override val Position: List<Int>,override val view: DrawingView):Tower(Position, view){
+    override val Step = view.Step
+    override val damage: Int = 40
+    override val price: Int = 50
+    override fun attack() {
+        if (projectile == null && cible != null){
+            projectile = Projectile(view,Position, cible!!, SystemClock.elapsedRealtime(), damage, 0)
+        }
+    }
+}

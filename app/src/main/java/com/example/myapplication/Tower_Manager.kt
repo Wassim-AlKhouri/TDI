@@ -10,8 +10,11 @@ class Tower_Manager(val view: DrawingView):Runnable {
 
     fun manage_towers() {
         for (tower in view.Towers){
-            tower.attack()
-            tower.move_projectile()
+            if (tower is Money_Tower){tower.attack()}
+            else {
+                tower.attack()
+                tower.move_projectile()
+            }
         }
     }
 

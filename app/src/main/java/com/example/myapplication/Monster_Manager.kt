@@ -7,7 +7,7 @@ class Monster_Manager(val view:DrawingView):Runnable {
     var playing = true
     var wave = 0
     val wave_length = 3 // durée de la vague en seconde
-    var monsters_per_wave = 2 // nombre de monstres en plus à chaque vague
+    var monsters_per_wave = 1 // nombre de monstres en plus à chaque vague
 
     override fun run() {
         while (playing){
@@ -22,7 +22,9 @@ class Monster_Manager(val view:DrawingView):Runnable {
         var new_monsters = ArrayList<Monster>()
         for(monster in view.Monsters){
             if (!monster.dead){ new_monsters.add(monster) }
-            else if (monster.dead){view.money+=50}
+        }
+        if (new_monsters.size != view.Monsters.size){
+            view.money+=(view.Monsters.size-new_monsters.size)*50
         }
         view.Monsters = new_monsters
     }
@@ -31,8 +33,8 @@ class Monster_Manager(val view:DrawingView):Runnable {
         if (time > (wave_length*wave) && view.Monsters.size == 0){
             this.wave+=1
             for(i in 0..wave*monsters_per_wave){
-                view.Monsters.add(Monster(SystemClock.elapsedRealtime(),view))
-                Thread.sleep(1)
+                view.Monsters.add(Explosif_Monster(SystemClock.elapsedRealtime(),view))
+                Thread.sleep(1000)
             }
         }
     }
@@ -41,7 +43,7 @@ class Monster_Manager(val view:DrawingView):Runnable {
         for (monster in view.Monsters) {
             monster.move()
             for (tower in view.Towers) {
-                tower.detect_monster(monster)
+                if(tower !is Money_Tower){tower.detect_monster(monster)}
             }
         }
     }
