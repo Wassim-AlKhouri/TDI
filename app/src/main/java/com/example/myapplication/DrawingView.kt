@@ -40,6 +40,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
         backgroundPaint.color = Color.WHITE
         blackPaint.color = Color.BLACK
         blackPaint.textSize = 50f
+        this.Step = (canvas.width/Col).toFloat()
     }
 
     override fun run() {
@@ -78,6 +79,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                 val stepx = (x / Step).toInt()
                 val stepy = (y / Step).toInt()
                 var price=0
+                val position:List<Int> = listOf(stepx,stepy)
                 when(tower_type){
                     2->price=50
                     3->price=100
@@ -86,14 +88,12 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                 if ((money-price) >= 0) {
                     if (map.Cells[(Col * stepy) + stepx].type != 1) {
                         map.Cells[(Col * stepy) + stepx].type = tower_type
-                        val position:List<Int> = listOf(stepx,stepy)
                         when(tower_type){
                             2->Towers.add(Attack_Tower(position,this))
                             3->Towers.add(Money_Tower(position,this,SystemClock.elapsedRealtime()))
                             4->Towers.add(Ice_Tower(position,this))
                         }
                         money-=price
-                        buttonpushed = false
                     }
                 }
             }

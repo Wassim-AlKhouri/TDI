@@ -2,12 +2,13 @@ package com.example.myapplication
 
 import android.graphics.Canvas
 import android.os.SystemClock
+import android.util.Log
 import kotlin.math.pow
 
 abstract class Tower (open val Position: List<Int>, open val view: DrawingView) {
     var attacking = false
     var projectile:Projectile? = null
-    var distanceattack :Float =50f
+    var distanceattack :Float =500f
     abstract val damage :Int
     abstract val price:Int
     var cible : Monster? = null
@@ -18,6 +19,7 @@ abstract class Tower (open val Position: List<Int>, open val view: DrawingView) 
     fun detect_monster(monster: Monster){
         if(cible == null){attacking = false}
         if (!attacking) {
+            Log.d("detect","oui")
             val xm = monster.x
             val ym = monster.y
             val distance = Math.sqrt( ((Math.abs( ((Position[0]+0.5)*Step) - xm) ).pow(2) + (Math.abs( ((Position[1]+0.5)*Step) - ym) ).pow(2)).toDouble() )

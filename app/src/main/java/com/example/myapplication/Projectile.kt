@@ -4,7 +4,7 @@ import android.graphics.*
 import android.os.SystemClock
 import kotlin.concurrent.thread
 
-class Projectile (view: DrawingView,start_Position: List<Int>,val cible:Monster,var last_time:Long,val damage:Int, val type:Int) {
+class Projectile (val view: DrawingView,val start_Position: List<Int>,val cible:Monster,var last_time:Long,val damage:Int, val type:Int) {
     val Step = view.Step
     var x = (start_Position[0]+0.5)*Step
     var y = (start_Position[1]+0.5)*Step

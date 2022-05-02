@@ -15,13 +15,20 @@ abstract class Monster(open val Birth_time:Long, open var view: DrawingView) {
     var x = 0f
     var y = 0f
     var r =RectF(0f,0f,0f,0f)
-    val radius = 20f
+    val radius = 40f
     var speed = 0.05f
     var pos = 0
     var health = 1000
     var dead = false
     var iced = false
     var iced_time:Long = 0
+    var ran = 0
+
+
+    init {
+        val r = ((Step/2)-radius).toInt()
+        this.ran = (r..-r).random()
+    }
 
     abstract fun special_move()
     abstract fun attacked(damage:Int,ice:Boolean)
@@ -47,7 +54,7 @@ abstract class Monster(open val Birth_time:Long, open var view: DrawingView) {
             } else if (road[pos][1] - road[pos+1][1] < 0) {
                 y += d
             }
-            this.r = RectF(x-radius/2,y-radius/2,x+radius/2,y+radius/2)
+            this.r = RectF(x-radius/2+ran,y-radius/2,x+radius/2+ran,y+radius/2)
         }
     }
 
