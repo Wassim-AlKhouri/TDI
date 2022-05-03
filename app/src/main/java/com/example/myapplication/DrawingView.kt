@@ -40,7 +40,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
         backgroundPaint.color = Color.WHITE
         blackPaint.color = Color.BLACK
         blackPaint.textSize = 50f
-        this.Step = (canvas.width/Col).toFloat()
+        //this.Step = (canvas.width/Col).toFloat()
     }
 
     override fun run() {
@@ -62,8 +62,13 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             canvas = holder.lockCanvas()
             canvas.drawRect(0F, 0F, canvas.getWidth()*1F, canvas.getHeight()*1F,backgroundPaint)
             map.draw(canvas)
-            for (monster in Monsters){monster.draw(canvas)}
-            for (tower in Towers){tower.draw(canvas)}
+            for (monster in Monsters) {
+                Thread.sleep(10)
+                monster.draw(canvas)
+            }
+            for (tower in Towers){tower.draw(canvas)
+            Thread.sleep(10)}
+
             //monstercreated = false
             draw_time(canvas)
             draw_money(canvas)

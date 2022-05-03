@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.graphics.Canvas
 import android.os.SystemClock
 
 class Monster_Manager(val view:DrawingView):Runnable {
@@ -15,6 +16,7 @@ class Monster_Manager(val view:DrawingView):Runnable {
     init { this.fibonacci(100) }
 
     override fun run() {
+        Thread.sleep(1000)
         while (playing){
             create_monsters(TotalTime)
             manage_monsters()
@@ -36,14 +38,15 @@ class Monster_Manager(val view:DrawingView):Runnable {
 
     fun create_monsters(time:Long){
         if(monsters_created <= fibo_series[wave]) {
-            if ( (SystemClock.elapsedRealtime() - Last_time) >= (0..500).random()) {
+            if ( (SystemClock.elapsedRealtime() - Last_time) >= (750..1250).random()) {
                 view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view))
                 Last_time = SystemClock.elapsedRealtime()
                 monsters_created+=1
                 Thread.sleep(1)
             }
         }
-        else if (monsters_created > fibo_series[wave] && (SystemClock.elapsedRealtime() - Last_time) > 3000){
+        else if (monsters_created > fibo_series[wave] && (SystemClock.elapsedRealtime() - Last_time) > 15000){
+            monsters_created = 0
             wave+=1
             Last_time = SystemClock.elapsedRealtime()
         }
@@ -57,6 +60,12 @@ class Monster_Manager(val view:DrawingView):Runnable {
             }
         }
     }
+    /*
+    fun draw(canvas: Canvas){
+        for (monster in view.Monsters){
+            monster.draw(canvas)
+        }
+    }*/
 
     fun resume(){
         playing = true

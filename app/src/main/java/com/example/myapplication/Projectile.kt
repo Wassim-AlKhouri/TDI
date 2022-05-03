@@ -14,8 +14,11 @@ class Projectile (val view: DrawingView,val start_Position: List<Int>,val cible:
     var vy = 0.0
     var Colision = false
     val tf = 100
+    val birth_time = last_time
 
-    init {this.calculate_speed()}
+
+    init {this.calculate_speed()
+    }
 
     fun calculate_speed(){
         vx = (cible.x - x)/tf
@@ -31,6 +34,10 @@ class Projectile (val view: DrawingView,val start_Position: List<Int>,val cible:
         if(r.intersect(cible.r)){
             Colision = true
             cible.attacked(damage,ice= type==1)
+
+        }
+        else if(SystemClock.elapsedRealtime() - birth_time > tf){
+            Colision = true
         }
     }
 
