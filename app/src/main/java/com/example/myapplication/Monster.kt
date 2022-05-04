@@ -22,7 +22,6 @@ abstract class Monster(open var LastMouvement:Long, open var view: DrawingView) 
     var dead = false
     var iced = false
     var iced_time:Long = 0
-    //var ran = 0
     var d = 0f
 
     abstract fun special_move()

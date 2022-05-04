@@ -5,22 +5,22 @@ import android.os.SystemClock
 import kotlin.concurrent.thread
 
 class Projectile (val view: DrawingView,val start_Position: List<Int>,val cible:Monster,var last_time:Long,val damage:Int, val type:Int) {
-    val Step = view.Step
-    var x = (start_Position[0]+0.5)*Step
-    var y = (start_Position[1]+0.5)*Step
-    var r = RectF(0f,0f,0f,0f)
-    val radius = 10f
-    var vx = 0.0
-    var vy = 0.0
+    private val Step = view.Step
+    private var x = (start_Position[0]+0.5)*Step
+    private var y = (start_Position[1]+0.5)*Step
+    private var r = RectF(0f,0f,0f,0f)
+    private val radius = 10f
+    private var vx = 0.0
+    private var vy = 0.0
     var Colision = false
-    val tf = 100
-    val birth_time = last_time
+    private val tf = 100
+    private val birth_time = last_time
 
 
     init {this.calculate_speed()
     }
 
-    fun calculate_speed(){
+    private fun calculate_speed(){
         vx = (cible.x - x)/tf
         vy = (cible.y - y)/tf
     }

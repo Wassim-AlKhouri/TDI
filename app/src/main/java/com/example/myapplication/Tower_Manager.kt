@@ -5,7 +5,7 @@ import android.os.SystemClock
 
 class Tower_Manager(val view: DrawingView):Runnable {
     lateinit var thread: Thread
-    var playing = true
+    private var playing = true
 
     override fun run() {
         while(playing){
@@ -13,7 +13,7 @@ class Tower_Manager(val view: DrawingView):Runnable {
          }
     }
 
-    fun manage_towers() {
+    private fun manage_towers() {
         for (tower in view.Towers){
                 tower.attack()
                 if(tower is Attack_Tower){tower.move_projectile()}
@@ -24,6 +24,11 @@ class Tower_Manager(val view: DrawingView):Runnable {
         playing = true
         thread = Thread(this)
         thread.start()
+        for (tower in view.Towers){
+            if(tower is Attack_Tower && tower.projectile!=null){
+                tower.projectile!!.last_time = SystemClock.elapsedRealtime()
+            }
+        }
     }
 
     fun pause() {
