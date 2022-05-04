@@ -9,9 +9,9 @@ var TotalTime:Long = 0
 class MainActivity : AppCompatActivity() {
     lateinit var drawingView: DrawingView
     lateinit var time: Time
-    lateinit var monster_manager: Monster_Manager
-    lateinit var tower_manager: Tower_Manager
-    var playing = true
+    private lateinit var monster_manager: Monster_Manager
+    private lateinit var tower_manager: Tower_Manager
+    private var playing = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         val btn_play = findViewById<Button>(R.id.button2)
         val btn_pause = findViewById<Button>(R.id.button3)
         btn_tower.setOnClickListener { OnClick(drawingView,btn_tower) }
-        btn_play.setOnClickListener { OnClick2(drawingView) }
+        btn_play.setOnClickListener {  }
         btn_pause.setOnClickListener { OnClick3(playing) }
     }
 
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun OnClick2(drawingView: DrawingView) {
-        drawingView.button2pushed = !drawingView.button2pushed
+
     }
 
     fun OnClick3(playing: Boolean) {

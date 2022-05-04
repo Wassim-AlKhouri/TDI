@@ -40,7 +40,7 @@ class Money_Tower(override val Position: List<Int>, override val view: DrawingVi
     override val Step = view.Step
     override var damage: Int = 10
     override val price: Int = 100
-    val attack_interval: Long = 2000
+    private val attack_interval: Long = 2000
     override val type: Int = 3
     init {
         view.map.Cells[(view.map.Col * Position[1]) + Position[0]].type = type

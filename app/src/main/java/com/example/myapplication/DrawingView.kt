@@ -24,8 +24,8 @@ class DrawingView @JvmOverloads
 constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0): SurfaceView(context, attributes,defStyleAttr), SurfaceHolder.Callback,Runnable {
 
     lateinit var canvas: Canvas
-    val backgroundPaint = Paint()
-    val blackPaint = Paint()
+    private val backgroundPaint = Paint()
+    private val blackPaint = Paint()
     lateinit var thread: Thread
     var drawing: Boolean = true
     val Col = 7
@@ -36,8 +36,6 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     //var Towers = ArrayList<Tower>()
     var Towers = CopyOnWriteArrayList<Tower>()
     var tower_type = 2
-    var buttonpushed = false
-    var button2pushed = false
     var money = 500
 
     init {
@@ -89,7 +87,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                     4->price=300
                 }
                 if ((money-price) >= 0) {
-                    if (map.Cells[(Col * stepy) + stepx].type != 1) {
+                    if (((Col * stepy) + stepx) < map.Cells.size && map.Cells[(Col * stepy) + stepx].type != 1) {
                         //map.Cells[(Col * stepy) + stepx].type = tower_type
                         when(tower_type){
                             2->Towers.add(Normal_Attack_Tower(position,this))

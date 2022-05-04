@@ -28,6 +28,9 @@ class Tower_Manager(val view: DrawingView):Runnable {
             if(tower is Attack_Tower && tower.projectile!=null){
                 tower.projectile!!.last_time = SystemClock.elapsedRealtime()
             }
+            else if (tower is Money_Tower){
+                tower.last_time=SystemClock.elapsedRealtime()
+            }
         }
     }
 
