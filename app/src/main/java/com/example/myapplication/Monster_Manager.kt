@@ -19,7 +19,7 @@ class Monster_Manager(val view:DrawingView):Runnable {
 
     override fun run() {
         while (playing){
-            create_monsters(TotalTime)
+            create_monsters()
             manage_monsters()
             delete_monsters()
         }
@@ -36,7 +36,7 @@ class Monster_Manager(val view:DrawingView):Runnable {
         view.Monsters = new_monsters
     }
 
-    private fun create_monsters(time:Long){
+    private fun create_monsters(){
         if(monsters_created <= fibo_series[wave]) {
             if ( (SystemClock.elapsedRealtime() - Last_time) >= (750..1250).random()) {
                 view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view))

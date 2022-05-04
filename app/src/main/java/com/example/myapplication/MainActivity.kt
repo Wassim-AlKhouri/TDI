@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.widget.Button
 import android.widget.Toast
-var TotalTime:Long = 0
+var TotalTime = arrayOf(0,0)
 class MainActivity : AppCompatActivity() {
     lateinit var drawingView: DrawingView
     lateinit var time: Time

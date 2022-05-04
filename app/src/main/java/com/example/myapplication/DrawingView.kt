@@ -103,7 +103,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     }
 
     fun draw_time(canvas: Canvas){
-        canvas.drawText(TotalTime.toString(),5f,50f,blackPaint)
+        canvas.drawText(("${TotalTime[0]}:${TotalTime[1]}"),5f,50f,blackPaint)
     }
 
     fun draw_money(canvas: Canvas){

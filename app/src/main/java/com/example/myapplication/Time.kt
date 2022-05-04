@@ -7,11 +7,13 @@ class Time(val initial_time:Long):Runnable {
     lateinit var thread: Thread
     var playing = true
     var last_time:Long = initial_time
+    var min = 0
 
     override fun run() { while(playing){update_time()} }
 
     fun update_time(){
-        TotalTime += (SystemClock.elapsedRealtime()  - last_time)/1000
+        TotalTime[1] += (SystemClock.elapsedRealtime()  - last_time).toInt()/1000
+        if(TotalTime[1]>=60){ TotalTime[0]+=1;TotalTime[1]-=60}
         last_time = SystemClock.elapsedRealtime()
         Thread.sleep(1000)
     }
