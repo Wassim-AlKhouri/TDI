@@ -62,12 +62,8 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             canvas = holder.lockCanvas()
             canvas.drawRect(0F, 0F, canvas.getWidth()*1F, canvas.getHeight()*1F,backgroundPaint)
             map.draw(canvas)
-            for (monster in Monsters) {
-                Thread.sleep(10)
-                monster.draw(canvas)
-            }
-            for (tower in Towers){tower.draw(canvas)
-            Thread.sleep(10)}
+            for (monster in Monsters) { monster.draw(canvas) }
+            for (tower in Towers){tower.draw(canvas)}
 
             //monstercreated = false
             draw_time(canvas)
@@ -94,7 +90,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                     if (map.Cells[(Col * stepy) + stepx].type != 1) {
                         map.Cells[(Col * stepy) + stepx].type = tower_type
                         when(tower_type){
-                            2->Towers.add(Attack_Tower(position,this))
+                            2->Towers.add(Normal_Attack_Tower(position,this))
                             3->Towers.add(Money_Tower(position,this,SystemClock.elapsedRealtime()))
                             4->Towers.add(Ice_Tower(position,this))
                         }

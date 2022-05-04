@@ -36,7 +36,7 @@ class Projectile (val view: DrawingView,val start_Position: List<Int>,val cible:
             cible.attacked(damage,ice= type==1)
 
         }
-        else if(SystemClock.elapsedRealtime() - birth_time > tf){
+        else if(SystemClock.elapsedRealtime() - birth_time > (tf+100)){
             Colision = true
         }
     }

@@ -10,14 +10,13 @@ class Tower_Manager(val view: DrawingView):Runnable {
     override fun run() {
         while(playing){
             manage_towers()
-            Thread.sleep(10)
          }
     }
 
     fun manage_towers() {
         for (tower in view.Towers){
                 tower.attack()
-                tower.move_projectile()
+                if(tower is Attack_Tower){tower.move_projectile()}
         }
     }
 

@@ -10,18 +10,19 @@ class Monster_Manager(val view:DrawingView):Runnable {
     val wave_length = 3 // durée de la vague en seconde
     var monsters_per_wave = 1 // nombre de monstres en plus à chaque vague
     val fibo_series = ArrayList<Int>()
-    var Last_time :Long = 100
+    var Last_time :Long = 0
     var monsters_created = 0
 
-    init { this.fibonacci(100) }
+    init {
+        this.fibonacci(100)
+        Last_time = SystemClock.elapsedRealtime()
+    }
 
     override fun run() {
-        Thread.sleep(1000)
         while (playing){
             create_monsters(TotalTime)
             manage_monsters()
             delete_monsters()
-            Thread.sleep(10)
         }
     }
 
@@ -42,7 +43,6 @@ class Monster_Manager(val view:DrawingView):Runnable {
                 view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view))
                 Last_time = SystemClock.elapsedRealtime()
                 monsters_created+=1
-                Thread.sleep(1)
             }
         }
         else if (monsters_created > fibo_series[wave] && (SystemClock.elapsedRealtime() - Last_time) > 15000){
@@ -56,7 +56,7 @@ class Monster_Manager(val view:DrawingView):Runnable {
         for (monster in view.Monsters) {
             monster.move()
             for (tower in view.Towers) {
-                tower.detect_monster(monster)
+                if(tower is Attack_Tower){tower.detect_monster(monster)}
             }
         }
     }

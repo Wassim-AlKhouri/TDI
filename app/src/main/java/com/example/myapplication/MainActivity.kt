@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         val btn_pause = findViewById<Button>(R.id.button3)
         btn_tower.setOnClickListener { OnClick(drawingView,btn_tower) }
         btn_play.setOnClickListener { OnClick2(drawingView) }
-        btn_pause.setOnClickListener {  }
+        btn_pause.setOnClickListener { OnClick3(playing) }
     }
 
     override fun onPause() {
@@ -63,8 +63,10 @@ class MainActivity : AppCompatActivity() {
 
     fun OnClick3(playing: Boolean) {
         if (playing) {
+            this.playing = false
             this.onPause()
         } else {
+            this.playing = true
             this.onResume()
         }
     }

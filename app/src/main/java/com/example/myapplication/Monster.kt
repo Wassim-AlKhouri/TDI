@@ -7,7 +7,7 @@ import android.graphics.RectF
 import android.os.SystemClock
 import java.util.ArrayList
 
-abstract class Monster(open val Birth_time:Long, open var view: DrawingView) {
+abstract class Monster(open var LastMouvement:Long, open var view: DrawingView) {
 
     abstract val road : ArrayList<Array<Int>>
     abstract val Step :Float
@@ -16,13 +16,14 @@ abstract class Monster(open val Birth_time:Long, open var view: DrawingView) {
     var y = 0f
     var r =RectF(0f,0f,0f,0f)
     val radius = 40f
-    var speed = 0.05f
+    var speed = 0.1f
     var pos = 0
     var health = 1000
     var dead = false
     var iced = false
     var iced_time:Long = 0
     var ran = 0
+    var d = 0f
 
 
     init {
@@ -41,9 +42,17 @@ abstract class Monster(open val Birth_time:Long, open var view: DrawingView) {
 
     fun move(){
         special_move()
-        if (iced) { if ((SystemClock.elapsedRealtime() - iced_time) <= 2000) { this.speed /= 2 } }
+        this.d += (SystemClock.elapsedRealtime() - this.LastMouvement)*speed
+        this.LastMouvement = SystemClock.elapsedRealtime()
+        if (d>=Step){
+            d-=Step
+            pos+=1
+        }
+        if (iced) { if ((SystemClock.elapsedRealtime() - iced_time) <= 2000) { this.speed/=0.09f } }
+        /*
         pos = ((SystemClock.elapsedRealtime()-Birth_time)*speed/Step).toInt()
         val d =( (SystemClock.elapsedRealtime()-Birth_time)*speed - pos*Step )
+         */
         if (pos < (road.size - 1)) {
             x = ((road[pos][0] + 0.5)*Step).toFloat()
             y = ((road[pos][1] + 0.5)*Step).toFloat()
@@ -60,9 +69,12 @@ abstract class Monster(open val Birth_time:Long, open var view: DrawingView) {
 
 }
 
-class Normal_Monster(override val Birth_time:Long, override var view: DrawingView):Monster(Birth_time, view){
+class Normal_Monster(override var LastMouvement:Long, override var view: DrawingView):Monster(LastMouvement, view){
     override val road = view.map.road
     override val Step = view.Step
+    init {
+        x=( (road[0][0]+0.5)*Step ).toFloat()
+    }
 
     override fun special_move() {paint.color = Color.BLACK}
 
@@ -74,14 +86,14 @@ class Normal_Monster(override val Birth_time:Long, override var view: DrawingVie
 
 }
 
-class Immune_Monster(override val Birth_time:Long, override var view: DrawingView):Monster(Birth_time, view){
+class Immune_Monster(override var LastMouvement:Long, override var view: DrawingView):Monster(LastMouvement, view){
     override val road = view.map.road
     override val Step = view.Step
     var immune:Boolean = false
 
     override fun special_move() {
         paint.color = Color.GRAY
-        if((SystemClock.elapsedRealtime()-Birth_time).toInt().mod(2) == 0){immune = true}
+        if((SystemClock.elapsedRealtime()-LastMouvement).toInt().mod(2) == 0){immune = true}
     }
 
     override fun attacked(damage: Int, ice: Boolean) {
@@ -93,7 +105,7 @@ class Immune_Monster(override val Birth_time:Long, override var view: DrawingVie
 
 }
 
-class Explosif_Monster(override val Birth_time:Long, override var view: DrawingView):Monster(Birth_time, view){
+class Explosif_Monster(override var LastMouvement:Long, override var view: DrawingView):Monster(LastMouvement, view){
     override val road = view.map.road
     override val Step = view.Step
 
@@ -105,7 +117,7 @@ class Explosif_Monster(override val Birth_time:Long, override var view: DrawingV
 
     override fun special_move() {
         paint.color = Color.RED
-        if((SystemClock.elapsedRealtime()-Birth_time) >= 5000){
+        if((SystemClock.elapsedRealtime()-LastMouvement) >= 5000){
             if(view.Towers.size !=0) {
                 val ran = (0 until view.Towers.size).random()
                 view.map.Cells[(view.Col * view.Towers[ran].Position[1]) + view.Towers[ran].Position[0]].type = 0
