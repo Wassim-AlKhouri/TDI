@@ -21,8 +21,8 @@ class Projectile (val view: DrawingView,val start_Position: List<Int>,val cible:
     }
 
     private fun calculate_speed(){
-        vx = (cible.x - x)/tf
-        vy = (cible.y - y)/tf
+        vx = (cible.x +15 - x)/tf
+        vy = (cible.y +15 - y)/tf
     }
 
     fun move(){
@@ -30,7 +30,6 @@ class Projectile (val view: DrawingView,val start_Position: List<Int>,val cible:
         y += vy*(SystemClock.elapsedRealtime()-last_time)
         last_time = SystemClock.elapsedRealtime()
         this.r = RectF(x.toFloat(),y.toFloat(),(x+radius).toFloat(),(y+radius).toFloat())
-        //if (Math.abs(x - cible.x) < 30 && Math.abs(y - cible.y) < 30){
         if(r.intersect(cible.r)){
             Colision = true
             cible.attacked(damage,ice= type==1)

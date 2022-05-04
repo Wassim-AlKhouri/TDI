@@ -15,7 +15,7 @@ abstract class Monster(open var LastMouvement:Long, open var view: DrawingView) 
     var x = 0f
     var y = 0f
     var r =RectF(0f,0f,0f,0f)
-    val radius = 40f
+    val radius = 50f
     var speed = 0.08f
     var pos = 0
     var health = 1000
@@ -41,7 +41,7 @@ abstract class Monster(open var LastMouvement:Long, open var view: DrawingView) 
             d-=Step
             pos+=1
         }
-        if (iced) { if ((SystemClock.elapsedRealtime() - iced_time) <= 2000) { this.speed/=0.09f } }
+        if (iced) { if ((SystemClock.elapsedRealtime() - iced_time) <= 2000) { this.speed=0.03f } }
         /*
         pos = ((SystemClock.elapsedRealtime()-Birth_time)*speed/Step).toInt()
         val d =( (SystemClock.elapsedRealtime()-Birth_time)*speed - pos*Step )
@@ -76,7 +76,10 @@ class Normal_Monster(override var LastMouvement:Long, override var view: Drawing
     override fun attacked(damage: Int, ice: Boolean) {
         health -= damage
         if (health <= 0){ dead = true }
-        if (ice){iced=true;iced_time=SystemClock.elapsedRealtime()}
+        if (ice){
+            iced=true
+            iced_time=SystemClock.elapsedRealtime()
+        }
     }
 
 }
