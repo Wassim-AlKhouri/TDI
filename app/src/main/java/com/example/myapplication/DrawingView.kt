@@ -61,15 +61,13 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
         map.creat_Cells()
     }
 
-    @Synchronized fun draw() {
+    fun draw() {
         if (holder.surface.isValid) {
             canvas = holder.lockCanvas()
             canvas.drawRect(0F, 0F, canvas.getWidth()*1F, canvas.getHeight()*1F,backgroundPaint)
             map.draw(canvas)
             for (monster in Monsters) { monster.draw(canvas) }
-            for (tower in Towers){tower.draw(canvas)}
-
-            //monstercreated = false
+            for (tower in Towers){if(tower is Attack_Tower){tower.draw(canvas)}}
             draw_time(canvas)
             draw_money(canvas)
             holder.unlockCanvasAndPost(canvas)
@@ -92,7 +90,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                 }
                 if ((money-price) >= 0) {
                     if (map.Cells[(Col * stepy) + stepx].type != 1) {
-                        map.Cells[(Col * stepy) + stepx].type = tower_type
+                        //map.Cells[(Col * stepy) + stepx].type = tower_type
                         when(tower_type){
                             2->Towers.add(Normal_Attack_Tower(position,this))
                             3->Towers.add(Money_Tower(position,this,SystemClock.elapsedRealtime()))
