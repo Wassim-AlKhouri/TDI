@@ -15,6 +15,8 @@ import android.widget.Toast
 import java.util.*
 import android.util.Log
 import android.widget.Button
+import java.util.concurrent.CopyOnWriteArrayList
+import java.util.concurrent.atomic.AtomicReferenceArray
 import java.util.logging.Handler
 import kotlin.collections.ArrayList
 
@@ -29,8 +31,10 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     val Col = 7
     lateinit var map:Map
     var Step:Float = 0f
-    var Monsters = ArrayList<Monster>()
-    var Towers = ArrayList<Tower>()
+    //var Monsters = ArrayList<Monster>()
+    var Monsters = CopyOnWriteArrayList<Monster>()
+    //var Towers = ArrayList<Tower>()
+    var Towers = CopyOnWriteArrayList<Tower>()
     var tower_type = 2
     var buttonpushed = false
     var button2pushed = false
@@ -57,7 +61,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
         map.creat_Cells()
     }
 
-    fun draw() {
+    @Synchronized fun draw() {
         if (holder.surface.isValid) {
             canvas = holder.lockCanvas()
             canvas.drawRect(0F, 0F, canvas.getWidth()*1F, canvas.getHeight()*1F,backgroundPaint)

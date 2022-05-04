@@ -2,13 +2,12 @@ package com.example.myapplication
 
 import android.graphics.Canvas
 import android.os.SystemClock
+import java.util.concurrent.CopyOnWriteArrayList
 
 class Monster_Manager(val view:DrawingView):Runnable {
     lateinit var thread: Thread
     var playing = true
     var wave = 0
-    val wave_length = 3 // durée de la vague en seconde
-    var monsters_per_wave = 1 // nombre de monstres en plus à chaque vague
     val fibo_series = ArrayList<Int>()
     var Last_time :Long = 0
     var monsters_created = 0
@@ -27,7 +26,7 @@ class Monster_Manager(val view:DrawingView):Runnable {
     }
 
     fun delete_monsters(){
-        var new_monsters = ArrayList<Monster>()
+        val new_monsters = CopyOnWriteArrayList<Monster>()
         for(monster in view.Monsters){
             if (!monster.dead){ new_monsters.add(monster) }
         }
@@ -77,6 +76,7 @@ class Monster_Manager(val view:DrawingView):Runnable {
         playing = false
         thread.join()
     }
+
     fun fibonacci(n: Int){
         var t1 = 1
         var t2 = 2
