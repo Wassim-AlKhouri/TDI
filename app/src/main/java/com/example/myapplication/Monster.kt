@@ -122,8 +122,9 @@ class Immune_Monster(override var LastMouvement:Long, override var view: Drawing
     }
 
     override fun special_move() {
-        paint.color = Color.GRAY
-        immune = (SystemClock.elapsedRealtime()-LastMouvement).toInt().mod(2) == 0
+        paint.color = Color.BLACK
+        immune = (TotalTime[1]).mod(2) == 0
+        if(!immune){paint.color = Color.GRAY}
     }
 
     override fun attacked(damage: Int, ice: Boolean) {

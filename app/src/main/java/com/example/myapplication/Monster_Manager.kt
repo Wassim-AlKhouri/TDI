@@ -52,7 +52,7 @@ class Monster_Manager(val view:DrawingView):Runnable {
                     else {view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave))}}
             }
         }
-        else if (monsters_created > fibo_series[wave] && (SystemClock.elapsedRealtime() - Last_time) > 15000) {
+        else if (monsters_created > fibo_series[wave] && (SystemClock.elapsedRealtime() - Last_time) > 15000 && view.Monsters.size == 0) {
             monsters_created = 0
             wave += 1
             Last_time = SystemClock.elapsedRealtime()
