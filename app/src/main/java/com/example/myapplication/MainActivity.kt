@@ -51,8 +51,8 @@ class MainActivity : AppCompatActivity() {
     fun OnClick(drawingView: DrawingView, button: Button) {
         drawingView.tower_type+=1
         when(drawingView.tower_type){
-            3->{button.text="MoneyTower:100"}
-            4->{button.text="IceTower:300"}
+            3->{button.text="MoneyTower:300"}
+            4->{button.text="IceTower:250"}
             5->{drawingView.tower_type=2;button.text="AttackTower:50"}
         }
     }

@@ -83,8 +83,8 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                 val position:List<Int> = listOf(stepx,stepy)
                 when(tower_type){
                     2->price=50
-                    3->price=100
-                    4->price=300
+                    3->price = 300
+                    4->price= 250
                 }
                 if ((money-price) >= 0) {
                     if (((Col * stepy) + stepx) < map.Cells.size && map.Cells[(Col * stepy) + stepx].type == 0) {
@@ -104,11 +104,18 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
 
     fun draw_time(canvas: Canvas) {
         val a = 0
-        if (TotalTime[1] < 10) {
+        if (TotalTime[1] < 10 && TotalTime[0] < 10){
+            canvas.drawText(("0${TotalTime[0]}: 0${TotalTime[1]}"), 5f, 50f, blackPaint)
+        }
+        else if (TotalTime[1] < 10 && TotalTime[0] > 10){
             canvas.drawText(("${TotalTime[0]}: 0${TotalTime[1]}"), 5f, 50f, blackPaint)
         }
-        else
+        else if (TotalTime[1] > 10 && TotalTime[0] < 10){
+            canvas.drawText(("0${TotalTime[0]}: ${TotalTime[1]}"), 5f, 50f, blackPaint)
+        }
+        else {
             canvas.drawText(("${TotalTime[0]}:${TotalTime[1]}"),5f,50f,blackPaint)
+        }
     }
 
     fun draw_money(canvas: Canvas){

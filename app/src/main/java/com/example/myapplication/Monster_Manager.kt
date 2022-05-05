@@ -11,7 +11,7 @@ class Monster_Manager(val view:DrawingView):Runnable {
     private val fibo_series = ArrayList<Int>()
     private var Last_time :Long = 0
     private var monsters_created = 0
-
+    private var monster_money = 10
 
 
     init {
@@ -29,11 +29,17 @@ class Monster_Manager(val view:DrawingView):Runnable {
 
     private fun delete_monsters(){
         val new_monsters = CopyOnWriteArrayList<Monster>()
+        var explo_monster_dead = false
         for(monster in view.Monsters){
-            if (!monster.dead){ new_monsters.add(monster) }
+            if (!monster.dead && !monster.deadExplosif) {
+                new_monsters.add(monster)
+            }
+            else if(monster.deadExplosif){
+                explo_monster_dead = true
+            }
         }
-        if (new_monsters.size != view.Monsters.size){
-            view.money+=(view.Monsters.size-new_monsters.size)*5
+        if (new_monsters.size != view.Monsters.size && explo_monster_dead == false ){
+            view.money+=(view.Monsters.size-new_monsters.size)* monster_money
         }
         view.Monsters = new_monsters
     }
@@ -44,12 +50,29 @@ class Monster_Manager(val view:DrawingView):Runnable {
             if ((SystemClock.elapsedRealtime() - Last_time) >= (300..1250).random()) {
                 Last_time = SystemClock.elapsedRealtime()
                 monsters_created += 1
-                when (ran_monster) {
-                    in (1..60) -> view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave))
-                    in (61..89) -> if (wave > 3) { view.Monsters.add(Immune_Monster(SystemClock.elapsedRealtime(), view, wave)) }
-                    else { view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave)) }
-                    in (90..100) -> if (wave > 5) {view.Monsters.add(Explosif_Monster(SystemClock.elapsedRealtime(), view, wave))}
-                    else {view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave))}}
+                when {
+                    wave < 8 -> {
+                        when (ran_monster) {
+                            in (1..60) -> view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave))
+                            in (61..89) -> if (wave > 3) { view.Monsters.add(Immune_Monster(SystemClock.elapsedRealtime(), view, wave)) } else { view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view,wave)) }
+                            in (90..100) -> if (wave > 5) { view.Monsters.add(Explosif_Monster(SystemClock.elapsedRealtime(), view, wave)) } else { view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave)) }
+                        }
+                    }
+                    wave < 10 -> {
+                        when (ran_monster) {
+                            in (1..49) -> view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave))
+                            in (50..75) ->  view.Monsters.add(Immune_Monster(SystemClock.elapsedRealtime(), view, wave))
+                            in (76..100) ->  view.Monsters.add(Explosif_Monster(SystemClock.elapsedRealtime(), view, wave))
+                        }
+                    }
+                    wave >= 10 -> {
+                        when (ran_monster) {
+                            in (1..33) -> view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave))
+                            in (34..67) -> view.Monsters.add(Immune_Monster(SystemClock.elapsedRealtime(), view, wave))
+                            in (68..100) -> view.Monsters.add(Explosif_Monster(SystemClock.elapsedRealtime(), view, wave))
+                        }
+                    }
+                }
             }
         }
         else if (monsters_created > fibo_series[wave] && (SystemClock.elapsedRealtime() - Last_time) > 15000 && view.Monsters.size == 0) {
