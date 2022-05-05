@@ -38,24 +38,24 @@ class Monster_Manager(val view:DrawingView):Runnable {
         view.Monsters = new_monsters
     }
 
-    private fun create_monsters(){
+    private fun create_monsters() {
         val ran_monster = (1..100).random()
-        if(monsters_created <= fibo_series[wave]) {
-            if ((SystemClock.elapsedRealtime() - Last_time) >= (750..1250).random()) {
+        if (monsters_created <= fibo_series[wave]) {
+            if ((SystemClock.elapsedRealtime() - Last_time) >= (300..1250).random()) {
                 Last_time = SystemClock.elapsedRealtime()
                 monsters_created += 1
                 when (ran_monster) {
-                    in(1..60)-> view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave))
-                    in(61..89) -> if(wave>3){view.Monsters.add(Immune_Monster(SystemClock.elapsedRealtime(), view, wave))}
-                    else{view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave))}
-                    in(90..100) -> if(wave>5){view.Monsters.add(Explosif_Monster(SystemClock.elapsedRealtime(), view, wave))}
-                    else{view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave))}
-                }
-            } else if (monsters_created > fibo_series[wave] && (SystemClock.elapsedRealtime() - Last_time) > 15000) {
-                monsters_created = 0
-                wave += 1
-                Last_time = SystemClock.elapsedRealtime()
+                    in (1..60) -> view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave))
+                    in (61..89) -> if (wave > 3) { view.Monsters.add(Immune_Monster(SystemClock.elapsedRealtime(), view, wave)) }
+                    else { view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave)) }
+                    in (90..100) -> if (wave > 5) {view.Monsters.add(Explosif_Monster(SystemClock.elapsedRealtime(), view, wave))}
+                    else {view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave))}}
             }
+        }
+        else if (monsters_created > fibo_series[wave] && (SystemClock.elapsedRealtime() - Last_time) > 15000) {
+            monsters_created = 0
+            wave += 1
+            Last_time = SystemClock.elapsedRealtime()
         }
     }
 

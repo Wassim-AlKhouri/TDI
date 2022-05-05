@@ -61,10 +61,30 @@ abstract class Monster(open var LastMouvement:Long, open var view: DrawingView, 
             } else if (road[pos][1] - road[pos+1][1] < 0) {
                 y += d
             }
-            this.r = RectF(x-radius/2+ran,y-radius/2,x+radius/2+ran,y+radius/2)
+            this.r = RectF(x-(radius/2)+ran,y-(radius/2)+ran,x+(radius/2)+ran,y+(radius/2)+ran)
         }
     }
 
+    fun get_pos(tf:Int): Array<Float> {
+        var local_d = this.d + (SystemClock.elapsedRealtime()+tf - this.LastMouvement)*speed
+        var local_pos = pos
+        var local_x = 0f
+        var local_y = 0f
+        if (local_d>=Step){
+            local_d-=Step
+            local_pos+=1
+        }
+        local_x = ((road[local_pos][0] + 0.5)*Step).toFloat() + ran
+        local_y = ((road[local_pos][1] + 0.5)*Step).toFloat() + ran
+        if (road[local_pos][0] - road[local_pos+1][0] > 0) {
+            local_x -= local_d
+        } else if (road[local_pos][0] - road[local_pos+1][0] < 0) {
+            local_x += local_d
+        } else if (road[local_pos][1] - road[local_pos+1][1] < 0) {
+            local_y += local_d
+        }
+        return(arrayOf(local_x,local_y))
+    }
 }
 
 class Normal_Monster(override var LastMouvement:Long, override var view: DrawingView, wave: Int):Monster(LastMouvement, view, wave){
