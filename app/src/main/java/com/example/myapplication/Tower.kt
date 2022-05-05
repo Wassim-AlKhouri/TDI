@@ -38,8 +38,8 @@ abstract class Tower (open val Position: List<Int>, open val view: DrawingView) 
 
 class Money_Tower(override val Position: List<Int>, override val view: DrawingView, var last_time:Long):Tower(Position,view){
     override val Step = view.Step
-    override var damage: Int = 10
-    override val price: Int = 100
+    override var damage: Int = 5
+    override val price: Int = 250
     private val attack_interval: Long = 2000
     override val type: Int = 3
     init {
@@ -98,7 +98,7 @@ class Money_Tower(override val Position: List<Int>, override val view: DrawingVi
 
 class Ice_Tower(override val Position: List<Int>,override val view: DrawingView):Attack_Tower(Position, view){
     override val Step = view.Step
-    override val damage: Int = 10
+    override val damage: Int = 30
     override val price: Int = 300
     override val projectile_type: Int = 1
     override val type: Int = 4
@@ -117,7 +117,7 @@ class Ice_Tower(override val Position: List<Int>,override val view: DrawingView)
 
 class Normal_Attack_Tower(override val Position: List<Int>,override val view: DrawingView):Attack_Tower(Position, view){
     override val Step = view.Step
-    override val damage: Int = 40
+    override val damage: Int = 50
     override val price: Int = 50
     override val projectile_type: Int = 0
     override val type: Int = 2

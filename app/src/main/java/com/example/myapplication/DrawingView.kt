@@ -36,7 +36,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     //var Towers = ArrayList<Tower>()
     var Towers = CopyOnWriteArrayList<Tower>()
     var tower_type = 2
-    var money = 500
+    var money = 100
 
     init {
         backgroundPaint.color = Color.WHITE
@@ -102,8 +102,13 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
         return true
     }
 
-    fun draw_time(canvas: Canvas){
-        canvas.drawText(("${TotalTime[0]}:${TotalTime[1]}"),5f,50f,blackPaint)
+    fun draw_time(canvas: Canvas) {
+        val a = 0
+        if (TotalTime[1] < 10) {
+            canvas.drawText(("${TotalTime[0]}: 0${TotalTime[1]}"), 5f, 50f, blackPaint)
+        }
+        else
+            canvas.drawText(("${TotalTime[0]}:${TotalTime[1]}"),5f,50f,blackPaint)
     }
 
     fun draw_money(canvas: Canvas){

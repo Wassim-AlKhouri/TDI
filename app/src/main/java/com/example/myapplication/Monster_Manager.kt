@@ -4,13 +4,14 @@ import android.graphics.Canvas
 import android.os.SystemClock
 import java.util.concurrent.CopyOnWriteArrayList
 
-class Monster_Manager(val view:DrawingView):Runnable {
+class Monster_Manager(val view:DrawingView, monster: Monster):Runnable {
     lateinit var thread: Thread
     private var playing = true
-    private var wave = 0
+    private var wave = monster.wave
     private val fibo_series = ArrayList<Int>()
     private var Last_time :Long = 0
     private var monsters_created = 0
+
 
     init {
         this.fibonacci()
@@ -31,19 +32,36 @@ class Monster_Manager(val view:DrawingView):Runnable {
             if (!monster.dead){ new_monsters.add(monster) }
         }
         if (new_monsters.size != view.Monsters.size){
-            view.money+=(view.Monsters.size-new_monsters.size)*50
+            view.money+=(view.Monsters.size-new_monsters.size)*5
         }
         view.Monsters = new_monsters
     }
 
     private fun create_monsters(){
+        val ran_monster = (1..3).random()
         if(monsters_created <= fibo_series[wave]) {
-            if ( (SystemClock.elapsedRealtime() - Last_time) >= (750..1250).random()) {
-                view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view))
-                Last_time = SystemClock.elapsedRealtime()
-                monsters_created+=1
+            if (ran_monster == 1) {
+                if ((SystemClock.elapsedRealtime() - Last_time) >= (750..1250).random()) {
+                    view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view))
+                    Last_time = SystemClock.elapsedRealtime()
+                    monsters_created += 1
+                }
+            } else if (ran_monster === 2) {
+                if ((SystemClock.elapsedRealtime() - Last_time) >= (750..1250).random()) {
+                    view.Monsters.add(Immune_Monster(SystemClock.elapsedRealtime(), view))
+                    Last_time = SystemClock.elapsedRealtime()
+                    monsters_created += 1
+                }
+            }
+            else if (ran_monster == 3) {
+                if ((SystemClock.elapsedRealtime() - Last_time) >= (750..1250).random()) {
+                    view.Monsters.add(Explosif_Monster(SystemClock.elapsedRealtime(), view))
+                    Last_time = SystemClock.elapsedRealtime()
+                    monsters_created += 1
+                }
             }
         }
+
         else if (monsters_created > fibo_series[wave] && (SystemClock.elapsedRealtime() - Last_time) > 15000){
             monsters_created = 0
             wave+=1

@@ -15,14 +15,20 @@ abstract class Monster(open var LastMouvement:Long, open var view: DrawingView) 
     var x = 0f
     var y = 0f
     var r =RectF(0f,0f,0f,0f)
-    val radius = 50f
+    val radius = 40f
     var speed = 0.08f
     var pos = 0
-    var health = 1000
+    var health = 300
     var dead = false
     var iced = false
     var iced_time:Long = 0
     var d = 0f
+    var ran = 0
+    var wave = 0
+    init {
+        val r = ((Step/2)-radius).toInt()
+        this.ran = (r..-r).random()
+    }
 
     abstract fun special_move()
     abstract fun attacked(damage:Int,ice:Boolean)
@@ -56,7 +62,7 @@ abstract class Monster(open var LastMouvement:Long, open var view: DrawingView) 
             } else if (road[pos][1] - road[pos+1][1] < 0) {
                 y += d
             }
-            this.r = RectF(x-radius/2,y-radius/2,x+radius/2,y+radius/2)
+            this.r = RectF(x-radius/2+ran,y-radius/2,x+radius/2+ran,y+radius/2)
         }
     }
 
@@ -67,15 +73,16 @@ class Normal_Monster(override var LastMouvement:Long, override var view: Drawing
     override val Step = view.Step
     init {
         x=( (road[0][0]+0.5)*Step ).toFloat()
-        //val r = ((Step/2)-radius).toInt()
-        //this.ran = (-r..r).random()
+        val r = ((Step/2)-radius).toInt()
+        this.ran = (-r..r).random()
     }
 
     override fun special_move() {paint.color = Color.BLACK}
 
     override fun attacked(damage: Int, ice: Boolean) {
+        health += (wave * 25)
         health -= damage
-        if (health <= 0){ dead = true }
+        if (health <= 0) dead = true
         if (ice){
             iced=true
             iced_time=SystemClock.elapsedRealtime()
@@ -90,13 +97,13 @@ class Immune_Monster(override var LastMouvement:Long, override var view: Drawing
     var immune:Boolean = false
     init {
         x=( (road[0][0]+0.5)*Step ).toFloat()
-        //val r = ((Step/2)-radius).toInt()
-        //this.ran = (-r..r).random()
+        val r = ((Step/2)-radius).toInt()
+        this.ran = (-r..r).random()
     }
 
     override fun special_move() {
         paint.color = Color.GRAY
-        if((SystemClock.elapsedRealtime()-LastMouvement).toInt().mod(2) == 0){immune = true}
+        immune = (SystemClock.elapsedRealtime()-LastMouvement).toInt().mod(2) == 0
     }
 
     override fun attacked(damage: Int, ice: Boolean) {
@@ -113,8 +120,8 @@ class Explosif_Monster(override var LastMouvement:Long, override var view: Drawi
     override val Step = view.Step
     init {
         x=( (road[0][0]+0.5)*Step ).toFloat()
-        //val r = ((Step/2)-radius).toInt()
-        //this.ran = (-r..r).random()
+        val r = ((Step/2)-radius).toInt()
+        this.ran = (-r..r).random()
     }
 
     override fun attacked(damage: Int, ice: Boolean) {

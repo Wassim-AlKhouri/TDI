@@ -13,7 +13,7 @@ class Projectile (val view: DrawingView,val start_Position: List<Int>,val cible:
     private var vx = 0.0
     private var vy = 0.0
     var Colision = false
-    private val tf = 100
+    private val tf = 200
     private val birth_time = last_time
 
 
