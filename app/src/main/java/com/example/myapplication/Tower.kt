@@ -61,10 +61,12 @@ class Money_Tower(override val Position: List<Int>, override val view: DrawingVi
      var cible : Monster? = null
      var projectile:Projectile? = null
      var attacking = false
+     var lastattack :Long = 0
 
      override fun attack() {
-         if (projectile == null && cible != null){
+         if (projectile == null && cible != null && SystemClock.elapsedRealtime() - lastattack > 500){
              projectile = Projectile(view,Position, cible!!, SystemClock.elapsedRealtime(), damage, projectile_type)
+             lastattack = SystemClock.elapsedRealtime()
          }
          if (cible !=null){
              val distance = Math.sqrt(((Math.abs(((Position[0]+0.5)*Step)- cible!!.x)).pow(2)+(Math.abs(((Position[1]+0.5)*Step)-cible!!.y)).pow(2)))

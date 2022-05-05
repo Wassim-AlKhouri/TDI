@@ -87,7 +87,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                     4->price=300
                 }
                 if ((money-price) >= 0) {
-                    if (((Col * stepy) + stepx) < map.Cells.size && map.Cells[(Col * stepy) + stepx].type != 1) {
+                    if (((Col * stepy) + stepx) < map.Cells.size && map.Cells[(Col * stepy) + stepx].type == 0) {
                         //map.Cells[(Col * stepy) + stepx].type = tower_type
                         when(tower_type){
                             2->Towers.add(Normal_Attack_Tower(position,this))

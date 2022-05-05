@@ -7,7 +7,7 @@ import android.graphics.RectF
 import android.os.SystemClock
 import java.util.ArrayList
 
-abstract class Monster(open var LastMouvement:Long, open var view: DrawingView) {
+abstract class Monster(open var LastMouvement:Long, open var view: DrawingView, wave: Int) {
 
     abstract val road : ArrayList<Array<Int>>
     abstract val Step :Float
@@ -18,13 +18,12 @@ abstract class Monster(open var LastMouvement:Long, open var view: DrawingView) 
     val radius = 40f
     var speed = 0.08f
     var pos = 0
-    var health = 300
+    abstract var health : Int
     var dead = false
     var iced = false
     var iced_time:Long = 0
     var d = 0f
     var ran = 0
-    var wave = 0
     init {
         val r = ((Step/2)-radius).toInt()
         this.ran = (r..-r).random()
@@ -68,9 +67,10 @@ abstract class Monster(open var LastMouvement:Long, open var view: DrawingView) 
 
 }
 
-class Normal_Monster(override var LastMouvement:Long, override var view: DrawingView):Monster(LastMouvement, view){
+class Normal_Monster(override var LastMouvement:Long, override var view: DrawingView, wave: Int):Monster(LastMouvement, view, wave){
     override val road = view.map.road
     override val Step = view.Step
+    override var health = 200 + (wave*25)
     init {
         x=( (road[0][0]+0.5)*Step ).toFloat()
         val r = ((Step/2)-radius).toInt()
@@ -80,7 +80,6 @@ class Normal_Monster(override var LastMouvement:Long, override var view: Drawing
     override fun special_move() {paint.color = Color.BLACK}
 
     override fun attacked(damage: Int, ice: Boolean) {
-        health += (wave * 25)
         health -= damage
         if (health <= 0) dead = true
         if (ice){
@@ -91,9 +90,10 @@ class Normal_Monster(override var LastMouvement:Long, override var view: Drawing
 
 }
 
-class Immune_Monster(override var LastMouvement:Long, override var view: DrawingView):Monster(LastMouvement, view){
+class Immune_Monster(override var LastMouvement:Long, override var view: DrawingView, wave: Int):Monster(LastMouvement, view, wave){
     override val road = view.map.road
     override val Step = view.Step
+    override var health = 300 + (wave*25)
     var immune:Boolean = false
     init {
         x=( (road[0][0]+0.5)*Step ).toFloat()
@@ -115,9 +115,11 @@ class Immune_Monster(override var LastMouvement:Long, override var view: Drawing
 
 }
 
-class Explosif_Monster(override var LastMouvement:Long, override var view: DrawingView):Monster(LastMouvement, view){
+class Explosif_Monster(override var LastMouvement:Long, override var view: DrawingView, wave: Int):Monster(LastMouvement, view, wave){
     override val road = view.map.road
     override val Step = view.Step
+    val birth_time = LastMouvement
+    override var health = 100 + (wave*25)
     init {
         x=( (road[0][0]+0.5)*Step ).toFloat()
         val r = ((Step/2)-radius).toInt()
@@ -132,7 +134,7 @@ class Explosif_Monster(override var LastMouvement:Long, override var view: Drawi
 
     override fun special_move() {
         paint.color = Color.RED
-        if((SystemClock.elapsedRealtime()-LastMouvement) >= 5000){
+        if((SystemClock.elapsedRealtime()- birth_time) >= 5000){
             if(view.Towers.size !=0) {
                 val ran = (0 until view.Towers.size).random()
                 view.map.Cells[(view.Col * view.Towers[ran].Position[1]) + view.Towers[ran].Position[0]].type = 0
