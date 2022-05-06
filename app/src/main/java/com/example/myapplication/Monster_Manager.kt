@@ -51,7 +51,6 @@ class Monster_Manager(val view:DrawingView):Runnable {
                 Last_time = SystemClock.elapsedRealtime()
                 monsters_created += 1
                 when {
-                    wave == 8 -> view.money += 50
                     wave < 8 -> {
                         when (ran_monster) {
                             in (1..60) -> view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave))
@@ -60,6 +59,7 @@ class Monster_Manager(val view:DrawingView):Runnable {
                         }
                     }
                     wave < 10 -> {
+                        view.money += 50
                         when (ran_monster) {
                             in (1..49) -> view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave))
                             in (50..75) ->  view.Monsters.add(Immune_Monster(SystemClock.elapsedRealtime(), view, wave))

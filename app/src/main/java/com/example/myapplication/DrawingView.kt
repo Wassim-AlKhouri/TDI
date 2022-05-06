@@ -51,7 +51,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
 
     override fun onSizeChanged(w: Int,h: Int,oldw: Int,oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        val canvasH = (h-250).toFloat()
+        val canvasH = (h-100).toFloat()
         val canvasW = (w).toFloat()
         this.Step = (canvasW/Col).toFloat()
         val Li = ((canvasH/this.Step)).toInt()
