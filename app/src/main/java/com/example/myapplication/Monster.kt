@@ -47,10 +47,6 @@ abstract class Monster(open var LastMouvement:Long, open var view: DrawingView, 
             pos+=1
         }
         if (iced) { if ((SystemClock.elapsedRealtime() - iced_time) <= 2000) { this.speed=0.03f } }
-        /*
-        pos = ((SystemClock.elapsedRealtime()-Birth_time)*speed/Step).toInt()
-        val d =( (SystemClock.elapsedRealtime()-Birth_time)*speed - pos*Step )
-         */
         if (pos < (road.size - 1)) {
             x = ((road[pos][0] + 0.5)*Step).toFloat()
             y = ((road[pos][1] + 0.5)*Step).toFloat()
@@ -63,6 +59,10 @@ abstract class Monster(open var LastMouvement:Long, open var view: DrawingView, 
             }
             this.r = RectF(x-(radius/2)+ran,y-(radius/2)+ran,x+(radius/2)+ran,y+(radius/2)+ran)
         }
+        if(pos == (road.size - 1)){
+            view.player.lose_healthpoints()
+            this.dead = true
+        }
     }
 
     fun get_pos(tf:Int): Array<Float> {
@@ -74,14 +74,21 @@ abstract class Monster(open var LastMouvement:Long, open var view: DrawingView, 
             local_d-=Step
             local_pos+=1
         }
-        local_x = ((road[local_pos][0] + 0.5)*Step).toFloat() + ran
-        local_y = ((road[local_pos][1] + 0.5)*Step).toFloat() + ran
-        if (road[local_pos][0] - road[local_pos+1][0] > 0) {
-            local_x -= local_d
-        } else if (road[local_pos][0] - road[local_pos+1][0] < 0) {
-            local_x += local_d
-        } else if (road[local_pos][1] - road[local_pos+1][1] < 0) {
-            local_y += local_d
+        if(local_pos < (road.size - 1)) {
+            local_x = ((road[local_pos][0] + 0.5)*Step).toFloat() + ran
+            local_y = ((road[local_pos][1] + 0.5)*Step).toFloat() + ran
+            if (road[local_pos][0] - road[local_pos + 1][0] > 0) {
+                local_x -= local_d
+            } else if (road[local_pos][0] - road[local_pos + 1][0] < 0) {
+                local_x += local_d
+            } else if (road[local_pos][1] - road[local_pos + 1][1] < 0) {
+                local_y += local_d
+            }
+        }
+        else{
+            local_pos = road.size - 1
+            local_x = ((road[local_pos][0] + 0.5)*Step).toFloat() + ran
+            local_y = ((road[local_pos][1] + 0.5)*Step).toFloat() + ran
         }
         return(arrayOf(local_x,local_y))
     }
@@ -166,4 +173,3 @@ class Explosif_Monster(override var LastMouvement:Long, override var view: Drawi
     }
 
 }
-

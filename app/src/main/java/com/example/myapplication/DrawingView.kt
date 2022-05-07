@@ -29,6 +29,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     lateinit var thread: Thread
     var drawing: Boolean = true
     val Col = 7
+    val Li = 10
     lateinit var map:Map
     var Step:Float = 0f
     var Monsters = CopyOnWriteArrayList<Monster>()
@@ -40,7 +41,6 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
         backgroundPaint.color = Color.WHITE
         blackPaint.color = Color.BLACK
         blackPaint.textSize = 50f
-        //this.Step = (canvas.width/Col).toFloat()
     }
 
     override fun run() {
@@ -52,12 +52,12 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
         val canvasH = (h-100).toFloat()
         val canvasW = (w).toFloat()
         this.Step = (canvasW/Col).toFloat()
-        val Li = ((canvasH/this.Step)).toInt()
+        //val Li = ((canvasH/this.Step)).toInt()
         this.map= Map(Col,Li,this)
         //this.map.creat_Cells()
     }
 
-    fun draw() {
+    private fun draw() {
         if (holder.surface.isValid) {
             canvas = holder.lockCanvas()
             canvas.drawRect(0F, 0F, canvas.getWidth()*1F, canvas.getHeight()*1F,backgroundPaint)
@@ -66,6 +66,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             for (tower in Towers){if(tower is Attack_Tower){tower.draw(canvas)}}
             draw_time(canvas)
             draw_money(canvas)
+            draw_healthpoints(canvas)
             holder.unlockCanvasAndPost(canvas)
         }
     }
@@ -99,7 +100,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
         return true
     }
 
-    fun draw_time(canvas: Canvas) {
+    private fun draw_time(canvas: Canvas) {
         val a = 0
         if (TotalTime[1] < 10 && TotalTime[0] < 10){
             canvas.drawText(("0${TotalTime[0]}: 0${TotalTime[1]}"), 5f, 50f, blackPaint)
@@ -115,8 +116,12 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
         }
     }
 
-    fun draw_money(canvas: Canvas){
-        canvas.drawText(player.money.toString(),(canvas.width/2).toFloat(),(canvas.height - 100).toFloat(),blackPaint)
+    private fun draw_money(canvas: Canvas){
+        canvas.drawText("money:${player.money}",10f,(canvas.height-200).toFloat(),blackPaint)
+    }
+
+    private fun draw_healthpoints(canvas: Canvas){
+        canvas.drawText("healthpoints:${player.healthpoints}",(canvas.width-350).toFloat(),(canvas.height-200).toFloat(),blackPaint)
     }
 
     fun reset(){

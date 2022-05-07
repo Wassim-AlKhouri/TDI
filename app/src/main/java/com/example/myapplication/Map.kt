@@ -28,12 +28,12 @@ class Map(val Col: Int, val Li: Int, var view: DrawingView)  {
     fun map_generate() {
         val height: Int = this.map.size
         val width: Int = this.map[0].size
-        var x: Int = 3
-        var y: Int = 0
+        var x= 3
+        var y= 0
         this.map[y][x] = 1
         this.road.add(arrayOf(x,y))
-        var left: Boolean = true
-        var right: Boolean = true
+        var left= true
+        var right= true
         var r =  (1..3).random()
         while (y < (height - 1)) {
             if (r == 1) {
@@ -62,8 +62,8 @@ class Map(val Col: Int, val Li: Int, var view: DrawingView)  {
 
     fun reset(){
         Cells = ArrayList<Cell>()
-        road =ArrayList<Array<Int>>()
-        map = Array(Li) { IntArray(Col) }
+        road = ArrayList<Array<Int>>()
+        map = Array(Li) {IntArray(Col)}
         map_generate()
         creat_Cells()
     }

@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity() {
         val btn_play = findViewById<Button>(R.id.button2)
         val btn_pause = findViewById<Button>(R.id.button3)
         val pause_fragment = Pause_fragment()
-        val manager = supportFragmentManager
         btn_tower.setOnClickListener { OnClick(drawingView,btn_tower) }
         btn_play.setOnClickListener {  }
         btn_pause.setOnClickListener { OnClick3(pause_fragment)}
@@ -75,7 +74,6 @@ class MainActivity : AppCompatActivity() {
         drawingView.reset()
         time.reset()
         monster_manager.reset()
-        Thread.sleep(1000)
         onResume()
         playing = true
     }

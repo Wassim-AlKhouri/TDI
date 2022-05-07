@@ -20,6 +20,7 @@ class Monster_Manager(val view:DrawingView):Runnable {
     }
 
     override fun run() {
+        //Thread.sleep(1000)
         while (playing){
             create_monsters()
             manage_monsters()
