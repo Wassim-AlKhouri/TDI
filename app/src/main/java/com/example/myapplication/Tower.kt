@@ -49,7 +49,7 @@ class Money_Tower(override val Position: List<Int>, override val view: DrawingVi
     override fun attack(){
         if ((SystemClock.elapsedRealtime()-last_time) >= attack_interval){
             last_time = SystemClock.elapsedRealtime()
-            view.money+=damage
+            view.player.money+=damage
         }
     }
 

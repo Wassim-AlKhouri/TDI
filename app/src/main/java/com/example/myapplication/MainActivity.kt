@@ -1,10 +1,13 @@
 package com.example.myapplication
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
 import android.widget.Button
 import android.widget.Toast
+import androidx.fragment.app.FragmentManager
+
 var TotalTime = arrayOf(0,0)
 class MainActivity : AppCompatActivity() {
     lateinit var drawingView: DrawingView
@@ -23,9 +26,11 @@ class MainActivity : AppCompatActivity() {
         val btn_tower = findViewById<Button>(R.id.button)
         val btn_play = findViewById<Button>(R.id.button2)
         val btn_pause = findViewById<Button>(R.id.button3)
+        val pause_fragment = Pause_fragment()
+        val manager = supportFragmentManager
         btn_tower.setOnClickListener { OnClick(drawingView,btn_tower) }
         btn_play.setOnClickListener {  }
-        btn_pause.setOnClickListener { OnClick3(playing) }
+        btn_pause.setOnClickListener { OnClick3(pause_fragment)}
     }
 
     override fun onPause() {
@@ -57,18 +62,37 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun OnClick2(drawingView: DrawingView) {
+    fun OnClick2(pause_fragment: Pause_fragment) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment,pause_fragment)
+            commit()
+        }
 
     }
 
-    fun OnClick3(playing: Boolean) {
+    fun new_game(){
+        onPause()
+        drawingView.reset()
+        time.reset()
+        monster_manager.reset()
+        Thread.sleep(1000)
+        onResume()
+        playing = true
+    }
+
+    fun resume(){
+        onResume()
+        playing = true
+    }
+
+    fun OnClick3(pause_fragment: Pause_fragment) {
         if (playing) {
             this.playing = false
             this.onPause()
-        } else {
-            this.playing = true
-            this.onResume()
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragment, pause_fragment)
+                commit()
+            }
         }
     }
-
 }

@@ -5,13 +5,12 @@ import android.widget.TextView
 
 class Time(val initial_time:Long):Runnable {
     lateinit var thread: Thread
-    var playing = true
-    var last_time:Long = initial_time
-    var min = 0
+    private var playing = true
+    private var last_time:Long = initial_time
 
     override fun run() { while(playing){update_time()} }
 
-    fun update_time(){
+    private fun update_time(){
         TotalTime[1] += (SystemClock.elapsedRealtime()  - last_time).toInt()/1000
         if(TotalTime[1]>=60){ TotalTime[0]+=1;TotalTime[1]-=60}
         last_time = SystemClock.elapsedRealtime()
@@ -28,6 +27,11 @@ class Time(val initial_time:Long):Runnable {
     fun pause() {
         playing = false
         thread.join()
+    }
+
+    fun reset(){
+        TotalTime = arrayOf(0,0)
+        last_time = SystemClock.elapsedRealtime()
     }
 
 }

@@ -29,17 +29,15 @@ class Monster_Manager(val view:DrawingView):Runnable {
 
     private fun delete_monsters(){
         val new_monsters = CopyOnWriteArrayList<Monster>()
-        var explo_monster_dead = false
+        var explo_monster_dead = 0
         for(monster in view.Monsters){
-            if (!monster.dead && !monster.deadExplosif) {
+            if (!monster.dead) {
                 new_monsters.add(monster)
             }
-            else if(monster.deadExplosif){
-                explo_monster_dead = true
-            }
+            if(monster is Explosif_Monster && monster.dead){explo_monster_dead+=1}
         }
-        if (new_monsters.size != view.Monsters.size && explo_monster_dead == false ){
-            view.money+=(view.Monsters.size-new_monsters.size)* monster_money
+        if (new_monsters.size != view.Monsters.size ){
+            view.player.money+=(view.Monsters.size-new_monsters.size-explo_monster_dead)* monster_money
         }
         view.Monsters = new_monsters
     }
@@ -55,11 +53,11 @@ class Monster_Manager(val view:DrawingView):Runnable {
                         when (ran_monster) {
                             in (1..60) -> view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave))
                             in (61..89) -> if (wave > 3) { view.Monsters.add(Immune_Monster(SystemClock.elapsedRealtime(), view, wave)) } else { view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view,wave)) }
-                            in (90..100) -> if (wave > 5) { view.Monsters.add(Explosif_Monster(SystemClock.elapsedRealtime(), view, wave)) } else { view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave)) }
+                            in (62..100) -> if (wave > 5) { view.Monsters.add(Explosif_Monster(SystemClock.elapsedRealtime(), view, wave)) } else { view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave)) }
                         }
                     }
-                    wave < 10 -> {
-                        view.money += 50
+                    (wave in 8..10) -> {
+                        view.player.money += 50
                         when (ran_monster) {
                             in (1..49) -> view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave))
                             in (50..75) ->  view.Monsters.add(Immune_Monster(SystemClock.elapsedRealtime(), view, wave))
@@ -67,7 +65,7 @@ class Monster_Manager(val view:DrawingView):Runnable {
                         }
                     }
                     wave >= 10 -> {
-                        view.money+=100
+                        view.player.money+=100
                         when (ran_monster) {
                             in (1..33) -> view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave))
                             in (34..67) -> view.Monsters.add(Immune_Monster(SystemClock.elapsedRealtime(), view, wave))
@@ -105,6 +103,12 @@ class Monster_Manager(val view:DrawingView):Runnable {
     fun pause() {
         playing = false
         thread.join()
+    }
+
+    fun reset(){
+        wave = 0
+        Last_time = SystemClock.elapsedRealtime()
+        monsters_created = 0
     }
 
     private fun fibonacci(){

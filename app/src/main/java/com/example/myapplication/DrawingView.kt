@@ -31,12 +31,10 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     val Col = 7
     lateinit var map:Map
     var Step:Float = 0f
-    //var Monsters = ArrayList<Monster>()
     var Monsters = CopyOnWriteArrayList<Monster>()
-    //var Towers = ArrayList<Tower>()
     var Towers = CopyOnWriteArrayList<Tower>()
     var tower_type = 2
-    var money = 100
+    val player = Player()
 
     init {
         backgroundPaint.color = Color.WHITE
@@ -56,7 +54,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
         this.Step = (canvasW/Col).toFloat()
         val Li = ((canvasH/this.Step)).toInt()
         this.map= Map(Col,Li,this)
-        map.creat_Cells()
+        //this.map.creat_Cells()
     }
 
     fun draw() {
@@ -86,7 +84,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                     3->price = 300
                     4->price= 250
                 }
-                if ((money-price) >= 0) {
+                if (player.afford(price)) {
                     if (((Col * stepy) + stepx) < map.Cells.size && map.Cells[(Col * stepy) + stepx].type == 0) {
                         //map.Cells[(Col * stepy) + stepx].type = tower_type
                         when(tower_type){
@@ -94,7 +92,6 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                             3->Towers.add(Money_Tower(position,this,SystemClock.elapsedRealtime()))
                             4->Towers.add(Ice_Tower(position,this))
                         }
-                        money-=price
                     }
                 }
             }
@@ -119,7 +116,14 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     }
 
     fun draw_money(canvas: Canvas){
-        canvas.drawText(money.toString(),(canvas.width/2).toFloat(),(canvas.height - 100).toFloat(),blackPaint)
+        canvas.drawText(player.money.toString(),(canvas.width/2).toFloat(),(canvas.height - 100).toFloat(),blackPaint)
+    }
+
+    fun reset(){
+        map.reset()
+        player.reset()
+        Monsters = CopyOnWriteArrayList<Monster>()
+        Towers = CopyOnWriteArrayList<Tower>()
     }
 
     fun pause() {

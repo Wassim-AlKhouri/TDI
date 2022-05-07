@@ -13,6 +13,7 @@ class Map(val Col: Int, val Li: Int, var view: DrawingView)  {
 
     init {
         map_generate()
+        creat_Cells()
     }
 
     fun creat_Cells(){
@@ -57,6 +58,14 @@ class Map(val Col: Int, val Li: Int, var view: DrawingView)  {
             this.map[y][x] = 1
             this.road.add(arrayOf(x,y))
         }
+    }
+
+    fun reset(){
+        Cells = ArrayList<Cell>()
+        road =ArrayList<Array<Int>>()
+        map = Array(Li) { IntArray(Col) }
+        map_generate()
+        creat_Cells()
     }
 
     fun draw(canvas: Canvas){

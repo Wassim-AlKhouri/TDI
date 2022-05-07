@@ -38,11 +38,5 @@ class Tower_Manager(val view: DrawingView):Runnable {
         playing = false
         thread.join()
     }
-    /*
-    fun draw(canvas: Canvas){
-        for (tower in view.Towers){
-            tower.draw(canvas)
-        }
-    }*/
 
 }

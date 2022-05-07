@@ -20,7 +20,6 @@ abstract class Monster(open var LastMouvement:Long, open var view: DrawingView, 
     var pos = 0
     abstract var health : Int
     var dead = false
-    var deadExplosif = false
     var iced = false
     var iced_time:Long = 0
     var d = 0f
@@ -150,7 +149,7 @@ class Explosif_Monster(override var LastMouvement:Long, override var view: Drawi
 
     override fun attacked(damage: Int, ice: Boolean) {
         health -= damage
-        if (health <= 0){ deadExplosif = true }
+        if (health <= 0){ dead = true }
         if (ice){iced=true;iced_time=SystemClock.elapsedRealtime()}
     }
 
@@ -161,7 +160,7 @@ class Explosif_Monster(override var LastMouvement:Long, override var view: Drawi
                 val ran = (0 until view.Towers.size).random()
                 view.map.Cells[(view.Col * view.Towers[ran].Position[1]) + view.Towers[ran].Position[0]].type = 0
                 view.Towers.remove(view.Towers[ran])
-                this.deadExplosif = true
+                this.dead = true
             }
         }
     }
