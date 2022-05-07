@@ -20,6 +20,7 @@ class Money_Tower(override val Position: List<Int>, override val view: DrawingVi
     override val specialattack_interval: Long = 2000
     override val type: Int = 3
     override val name ="$$"
+    override var upgrade_price = get_price(type)/2 + level*30
     init {
         view.map.Cells[(view.map.Col * Position[1]) + Position[0]].type = type
     }
@@ -31,6 +32,7 @@ class Money_Tower(override val Position: List<Int>, override val view: DrawingVi
     override fun upgrade() {
         money_gen+=5
         level+=1
+        upgrade_price+=25
     }
 
     override fun explode() {
@@ -45,18 +47,20 @@ class Sacrifice_Tower(override val Position: List<Int>, override val view: Drawi
     override val specialattack_interval: Long = 50000
     override val type: Int = 5
     override val name ="ST"
+    override var upgrade_price = get_price(type)/2
     var lives = 1
     init {
         view.map.Cells[(view.map.Col * Position[1]) + Position[0]].type = type
     }
 
     override fun special_ability() {
-        view.Towers.random().upgrade()
+        (view.Towers.plus(view.Sacrifice_Towers)).random().upgrade()
     }
 
     override fun upgrade() {
         lives+=1
         level+=1
+        upgrade_price+=10
     }
 
     override fun explode(){

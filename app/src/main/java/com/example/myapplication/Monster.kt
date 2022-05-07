@@ -97,7 +97,7 @@ abstract class Monster(open var view: DrawingView, wave: Int) {
     }
 }
 
-class Normal_Monster(override var view: DrawingView, wave: Int):Monster(view, wave){
+class Normal_Monster(override var view: DrawingView, val wave: Int):Monster(view, wave){
     override val road = view.map.road
     override val Step = view.Step
     override var health = 200 + (wave*25)
@@ -115,6 +115,7 @@ class Normal_Monster(override var view: DrawingView, wave: Int):Monster(view, wa
         if (health <= 0) {
             dead = true
             view.player.score+=value
+            view.player.money+=value + 10*wave
             view.Monsters.remove(this)
         }
 
@@ -126,7 +127,7 @@ class Normal_Monster(override var view: DrawingView, wave: Int):Monster(view, wa
 
 }
 
-class Immune_Monster(override var view: DrawingView, wave: Int):Monster(view, wave){
+class Immune_Monster(override var view: DrawingView,val wave: Int):Monster(view, wave){
     override val road = view.map.road
     override val Step = view.Step
     override var health = 300 + (wave*25)
@@ -151,13 +152,14 @@ class Immune_Monster(override var view: DrawingView, wave: Int):Monster(view, wa
                 dead = true
                 view.player.score+=value
                 view.Monsters.remove(this)
+                view.player.money+=value + 10*wave
             }
         }
     }
 
 }
 
-class Explosif_Monster(override var view: DrawingView, wave: Int):Monster(view, wave){
+class Explosif_Monster(override var view: DrawingView, val wave: Int):Monster(view, wave){
     override val road = view.map.road
     override val Step = view.Step
     override val value = 40
@@ -176,6 +178,7 @@ class Explosif_Monster(override var view: DrawingView, wave: Int):Monster(view, 
             dead = true
             view.player.score+=value
             view.Monsters.remove(this)
+            view.player.money+=value + 10*wave
         }
         if (ice){iced=true;iced_time=SystemClock.elapsedRealtime()}
     }
