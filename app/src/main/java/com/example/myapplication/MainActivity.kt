@@ -1,11 +1,16 @@
 package com.example.myapplication
 
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
 import android.widget.Button
 import android.widget.Toast
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 
 var TotalTime = arrayOf(0,0)
@@ -15,6 +20,7 @@ class MainActivity : AppCompatActivity(),Price {
     private lateinit var monster_manager: Monster_Manager
     private lateinit var tower_manager: Tower_Manager
     private var playing = true
+    var player = Player()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,13 +60,19 @@ class MainActivity : AppCompatActivity(),Price {
     }
 
 
-    fun gameover(){
+    /*fun gameover(){
         onPause()
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragment, gameover_Fragment())
             commit()
         }
+    }*/
+    fun gameOver() {
+        onPause()
+        showGameOverDialog(R.string.lose)
+        player.gameover = false
     }
+
 
     fun new_game(){
         onPause()
@@ -69,6 +81,9 @@ class MainActivity : AppCompatActivity(),Price {
         monster_manager.reset()
         onResume()
         playing = true
+        if (player.gameover) {
+            player.gameover = false
+        }
     }
 
     fun resume(){
@@ -101,4 +116,33 @@ class MainActivity : AppCompatActivity(),Price {
             }
         }
     }
+    fun showGameOverDialog(messageId: Int) {
+        class GameResult: DialogFragment() {
+            override fun onCreateDialog(bundle: Bundle?): Dialog {
+                val builder = AlertDialog.Builder(getActivity())
+                builder.setTitle(resources.getString(messageId))
+                builder.setMessage("Score : ${player.score}")
+                builder.setPositiveButton("Redémarrer le jeu",
+                    DialogInterface.OnClickListener { _, _-> new_game()}
+                )
+                return builder.create()
+            }
+        }
+
+        drawingView.activity.runOnUiThread(
+            Runnable {
+                val ft = drawingView.activity.supportFragmentManager.beginTransaction()
+                val prev =
+                    drawingView.activity.supportFragmentManager.findFragmentByTag("dialog")
+                if (prev != null) {
+                    ft.remove(prev)
+                }
+                ft.addToBackStack(null)
+                val gameResult = GameResult()
+                gameResult.setCancelable(false)
+                gameResult.show(ft,"dialog")
+            }
+        )
+    }
+
 }

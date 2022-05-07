@@ -1,6 +1,6 @@
 package com.example.myapplication
 
-class Player {
+class Player() {
     var money = 1000
     var healthpoints = 2
     var gameover = false
