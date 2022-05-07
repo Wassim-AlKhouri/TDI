@@ -55,6 +55,7 @@ abstract class Attack_Tower(override val Position: List<Int>, override val view:
         if(attack_interval>100) {
             attack_interval -= 25
             level+=1
+            upgrade_price+=15
         }
     }
 
@@ -67,6 +68,7 @@ class Ice_Tower(override val Position: List<Int>,override val view: DrawingView)
     override val projectile_type: Int = 1
     override val type: Int = 4
     override val name = "ICE"
+    override var upgrade_price = get_price(type)/2 + level*30
     init {
         view.map.Cells[(view.map.Col * Position[1]) + Position[0]].type = type
     }
@@ -78,6 +80,7 @@ class Normal_Attack_Tower(override val Position: List<Int>,override val view: Dr
     override val projectile_type: Int = 0
     override val type: Int = 2
     override val name = "ATT"
+    override var upgrade_price = get_price(type)/2 + level*15
     init {
         view.map.Cells[(view.map.Col * Position[1]) + Position[0]].type = type
     }
