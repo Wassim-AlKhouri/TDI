@@ -150,6 +150,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
         player.reset()
         Monsters = CopyOnWriteArrayList<Monster>()
         Towers = CopyOnWriteArrayList<Tower>()
+        Sacrifice_Towers = CopyOnWriteArrayList<Tower>()
     }
 
     fun pause() {

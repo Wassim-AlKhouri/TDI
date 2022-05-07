@@ -54,7 +54,7 @@ class Sacrifice_Tower(override val Position: List<Int>, override val view: Drawi
     }
 
     override fun special_ability() {
-        view.Towers.random().upgrade()
+        (view.Towers.plus(view.Sacrifice_Towers)).random().upgrade()
     }
 
     override fun upgrade() {
