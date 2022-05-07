@@ -1,15 +1,15 @@
 package com.example.myapplication
 
 class Player {
-    var money = 100
-    var healthpoints = 3
+    var money = 1000
+    var healthpoints = 2
     var gameover = false
+    var score = 0
 
     fun afford (price:Int): Boolean {
         var res = false
         if (money-price >=0){
             res = true
-            this.money-=price
         }
         return res
     }
@@ -22,5 +22,6 @@ class Player {
     fun reset(){
         money = 100
         healthpoints = 3
+        score = 0
     }
 }

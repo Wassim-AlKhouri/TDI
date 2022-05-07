@@ -21,7 +21,7 @@ import java.util.logging.Handler
 import kotlin.collections.ArrayList
 
 class DrawingView @JvmOverloads
-constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0): SurfaceView(context, attributes,defStyleAttr), SurfaceHolder.Callback,Runnable {
+constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0): SurfaceView(context, attributes,defStyleAttr), SurfaceHolder.Callback,Runnable,Price {
 
     lateinit var canvas: Canvas
     private val backgroundPaint = Paint()
@@ -34,6 +34,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     var Step:Float = 0f
     var Monsters = CopyOnWriteArrayList<Monster>()
     var Towers = CopyOnWriteArrayList<Tower>()
+    var Sacrifice_Towers = CopyOnWriteArrayList<Tower>()
     var tower_type = 2
     val player = Player()
 
@@ -44,7 +45,9 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     }
 
     override fun run() {
-        while (drawing) { draw() }
+        while (drawing) {
+            draw()
+        }
     }
 
     override fun onSizeChanged(w: Int,h: Int,oldw: Int,oldh: Int) {
@@ -63,10 +66,19 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             canvas.drawRect(0F, 0F, canvas.getWidth()*1F, canvas.getHeight()*1F,backgroundPaint)
             map.draw(canvas)
             for (monster in Monsters) { monster.draw(canvas) }
-            for (tower in Towers){if(tower is Attack_Tower){tower.draw(canvas)}}
+            for (tower in Towers){
+                tower.draw(canvas)
+                if(tower is Attack_Tower){
+                    tower.draw_projectile(canvas)
+                }
+            }
+            for(tower in Sacrifice_Towers){
+                tower.draw(canvas)
+            }
             draw_time(canvas)
             draw_money(canvas)
             draw_healthpoints(canvas)
+            draw_score(canvas)
             holder.unlockCanvasAndPost(canvas)
         }
     }
@@ -78,20 +90,17 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                 val y = e.rawY.toInt() - 300
                 val stepx = (x / Step).toInt()
                 val stepy = (y / Step).toInt()
-                var price=0
+                //var price=0
                 val position:List<Int> = listOf(stepx,stepy)
-                when(tower_type){
-                    2->price=50
-                    3->price = 300
-                    4->price= 250
-                }
-                if (player.afford(price)) {
+                if (player.afford(get_price(tower_type))) {
                     if (((Col * stepy) + stepx) < map.Cells.size && map.Cells[(Col * stepy) + stepx].type == 0) {
-                        //map.Cells[(Col * stepy) + stepx].type = tower_type
+                        //map.Cells[(Col * stepy) + stepx].type = tower_types
+                        player.money-=get_price(tower_type)
                         when(tower_type){
                             2->Towers.add(Normal_Attack_Tower(position,this))
-                            3->Towers.add(Money_Tower(position,this,SystemClock.elapsedRealtime()))
+                            3->Towers.add(Money_Tower(position,this))
                             4->Towers.add(Ice_Tower(position,this))
+                            5->Sacrifice_Towers.add(Sacrifice_Tower(position,this))
                         }
                     }
                 }
@@ -117,11 +126,15 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     }
 
     private fun draw_money(canvas: Canvas){
-        canvas.drawText("money:${player.money}",10f,(canvas.height-200).toFloat(),blackPaint)
+        canvas.drawText("Money:${player.money}",10f,(canvas.height-200).toFloat(),blackPaint)
     }
 
     private fun draw_healthpoints(canvas: Canvas){
-        canvas.drawText("healthpoints:${player.healthpoints}",(canvas.width-350).toFloat(),(canvas.height-200).toFloat(),blackPaint)
+        canvas.drawText("Healthpoints:${player.healthpoints}",(canvas.width-350).toFloat(),(canvas.height-200).toFloat(),blackPaint)
+    }
+
+    private fun draw_score(canvas: Canvas){
+        canvas.drawText("Score:${player.score}",((canvas.width/2)-90).toFloat(),(canvas.height-200).toFloat(),blackPaint)
     }
 
     fun reset(){

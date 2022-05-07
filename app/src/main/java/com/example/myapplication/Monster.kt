@@ -7,7 +7,7 @@ import android.graphics.RectF
 import android.os.SystemClock
 import java.util.ArrayList
 
-abstract class Monster(open var LastMouvement:Long, open var view: DrawingView, wave: Int) {
+abstract class Monster(open var view: DrawingView, wave: Int) {
 
     abstract val road : ArrayList<Array<Int>>
     abstract val Step :Float
@@ -24,6 +24,8 @@ abstract class Monster(open var LastMouvement:Long, open var view: DrawingView, 
     var iced_time:Long = 0
     var d = 0f
     var ran = 0
+    var LastMouvement = SystemClock.elapsedRealtime()
+    abstract val value:Int
     init {
         val r = ((Step/2)-radius).toInt()
         this.ran = (r..-r).random()
@@ -62,6 +64,7 @@ abstract class Monster(open var LastMouvement:Long, open var view: DrawingView, 
         if(pos == (road.size - 1)){
             view.player.lose_healthpoints()
             this.dead = true
+            view.Monsters.remove(this)
         }
     }
 
@@ -94,10 +97,11 @@ abstract class Monster(open var LastMouvement:Long, open var view: DrawingView, 
     }
 }
 
-class Normal_Monster(override var LastMouvement:Long, override var view: DrawingView, wave: Int):Monster(LastMouvement, view, wave){
+class Normal_Monster(override var view: DrawingView, wave: Int):Monster(view, wave){
     override val road = view.map.road
     override val Step = view.Step
     override var health = 200 + (wave*25)
+    override val value = 10
     init {
         x=( (road[0][0]+0.5)*Step ).toFloat()
         val r = ((Step/2)-radius).toInt()
@@ -108,7 +112,12 @@ class Normal_Monster(override var LastMouvement:Long, override var view: Drawing
 
     override fun attacked(damage: Int, ice: Boolean) {
         health -= damage
-        if (health <= 0) dead = true
+        if (health <= 0) {
+            dead = true
+            view.player.score+=value
+            view.Monsters.remove(this)
+        }
+
         if (ice){
             iced=true
             iced_time=SystemClock.elapsedRealtime()
@@ -117,10 +126,11 @@ class Normal_Monster(override var LastMouvement:Long, override var view: Drawing
 
 }
 
-class Immune_Monster(override var LastMouvement:Long, override var view: DrawingView, wave: Int):Monster(LastMouvement, view, wave){
+class Immune_Monster(override var view: DrawingView, wave: Int):Monster(view, wave){
     override val road = view.map.road
     override val Step = view.Step
     override var health = 300 + (wave*25)
+    override val value = 30
     var immune:Boolean = false
     init {
         x=( (road[0][0]+0.5)*Step ).toFloat()
@@ -137,17 +147,23 @@ class Immune_Monster(override var LastMouvement:Long, override var view: Drawing
     override fun attacked(damage: Int, ice: Boolean) {
         if(!immune){
             health -= damage
-            if (health <= 0){ dead = true }
+            if (health <= 0){
+                dead = true
+                view.player.score+=value
+                view.Monsters.remove(this)
+            }
         }
     }
 
 }
 
-class Explosif_Monster(override var LastMouvement:Long, override var view: DrawingView, wave: Int):Monster(LastMouvement, view, wave){
+class Explosif_Monster(override var view: DrawingView, wave: Int):Monster(view, wave){
     override val road = view.map.road
     override val Step = view.Step
-    val birth_time = LastMouvement
+    override val value = 40
     override var health = 100 + (wave*25)
+    val birth_time = LastMouvement
+
     init {
         x=( (road[0][0]+0.5)*Step ).toFloat()
         val r = ((Step/2)-radius).toInt()
@@ -156,19 +172,29 @@ class Explosif_Monster(override var LastMouvement:Long, override var view: Drawi
 
     override fun attacked(damage: Int, ice: Boolean) {
         health -= damage
-        if (health <= 0){ dead = true }
+        if (health <= 0){
+            dead = true
+            view.player.score+=value
+            view.Monsters.remove(this)
+        }
         if (ice){iced=true;iced_time=SystemClock.elapsedRealtime()}
     }
 
     override fun special_move() {
         paint.color = Color.RED
-        if((SystemClock.elapsedRealtime()- birth_time) >= 5000){
-            if(view.Towers.size !=0) {
-                val ran = (0 until view.Towers.size).random()
-                view.map.Cells[(view.Col * view.Towers[ran].Position[1]) + view.Towers[ran].Position[0]].type = 0
-                view.Towers.remove(view.Towers[ran])
+        if((SystemClock.elapsedRealtime()- birth_time) >= (4000..6000).random()){
+
+            if(view.Sacrifice_Towers.size !=0){
+                val tower = view.Sacrifice_Towers.random()
+                tower.explode()
                 this.dead = true
             }
+            else if(view.Towers.size !=0) {
+                val tower = view.Towers.random()
+                tower.explode()
+                this.dead = true
+            }
+
         }
     }
 

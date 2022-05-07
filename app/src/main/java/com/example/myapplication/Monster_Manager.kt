@@ -11,8 +11,6 @@ class Monster_Manager(val view:DrawingView):Runnable {
     private val fibo_series = ArrayList<Int>()
     private var Last_time :Long = 0
     private var monsters_created = 0
-    private var monster_money = 10
-
 
     init {
         this.fibonacci()
@@ -24,7 +22,7 @@ class Monster_Manager(val view:DrawingView):Runnable {
         while (playing){
             create_monsters()
             manage_monsters()
-            delete_monsters()
+            //delete_monsters()
         }
     }
 
@@ -32,15 +30,18 @@ class Monster_Manager(val view:DrawingView):Runnable {
         val new_monsters = CopyOnWriteArrayList<Monster>()
         var explo_monster_dead = 0
         for(monster in view.Monsters){
-            if (!monster.dead) {
-                new_monsters.add(monster)
+            if (monster.dead) {
+                view.Monsters.remove(monster)
             }
+            }
+            /*
             if(monster is Explosif_Monster && monster.dead){explo_monster_dead+=1}
         }
         if (new_monsters.size != view.Monsters.size ){
             view.player.money+=(view.Monsters.size-new_monsters.size-explo_monster_dead)* monster_money
         }
         view.Monsters = new_monsters
+             */
     }
 
     private fun create_monsters() {
@@ -52,25 +53,25 @@ class Monster_Manager(val view:DrawingView):Runnable {
                 when {
                     wave < 8 -> {
                         when (ran_monster) {
-                            in (1..60) -> view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave))
-                            in (61..89) -> if (wave > 3) { view.Monsters.add(Immune_Monster(SystemClock.elapsedRealtime(), view, wave)) } else { view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view,wave)) }
-                            in (62..100) -> if (wave > 5) { view.Monsters.add(Explosif_Monster(SystemClock.elapsedRealtime(), view, wave)) } else { view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave)) }
+                            in (1..60) -> view.Monsters.add(Normal_Monster(view, wave))
+                            in (61..89) -> if (wave > 3) { view.Monsters.add(Immune_Monster(view, wave)) } else { view.Monsters.add(Normal_Monster(view,wave)) }
+                            in (62..100) -> if (wave > 5) { view.Monsters.add(Explosif_Monster(view, wave)) } else { view.Monsters.add(Normal_Monster(view, wave)) }
                         }
                     }
                     (wave in 8..10) -> {
                         view.player.money += 50
                         when (ran_monster) {
-                            in (1..49) -> view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave))
-                            in (50..75) ->  view.Monsters.add(Immune_Monster(SystemClock.elapsedRealtime(), view, wave))
-                            in (76..100) ->  view.Monsters.add(Explosif_Monster(SystemClock.elapsedRealtime(), view, wave))
+                            in (1..49) -> view.Monsters.add(Normal_Monster(view, wave))
+                            in (50..75) ->  view.Monsters.add(Immune_Monster(view, wave))
+                            in (76..100) ->  view.Monsters.add(Explosif_Monster(view, wave))
                         }
                     }
                     wave >= 10 -> {
                         view.player.money+=100
                         when (ran_monster) {
-                            in (1..33) -> view.Monsters.add(Normal_Monster(SystemClock.elapsedRealtime(), view, wave))
-                            in (34..67) -> view.Monsters.add(Immune_Monster(SystemClock.elapsedRealtime(), view, wave))
-                            in (68..100) -> view.Monsters.add(Explosif_Monster(SystemClock.elapsedRealtime(), view, wave))
+                            in (1..33) -> view.Monsters.add(Normal_Monster(view, wave))
+                            in (34..67) -> view.Monsters.add(Immune_Monster(view, wave))
+                            in (68..100) -> view.Monsters.add(Explosif_Monster(view, wave))
                         }
                     }
                 }

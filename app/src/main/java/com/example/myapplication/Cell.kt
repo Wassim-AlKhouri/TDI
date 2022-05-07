@@ -19,6 +19,7 @@ class Cell (coordX : Int, coordY : Int, val step: Float, var type:Int) {
             2->paint.color = Color.BLACK
             3->paint.color = Color.GRAY
             4->paint.color = Color.BLUE
+            5->paint.color = Color.RED
         }
         canvas.drawRect(R,paint)
         paint.color = Color.BLACK

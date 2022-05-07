@@ -43,9 +43,15 @@ class Projectile (val view: DrawingView,val start_Position: List<Int>,val cible:
 
     fun draw(canvas: Canvas) {
         if(!Colision) {
-            val green = Paint()
-            green.color = Color.argb(255, 0, 255, 0)
-            canvas.drawCircle(x.toFloat(), y.toFloat(), 15f, green)
+            val paint = Paint()
+            if (type==1){
+                paint.color = Color.BLUE
+                canvas.drawRect((x-15f).toFloat(), (y-15f).toFloat(),(x+15f).toFloat(),(y+15f).toFloat(),paint)
+            }
+            else{
+                paint.color = Color.LTGRAY
+                canvas.drawCircle(x.toFloat(), y.toFloat(), 15f, paint)
+            }
         }
     }
 

@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 
 var TotalTime = arrayOf(0,0)
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),Price {
     lateinit var drawingView: DrawingView
     lateinit var time: Time
     private lateinit var monster_manager: Monster_Manager
@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         val btn_play = findViewById<Button>(R.id.button2)
         val btn_pause = findViewById<Button>(R.id.button3)
         val pause_fragment = Pause_fragment()
+        //val gameover_fragment = gameover_Fragment()
         btn_tower.setOnClickListener { OnClick(drawingView,btn_tower) }
         btn_play.setOnClickListener {  }
         btn_pause.setOnClickListener { OnClick3(pause_fragment)}
@@ -55,9 +56,10 @@ class MainActivity : AppCompatActivity() {
     fun OnClick(drawingView: DrawingView, button: Button) {
         drawingView.tower_type+=1
         when(drawingView.tower_type){
-            3->{button.text="MoneyTower:300"}
-            4->{button.text="IceTower:250"}
-            5->{drawingView.tower_type=2;button.text="AttackTower:50"}
+            3->{button.text="MoneyTower:${get_price(3)}"}
+            4->{button.text="IceTower:${get_price(4)}"}
+            5->{drawingView.tower_type=5;button.text="SacrificeTower:${get_price(5)}"}
+            6->{drawingView.tower_type=2;button.text="AttackTower:${get_price(2)}"}
         }
     }
 
@@ -67,6 +69,14 @@ class MainActivity : AppCompatActivity() {
             commit()
         }
 
+    }
+
+    fun gameover(){
+        onPause()
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment, gameover_Fragment())
+            commit()
+        }
     }
 
     fun new_game(){
