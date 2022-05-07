@@ -24,12 +24,12 @@ class MainActivity : AppCompatActivity(),Price {
         monster_manager = Monster_Manager(drawingView)
         tower_manager = Tower_Manager(drawingView)
         val btn_tower = findViewById<Button>(R.id.button)
-        val btn_play = findViewById<Button>(R.id.button2)
+        val btn_upgrade = findViewById<Button>(R.id.button2)
         val btn_pause = findViewById<Button>(R.id.button3)
         val pause_fragment = Pause_fragment()
         //val gameover_fragment = gameover_Fragment()
         btn_tower.setOnClickListener { OnClick(drawingView,btn_tower) }
-        btn_play.setOnClickListener {  }
+        btn_upgrade.setOnClickListener { OnClick2(drawingView,btn_upgrade) }
         btn_pause.setOnClickListener { OnClick3(pause_fragment)}
     }
 
@@ -53,23 +53,6 @@ class MainActivity : AppCompatActivity(),Price {
         Toast.makeText(this@MainActivity, text, Toast.LENGTH_LONG).show()
     }
 
-    fun OnClick(drawingView: DrawingView, button: Button) {
-        drawingView.tower_type+=1
-        when(drawingView.tower_type){
-            3->{button.text="MoneyTower:${get_price(3)}"}
-            4->{button.text="IceTower:${get_price(4)}"}
-            5->{drawingView.tower_type=5;button.text="SacrificeTower:${get_price(5)}"}
-            6->{drawingView.tower_type=2;button.text="AttackTower:${get_price(2)}"}
-        }
-    }
-
-    fun OnClick2(pause_fragment: Pause_fragment) {
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragment,pause_fragment)
-            commit()
-        }
-
-    }
 
     fun gameover(){
         onPause()
@@ -91,6 +74,21 @@ class MainActivity : AppCompatActivity(),Price {
     fun resume(){
         onResume()
         playing = true
+    }
+
+    fun OnClick(drawingView: DrawingView, button: Button) {
+        drawingView.tower_type+=1
+        when(drawingView.tower_type){
+            3->{button.text="MoneyTower:${get_price(3)}"}
+            4->{button.text="IceTower:${get_price(4)}"}
+            5->{drawingView.tower_type=5;button.text="SacrificeTower:${get_price(5)}"}
+            6->{drawingView.tower_type=2;button.text="AttackTower:${get_price(2)}"}
+        }
+    }
+
+    fun OnClick2(drawingView: DrawingView,button:Button) {
+        drawingView.upgrade = !drawingView.upgrade
+        button.text = "Upgrade = ${drawingView.upgrade}"
     }
 
     fun OnClick3(pause_fragment: Pause_fragment) {

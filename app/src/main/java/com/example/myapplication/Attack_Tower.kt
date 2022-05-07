@@ -54,6 +54,7 @@ abstract class Attack_Tower(override val Position: List<Int>, override val view:
     override fun upgrade() {
         if(attack_interval>100) {
             attack_interval -= 25
+            level+=1
         }
     }
 

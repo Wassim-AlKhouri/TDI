@@ -30,6 +30,7 @@ class Money_Tower(override val Position: List<Int>, override val view: DrawingVi
 
     override fun upgrade() {
         money_gen+=5
+        level+=1
     }
 
     override fun explode() {
@@ -55,6 +56,7 @@ class Sacrifice_Tower(override val Position: List<Int>, override val view: Drawi
 
     override fun upgrade() {
         lives+=1
+        level+=1
     }
 
     override fun explode(){

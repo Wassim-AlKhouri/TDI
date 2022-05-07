@@ -35,7 +35,7 @@
         android:id="@+id/button2"
         android:layout_width="155dp"
         android:layout_height="71dp"
-        android:text="MoneyTower 100"
+        android:text="Upgrade = false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

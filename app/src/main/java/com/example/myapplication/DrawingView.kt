@@ -37,6 +37,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     var Sacrifice_Towers = CopyOnWriteArrayList<Tower>()
     var tower_type = 2
     val player = Player()
+    var upgrade = false
 
     init {
         backgroundPaint.color = Color.WHITE
@@ -92,7 +93,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                 val stepy = (y / Step).toInt()
                 //var price=0
                 val position:List<Int> = listOf(stepx,stepy)
-                if (player.afford(get_price(tower_type))) {
+                if (!upgrade && player.afford(get_price(tower_type))) {
                     if (((Col * stepy) + stepx) < map.Cells.size && map.Cells[(Col * stepy) + stepx].type == 0) {
                         //map.Cells[(Col * stepy) + stepx].type = tower_types
                         player.money-=get_price(tower_type)
@@ -101,6 +102,13 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                             3->Towers.add(Money_Tower(position,this))
                             4->Towers.add(Ice_Tower(position,this))
                             5->Sacrifice_Towers.add(Sacrifice_Tower(position,this))
+                        }
+                    }
+                }
+                else if(upgrade){
+                    for (tower in Towers.plus(Sacrifice_Towers)){
+                        if(position == tower.Position){
+                            tower.ask_for_upgrade()
                         }
                     }
                 }
