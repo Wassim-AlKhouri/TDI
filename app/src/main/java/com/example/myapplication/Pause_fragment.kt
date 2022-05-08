@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 
 class Pause_fragment : Fragment() {
-
+    // fragment qui apparait quand on met le jeu en pause
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.pause_fragment, container, false)

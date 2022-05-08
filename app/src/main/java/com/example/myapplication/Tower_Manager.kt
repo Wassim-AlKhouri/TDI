@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.os.SystemClock
 
 class Tower_Manager(val view: DrawingView):Runnable {
+    //Tower_Manager fonctionne sur un thread à part et s'occupe de faire attaquer les tours et de faire bouger leurs projectiles
     lateinit var thread: Thread
     private var playing = true
 
@@ -31,6 +32,7 @@ class Tower_Manager(val view: DrawingView):Runnable {
         thread = Thread(this)
         thread.start()
         for (tower in view.Towers){
+            // remet le temps du dernier mouvement à maintenant
             if(tower is Attack_Tower && tower.projectile!=null){
                 tower.projectile!!.last_time = SystemClock.elapsedRealtime()
             }
