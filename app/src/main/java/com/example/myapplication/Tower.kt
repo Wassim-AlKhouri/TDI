@@ -23,8 +23,8 @@ abstract class Tower (open val Position: List<Int>, open val view: DrawingView):
     abstract fun explode()
     fun ask_for_upgrade(){
         if (view.player.afford(upgrade_price)){
-            this.upgrade()
             view.player.money -= upgrade_price
+            this.upgrade()
         }
     }
 

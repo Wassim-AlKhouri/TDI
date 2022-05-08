@@ -142,7 +142,7 @@ class Immune_Monster(override var view: DrawingView,val wave: Int):Monster(view,
     override fun special_move() {
         paint.color = Color.BLACK
         immune = (TotalTime[1]).mod(2) == 0
-        if(!immune){paint.color = Color.GRAY}
+        if(immune){paint.color = Color.GRAY}
     }
 
     override fun attacked(damage: Int, ice: Boolean) {
@@ -191,11 +191,13 @@ class Explosif_Monster(override var view: DrawingView, val wave: Int):Monster(vi
                 val tower = view.Sacrifice_Towers.random()
                 tower.explode()
                 this.dead = true
+                view.Monsters.remove(this)
             }
             else if(view.Towers.size !=0) {
                 val tower = view.Towers.random()
                 tower.explode()
                 this.dead = true
+                view.Monsters.remove(this)
             }
 
         }
