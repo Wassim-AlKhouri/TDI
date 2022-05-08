@@ -33,18 +33,18 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     private val backgroundPaint = Paint()
     private val blackPaint = Paint()
     lateinit var thread: Thread
-    var drawing: Boolean = true
-    val Col = 7
-    val Li = 10
-    lateinit var map: Map
-    var Step: Float = 0f
-    var Monsters = CopyOnWriteArrayList<Monster>()
-    var Towers = CopyOnWriteArrayList<Tower>()
-    var Sacrifice_Towers = CopyOnWriteArrayList<Tower>()
-    var tower_type = 2
+    private var drawing: Boolean = true
+    val Col = 7  // nombre de colonnes dans le map
+    private val Li = 10  // nombre de lignes dans le map
+    lateinit var map: Map //
+    var Step: Float = 0f  // le côté du Cell
+    var Monsters = CopyOnWriteArrayList<Monster>()  // liste de monstres vivant (CopyOnWriteList a été utilisé car il est thread-safe)
+    var Towers = CopyOnWriteArrayList<Tower>()  // liste des tours
+    var Sacrifice_Towers = CopyOnWriteArrayList<Tower>()  // liste des tours de sacrifice
+    var tower_type = 2 // ce variable sert à savoir quel type de tour va être contruit quand on appuie sur l'écran
     val player = Player()
-    val activity = context as FragmentActivity
-    var upgrade = false
+    private val activity = context as FragmentActivity
+    var upgrade = false // si le bouton upgrade est active
 
 
     init {
@@ -56,7 +56,12 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     override fun run() {
         while (drawing) {
             draw()
-            if (player.gameover) { activity.runOnUiThread(Runnable {
+            if (player.gameover) {
+                activity.runOnUiThread(Runnable {
+                    /*
+                    runOnUiThread nous permet de lance ce bout de code sur le thread principale et
+                    donc de faire appel à des méthode du MainActivity
+                    */
                     (activity as MainActivity).gameover()
                 })
             }
@@ -65,12 +70,9 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        val canvasH = (h - 100).toFloat()
-        val canvasW = (w).toFloat()
-        this.Step = (canvasW / Col).toFloat()
-        //val Li = ((canvasH/this.Step)).toInt()
+        // onSizeChanged nous donne les dimensions de l'écran avec les quels on crée Step et map
+        this.Step = (w / Col).toFloat()
         this.map = Map(Col, Li, this)
-        //this.map.creat_Cells()
     }
 
     private fun draw() {
@@ -108,14 +110,15 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
         when (e.action) {
             MotionEvent.ACTION_DOWN -> {
                 val x = e.rawX.toInt()
-                val y = e.rawY.toInt() - 300
+                val y = e.rawY.toInt() - 300 // le "-300" a été ajouté à cause du décalage entre les données récuppérés et la réél position d'appuie
                 val stepx = (x / Step).toInt()
                 val stepy = (y / Step).toInt()
-                //var price=0
                 val position: List<Int> = listOf(stepx, stepy)
                 if (!upgrade && player.afford(get_price(tower_type))) {
+                    // teste si upgrade est false et si le joueur a assez d'argent pour créer une tour
+                        // get_price est une méthode que drawingView hérite de l'interface Price
                     if (((Col * stepy) + stepx) < map.Cells.size && map.Cells[(Col * stepy) + stepx].type == 0) {
-                        //map.Cells[(Col * stepy) + stepx].type = tower_types
+                        //teste si le joueur a appuyé sur à l'interieur du map et si la case est de type sol
                         player.money -= get_price(tower_type)
                         when (tower_type) {
                             2 -> Towers.add(Normal_Attack_Tower(position, this))
@@ -126,6 +129,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                     }
                 } else if (upgrade) {
                     for (tower in Towers.plus(Sacrifice_Towers)) {
+                        // le "for" cherche la tour dont la position correspond à celle de l'appuie
                         if (position == tower.Position) {
                             tower.ask_for_upgrade()
                         }
@@ -137,7 +141,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     }
 
     private fun draw_time(canvas: Canvas) {
-        val a = 0
+        // dessine le temps en haut à gauche
         if (TotalTime[1] < 10 && TotalTime[0] < 10) {
             canvas.drawText(("0${TotalTime[0]}: 0${TotalTime[1]}"), 5f, 50f, blackPaint)
         } else if (TotalTime[1] < 10 && TotalTime[0] > 10) {
@@ -150,10 +154,12 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     }
 
     private fun draw_money(canvas: Canvas) {
+        // dessine combien d'agent le joueur poosède
         canvas.drawText("Money:${player.money}", 10f, (canvas.height - 200).toFloat(), blackPaint)
     }
 
     private fun draw_healthpoints(canvas: Canvas) {
+        // dessine les points de vie restantes du joueur
         canvas.drawText(
             "Healthpoints:${player.healthpoints}",
             (canvas.width - 350).toFloat(),
@@ -163,15 +169,17 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     }
 
     private fun draw_score(canvas: Canvas) {
+        // dessine le score
         canvas.drawText(
             "Score:${player.score}",
-            ((canvas.width / 2) - 90).toFloat(),
+            ((canvas.width / 2) - 150).toFloat(),
             (canvas.height - 200).toFloat(),
             blackPaint
         )
     }
 
     fun reset() {
+        // réinitialise les attribues de DrawingView pour lancer une nouvelle partie
         map.reset()
         player.reset()
         Monsters = CopyOnWriteArrayList<Monster>()
@@ -204,35 +212,5 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     override fun surfaceDestroyed(holder: SurfaceHolder) {
         thread.join()
     }
-/*
-    fun showGameOverDialog(messageId: Int) {
-        class GameResult: DialogFragment() {
-            override fun onCreateDialog(bundle: Bundle?): Dialog {
-                val builder = AlertDialog.Builder(getActivity())
-                builder.setTitle(resources.getString(messageId))
-                builder.setMessage("Score : ${player.score}")
-                builder.setPositiveButton("Redémarrer le jeu",
-                    DialogInterface.OnClickListener { _, _-> activity.new_game()}
-                )
-                return builder.create()
-            }
-        }
 
-        activity.runOnUiThread(
-            Runnable {
-                val ft = activity.supportFragmentManager.beginTransaction()
-                val prev =
-                    activity.supportFragmentManager.findFragmentByTag("dialog")
-                if (prev != null) {
-                    ft.remove(prev)
-                }
-                ft.addToBackStack(null)
-                val gameResult = GameResult()
-                gameResult.setCancelable(false)
-                gameResult.show(ft,"dialog")
-            }
-        )
-    }
-
- */
 }
