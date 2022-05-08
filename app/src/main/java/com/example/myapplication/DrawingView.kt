@@ -56,6 +56,10 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     override fun run() {
         while (drawing) {
             draw()
+            if (player.gameover) { activity.runOnUiThread(Runnable {
+                    (activity as MainActivity).gameover()
+                })
+            }
         }
     }
 
@@ -200,15 +204,15 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     override fun surfaceDestroyed(holder: SurfaceHolder) {
         thread.join()
     }
-}
-    /*fun showGameOverDialog(messageId: Int) {
+/*
+    fun showGameOverDialog(messageId: Int) {
         class GameResult: DialogFragment() {
             override fun onCreateDialog(bundle: Bundle?): Dialog {
                 val builder = AlertDialog.Builder(getActivity())
                 builder.setTitle(resources.getString(messageId))
                 builder.setMessage("Score : ${player.score}")
                 builder.setPositiveButton("Redémarrer le jeu",
-                    DialogInterface.OnClickListener { _, _-> mainActivity.new_game()}
+                    DialogInterface.OnClickListener { _, _-> activity.new_game()}
                 )
                 return builder.create()
             }
@@ -229,4 +233,6 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             }
         )
     }
-    */
+
+ */
+}

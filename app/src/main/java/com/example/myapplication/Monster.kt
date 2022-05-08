@@ -16,7 +16,7 @@ abstract class Monster(open var view: DrawingView, wave: Int) {
     var y = 0f
     var r =RectF(0f,0f,0f,0f)
     val radius = 40f
-    var speed = 0.08f
+    var speed = 0.8f
     var pos = 0
     abstract var health : Int
     var dead = false

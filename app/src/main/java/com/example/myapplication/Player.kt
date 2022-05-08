@@ -23,5 +23,6 @@ class Player() {
         money = 100
         healthpoints = 3
         score = 0
+        gameover = false
     }
 }

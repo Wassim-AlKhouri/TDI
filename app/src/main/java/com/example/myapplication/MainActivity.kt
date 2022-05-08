@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity(),Price {
     private lateinit var monster_manager: Monster_Manager
     private lateinit var tower_manager: Tower_Manager
     private var playing = true
-    var player = Player()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,18 +59,20 @@ class MainActivity : AppCompatActivity(),Price {
     }
 
 
-    /*fun gameover(){
+    fun gameover(){
         onPause()
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragment, gameover_Fragment())
+            replace(R.id.fragment, gameover_Fragment(drawingView.player.score))
             commit()
         }
-    }*/
+    }
+    /*
     fun gameOver() {
         onPause()
         showGameOverDialog(R.string.lose)
         player.gameover = false
     }
+     */
 
 
     fun new_game(){
@@ -81,9 +82,6 @@ class MainActivity : AppCompatActivity(),Price {
         monster_manager.reset()
         onResume()
         playing = true
-        if (player.gameover) {
-            player.gameover = false
-        }
     }
 
     fun resume(){
@@ -116,6 +114,7 @@ class MainActivity : AppCompatActivity(),Price {
             }
         }
     }
+    /*
     fun showGameOverDialog(messageId: Int) {
         class GameResult: DialogFragment() {
             override fun onCreateDialog(bundle: Bundle?): Dialog {
@@ -144,5 +143,6 @@ class MainActivity : AppCompatActivity(),Price {
             }
         )
     }
+     */
 
 }
