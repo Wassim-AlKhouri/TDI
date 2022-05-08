@@ -2,11 +2,14 @@ package com.example.myapplication
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.AttributeSet
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
@@ -52,80 +55,15 @@ class MainActivity : AppCompatActivity(),Price {
         monster_manager.resume()
         tower_manager.resume()
     }
-    /*laying = false
-        this.onPause()
-        showGameOverDialog2("Tower Defence Révolutionnaire","Bienvenue dans notre tower defence.Nous espérons que vous prendrez du plaisir à jouer à notre création","Play",)
 
-        drawingView.start_MonsterManager = true
-        drawingView.start_TowerManager = true
-        this.playing = true
-
-    }*/
-    fun gameover(){
+    fun gameover() {
         // affiche le fragment de fin de jeu
         onPause()
-        showGameOverDialog(R.string.lose)
-        /*supportFragmentManager.beginTransaction().apply {
+        supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragment, gameover_Fragment(drawingView.player.score))
-            commit()*/
-
-    }
-    fun showGameOverDialog(messageId: Int) {
-        class GameResult: DialogFragment() {
-            override fun onCreateDialog(bundle: Bundle?): Dialog {
-                val builder = AlertDialog.Builder(getActivity())
-                builder.setTitle(resources.getString(messageId))
-                builder.setMessage("Score : ${player.score}")
-                builder.setPositiveButton("Redémarrer le jeu",
-                    DialogInterface.OnClickListener { _, _-> new_game()}
-                )
-                return builder.create()
-            }
+            commit()
         }
-
-        drawingView.activity.runOnUiThread(
-            Runnable {
-                val ft = drawingView.activity.supportFragmentManager.beginTransaction()
-                val prev =
-                    drawingView.activity.supportFragmentManager.findFragmentByTag("dialog")
-                if (prev != null) {
-                    ft.remove(prev)
-                }
-                ft.addToBackStack(null)
-                val gameResult = GameResult()
-                gameResult.setCancelable(false)
-                gameResult.show(ft,"dialog")
-            }
-        )
     }
-    /*fun showGameOverDialog2(Title: String, Text: String, button_text: String, function: Unit) {
-        class GameResult: DialogFragment() {
-            override fun onCreateDialog(bundle: Bundle?): Dialog {
-                val builder = AlertDialog.Builder(getActivity())
-                builder.setTitle(Title)
-                builder.setMessage(Text)
-                builder.setPositiveButton(button_text,
-                    DialogInterface.OnClickListener { _, _-> function }
-                )
-                return builder.create()
-            }
-        }
-
-        drawingView.activity.runOnUiThread(
-            Runnable {
-                val ft = drawingView.activity.supportFragmentManager.beginTransaction()
-                val prev =
-                    drawingView.activity.supportFragmentManager.findFragmentByTag("dialog")
-                if (prev != null) {
-                    ft.remove(prev)
-                }
-                ft.addToBackStack(null)
-                val gameResult = GameResult()
-                gameResult.setCancelable(false)
-                gameResult.show(ft,"dialog")
-            }
-        )
-    }*/
 
     fun new_game(){
         // lance une nouvelle partie

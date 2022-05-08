@@ -36,29 +36,18 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     var upgrade = false // si le bouton upgrade est active
     var start_MonsterManager = false
     var start_TowerManager = false
-
+    var start:Boolean = false
 
     init {
         backgroundPaint.color = Color.WHITE
         blackPaint.color = Color.BLACK
         blackPaint.textSize = 50f
+
     }
 
     override fun run() {
         while (drawing) {
             draw()
-            /*if ( TotalTime[0]==0 && TotalTime[1]==1){
-                activity.runOnUiThread(Runnable {
-                    /*
-                    runOnUiThread nous permet de lance ce bout de code sur le thread principale et
-                    donc de faire appel à des méthode du MainActivity
-                    */
-
-                    (activity as MainActivity).Play()
-
-                })
-            }*/
-
             if (player.gameover) {
                 player.gameover = false
                 activity.runOnUiThread(Runnable {
@@ -66,9 +55,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                     runOnUiThread nous permet de lance ce bout de code sur le thread principale et
                     donc de faire appel à des méthode du MainActivity
                     */
-
                     (activity as MainActivity).gameover()
-
                 })
             }
         }

@@ -26,6 +26,7 @@ abstract class Monster(open var view: DrawingView, wave: Int) {
     var d = 0f // distance parcouru par le monstre(expliqué dans move)
     var ran = 0 // ran correspond au décalage du monstre par rapport au centre du chemin
     var LastMouvement = SystemClock.elapsedRealtime() // temps depuis la dérnière mouvment du monstre
+
     init {
         val r = ((Step/2)-radius).toInt()
         this.ran = (r..-r).random()

@@ -10,6 +10,7 @@ class Monster_Manager(val view:DrawingView):Runnable {
     private var wave = 0 // la vague
     private val fibo_series = ArrayList<Int>()
     private var Last_time :Long = 0 // le temps depuis la création du dernier monstre
+    private var Birth_time:Long = SystemClock.elapsedRealtime() // le temps de création du Monster_Manager
     private var monsters_created = 0 // nombre de monstres créés
 
 
@@ -29,8 +30,8 @@ class Monster_Manager(val view:DrawingView):Runnable {
         val ran_monster = (1..100).random()  // le type monstre qui sera crée est choisi au hasard
         if (monsters_created <= fibo_series[wave]) {
             // teste si le nombre de monstres créés ne dépasse pas le nombre de monstre qui doivent être créés pendant cette vague
-            if ((SystemClock.elapsedRealtime() - Last_time) >= (300..1250).random()) {
-                // crée des monstres à des intervales aléatoires qui vont de 0.3 à 1.25 secondes
+            if ((SystemClock.elapsedRealtime() - Last_time) >= (300..1250).random() && (SystemClock.elapsedRealtime() - Birth_time)>5000) {
+                // crée des monstres à des intervales aléatoires qui vont de 0.3 à 1.25 secondes et teste si ça fait plus que 5 secondes que le jeu est lancé
                 Last_time = SystemClock.elapsedRealtime()
                 monsters_created += 1
                 when {

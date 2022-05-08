@@ -1,8 +1,8 @@
 package com.example.myapplication
 
 class Player() {
-    var money = 1000 // Argent du joueur
-    var healthpoints = 2 // Vie totale du joueur
+    var money = 130 // Argent du joueur
+    var healthpoints = 3 // Vie totale du joueur
     var gameover = false
     var score = 0 // Score de la partie
 
@@ -23,8 +23,8 @@ class Player() {
 
     fun reset(){
         //Lors d'une nouvelle partie, ces paramètres sont réinitialisés
-        money = 100
-        healthpoints = 2
+        money = 130
+        healthpoints = 3
         score = 0
         gameover = false
     }
