@@ -1,6 +1,5 @@
 package com.example.myapplication
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -9,22 +8,13 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
-import android.os.SystemClock
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
-import android.view.View
-import android.widget.Toast
-import java.util.*
-import android.util.Log
-import android.widget.Button
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import java.util.concurrent.CopyOnWriteArrayList
-import java.util.concurrent.atomic.AtomicReferenceArray
-import java.util.logging.Handler
-import kotlin.collections.ArrayList
 
 class DrawingView @JvmOverloads
 constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0): SurfaceView(context, attributes,defStyleAttr), SurfaceHolder.Callback,Runnable,Price {
@@ -43,8 +33,10 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     var Sacrifice_Towers = CopyOnWriteArrayList<Tower>()  // liste des tours de sacrifice
     var tower_type = 2 // ce variable sert à savoir quel type de tour va être contruit quand on appuie sur l'écran
     val player = Player()
-    private val activity = context as FragmentActivity
+    val activity = context as FragmentActivity
     var upgrade = false // si le bouton upgrade est active
+    var start_MonsterManager = false
+    var start_TowerManager = false
 
 
     init {
@@ -56,13 +48,28 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     override fun run() {
         while (drawing) {
             draw()
-            if (player.gameover) {
+            /*if ( TotalTime[0]==0 && TotalTime[1]==1){
                 activity.runOnUiThread(Runnable {
                     /*
                     runOnUiThread nous permet de lance ce bout de code sur le thread principale et
                     donc de faire appel à des méthode du MainActivity
                     */
+
+                    (activity as MainActivity).Play()
+
+                })
+            }*/
+
+            if (player.gameover) {
+                player.gameover = false
+                activity.runOnUiThread(Runnable {
+                    /*
+                    runOnUiThread nous permet de lance ce bout de code sur le thread principale et
+                    donc de faire appel à des méthode du MainActivity
+                    */
+
                     (activity as MainActivity).gameover()
+
                 })
             }
         }
@@ -98,6 +105,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             for (tower in Sacrifice_Towers) {
                 tower.draw(canvas)
             }
+
             draw_time(canvas)
             draw_money(canvas)
             draw_healthpoints(canvas)
@@ -138,6 +146,11 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             }
         }
         return true
+    }
+    fun play(){
+        start_MonsterManager = true
+        start_TowerManager = true
+
     }
 
     private fun draw_time(canvas: Canvas) {
@@ -213,4 +226,6 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
         thread.join()
     }
 
+
 }
+

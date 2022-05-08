@@ -7,11 +7,14 @@ class Tower_Manager(val view: DrawingView):Runnable {
     lateinit var thread: Thread
     private var playing = true
 
+
     override fun run() {
-        while(playing){
+
+        while (playing) {
             manage_towers()
-         }
+        }
     }
+
 
     private fun manage_towers() {
         for (tower in view.Towers){

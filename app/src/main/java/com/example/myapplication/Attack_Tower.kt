@@ -5,7 +5,7 @@ import android.os.SystemClock
 import kotlin.math.pow
 
 abstract class Attack_Tower(override val Position: List<Int>, override val view: DrawingView):Tower(Position, view){
-    // les tours d'attaque
+    // Les tours qui attaquent
     abstract val projectile_type:Int
     abstract val damage:Int
     var distanceattack :Float =250f
@@ -17,14 +17,14 @@ abstract class Attack_Tower(override val Position: List<Int>, override val view:
 
     override fun attack() {
         if (projectile == null && cible != null && SystemClock.elapsedRealtime() - lastattack > attack_interval){
-            // test si une projectile est dêjà lancé, si il y a une cible qui est choisi et si la tour a attendu suffisament pour lance une nouvelle projectile
-            projectile = Projectile(view,Position, cible!!, SystemClock.elapsedRealtime(), damage, projectile_type) // crée une nouvelle projectile
+            // Test si un projectile est déjà lancé, si une cible a déjà été choisi et si l'intervalle pour lancer un nouveau projectile est bon
+            projectile = Projectile(view,Position, cible!!, SystemClock.elapsedRealtime(), damage, projectile_type) // créer un nouveau projectile
             lastattack = SystemClock.elapsedRealtime()
         }
         if (cible !=null){
             val distance = Math.sqrt(((Math.abs(((Position[0]+0.5)*Step)- cible!!.x)).pow(2)+(Math.abs(((Position[1]+0.5)*Step)-cible!!.y)).pow(2)))
             if (distance > distanceattack){
-                // test si la cible est trop éloignée, si oui la tour ne prend plus ce monstre comme cible
+                // Test si la cible est trop éloignée. Si oui, la tour change de cible
                 cible = null
             }
         }

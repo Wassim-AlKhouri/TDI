@@ -12,13 +12,14 @@ class Monster_Manager(val view:DrawingView):Runnable {
     private var Last_time :Long = 0 // le temps depuis la création du dernier monstre
     private var monsters_created = 0 // nombre de monstres créés
 
+
     init {
         this.fibonacci() // crée la liste de fibbonacci
         Last_time = SystemClock.elapsedRealtime()
     }
 
     override fun run() {
-        while (playing){
+        while (playing) {
             create_monsters()
             manage_monsters()
         }
