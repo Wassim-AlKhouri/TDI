@@ -147,7 +147,7 @@ class Immune_Monster(override var view: DrawingView,val wave: Int):Monster(view,
     override val Step = view.Step
     override var health = 300 + (wave*25)
     override val value = 30
-    var immune:Boolean = false
+    private var immune:Boolean = false
     init {
         x=( (road[0][0]+0.5)*Step ).toFloat()
         val r = ((Step/2)-radius).toInt()
@@ -181,7 +181,7 @@ class Explosif_Monster(override var view: DrawingView, val wave: Int):Monster(vi
     override val Step = view.Step
     override val value = 40
     override var health = 100 + (wave*25)
-    val birth_time = LastMouvement
+    private val birth_time = LastMouvement
 
     init {
         x=( (road[0][0]+0.5)*Step ).toFloat()

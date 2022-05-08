@@ -10,7 +10,7 @@ import kotlin.math.pow
 abstract class Tower (open val Position: List<Int>, open val view: DrawingView):Price {
     abstract val Step:Float
     abstract val type:Int
-    val whitepaint = Paint()
+    private val whitepaint = Paint()
     abstract val name:String // Nom de la tour (visible en jeu)
     abstract var upgrade_price : Int
     var level = 1

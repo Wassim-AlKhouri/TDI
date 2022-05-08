@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity(),Price {
     private lateinit var monster_manager: Monster_Manager
     private lateinit var tower_manager: Tower_Manager
     private var playing = true
-    var player = Player()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

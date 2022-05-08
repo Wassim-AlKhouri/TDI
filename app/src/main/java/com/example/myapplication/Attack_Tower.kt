@@ -8,12 +8,12 @@ abstract class Attack_Tower(override val Position: List<Int>, override val view:
     // Les tours qui attaquent
     abstract val projectile_type:Int
     abstract val damage:Int
-    var distanceattack :Float =250f
-    var cible : Monster? = null
+    private var distanceattack :Float =250f
+    private var cible : Monster? = null
     var projectile:Projectile? = null
-    var attacking = false
-    var lastattack :Long = 0
-    var attack_interval = 500
+    private var attacking = false
+    private var lastattack :Long = 0
+    private var attack_interval = 500
 
     override fun attack() {
         if (projectile == null && cible != null && SystemClock.elapsedRealtime() - lastattack > attack_interval){

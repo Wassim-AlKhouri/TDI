@@ -7,10 +7,7 @@ class Tower_Manager(val view: DrawingView):Runnable {
     //Tower_Manager fonctionne sur un thread à part et s'occupe de faire attaquer les tours et de faire bouger leurs projectiles
     lateinit var thread: Thread
     private var playing = true
-
-
     override fun run() {
-
         while (playing) {
             manage_towers()
         }

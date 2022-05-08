@@ -32,11 +32,8 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     var Sacrifice_Towers = CopyOnWriteArrayList<Tower>()  // liste des tours de sacrifice
     var tower_type = 2 // ce variable sert à savoir quel type de tour va être contruit quand on appuie sur l'écran
     val player = Player()
-    val activity = context as FragmentActivity
+    private val activity = context as FragmentActivity
     var upgrade = false // si le bouton upgrade est active
-    var start_MonsterManager = false
-    var start_TowerManager = false
-    var start:Boolean = false
 
     init {
         backgroundPaint.color = Color.WHITE
@@ -134,11 +131,6 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             }
         }
         return true
-    }
-    fun play(){
-        start_MonsterManager = true
-        start_TowerManager = true
-
     }
 
     private fun draw_time(canvas: Canvas) {

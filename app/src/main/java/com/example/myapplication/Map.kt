@@ -17,7 +17,7 @@ class Map(val Col: Int, val Li: Int, var view: DrawingView)  {
         creat_Cells()
     }
 
-    fun creat_Cells(){
+    private fun creat_Cells(){
         // crée les case du map
         for (y in 0 until Li){
             for(x in 0 until Col){
@@ -27,7 +27,7 @@ class Map(val Col: Int, val Li: Int, var view: DrawingView)  {
         }
     }
 
-    fun map_generate() {
+    private fun map_generate() {
         //génère un map aléatoirement
         val height: Int = this.map.size
         val width: Int = this.map[0].size
