@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 interface Price {
+    // une interface qui permet d'avoir les prix des tours
     fun get_price(type:Int): Int {
         var res:Int = 0
         when(type){

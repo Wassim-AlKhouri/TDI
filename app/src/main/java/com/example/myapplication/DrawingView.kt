@@ -35,7 +35,6 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     lateinit var thread: Thread
     private var drawing: Boolean = true
     val Col = 7  // nombre de colonnes dans le map
-    private val Li = 10  // nombre de lignes dans le map
     lateinit var map: Map //
     var Step: Float = 0f  // le côté du Cell
     var Monsters = CopyOnWriteArrayList<Monster>()  // liste de monstres vivant (CopyOnWriteList a été utilisé car il est thread-safe)
@@ -72,6 +71,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
         super.onSizeChanged(w, h, oldw, oldh)
         // onSizeChanged nous donne les dimensions de l'écran avec les quels on crée Step et map
         this.Step = (w / Col).toFloat()
+        val Li = ((h/this.Step)).toInt() - 2 // nombre de lignes dans le map qui dépend de la taille de l'ècran
         this.map = Map(Col, Li, this)
     }
 

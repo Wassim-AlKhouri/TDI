@@ -7,6 +7,7 @@ class Player() {
     var score = 0
 
     fun afford (price:Int): Boolean {
+        // fonction qui teste si le joueur a assez d'argent pour faire un achat
         var res = false
         if (money-price >=0){
             res = true
@@ -20,7 +21,8 @@ class Player() {
     }
 
     fun reset(){
-        money = 100
+        // reinitialise les attribues du joueur
+        money = 150
         healthpoints = 3
         score = 0
         gameover = false

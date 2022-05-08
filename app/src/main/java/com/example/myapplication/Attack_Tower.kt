@@ -52,10 +52,9 @@ abstract class Attack_Tower(override val Position: List<Int>, override val view:
     }
 
     fun move_projectile(){
-        // la tour dit à son projectile de se déplacer
-        if(cible!=null){ if(cible!!.dead){cible = null;attacking=false} }
-        if(projectile?.Colision == true){projectile = null}
-        else{projectile?.move()}
+        if(cible!=null){ if(cible!!.dead){cible = null;attacking=false} } // si la cible est mort alors la tour l'efface et n'est plus en état d'attaque
+        if(projectile?.Colision == true){projectile = null} // si le projectile a touché le monstre alors la tour l'efface
+        else{projectile?.move()} // la tour dit à son projectile de se déplacer
     }
 
     override fun upgrade() {

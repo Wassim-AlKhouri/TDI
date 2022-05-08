@@ -5,6 +5,8 @@ import android.os.SystemClock
 import java.util.concurrent.CopyOnWriteArrayList
 
 class Monster_Manager(val view:DrawingView):Runnable {
+    // Monster_Manager fonctionne sur un thread à part et s'occupe de faire avancer les monstres,
+    // les faire interagir avec les tours et les créer
     lateinit var thread: Thread
     private var playing = true
     private var wave = 0 // la vague
@@ -84,6 +86,7 @@ class Monster_Manager(val view:DrawingView):Runnable {
         thread = Thread(this)
         thread.start()
         for (monster in view.Monsters){
+            // remet le temps du dernier mouvement à maintenant
             monster.LastMouvement = SystemClock.elapsedRealtime()
         }
     }

@@ -3,18 +3,21 @@ package com.example.myapplication
 import android.os.SystemClock
 
 abstract class Utility_Tower(override val Position: List<Int>, override val view: DrawingView):Tower(Position, view){
-    abstract val specialattack_interval: Long
+    // tours utilitaires qui n'attaque pas les monstres
+    abstract val specialattack_interval: Long // l'intervalle de temps entre chaque "attaque" spéciale
     var last_time = SystemClock.elapsedRealtime()
+
     override fun attack(){
         if ((SystemClock.elapsedRealtime()-last_time) >= specialattack_interval){
             last_time = SystemClock.elapsedRealtime()
             special_ability()
         }
     }
-    abstract fun special_ability()
+    abstract fun special_ability() // ce qui rendra chaque type de tour spéciale
 }
 
 class Money_Tower(override val Position: List<Int>, override val view: DrawingView):Utility_Tower(Position,view){
+    // donne de l'argent au joueur chaque 2 secondes
     override val Step = view.Step
     var money_gen: Int = 5
     override val specialattack_interval: Long = 2000
@@ -43,6 +46,7 @@ class Money_Tower(override val Position: List<Int>, override val view: DrawingVi
 }
 
 class Sacrifice_Tower(override val Position: List<Int>, override val view: DrawingView):Utility_Tower(Position,view){
+    //tours de sacrifice sont les cibles prioritaires des monstres explosives et améliorent une tour au hasard chaque 50 secondes
     override val Step = view.Step
     override val specialattack_interval: Long = 50000
     override val type: Int = 5

@@ -4,9 +4,10 @@ import android.os.SystemClock
 import android.widget.TextView
 
 class Time(val initial_time:Long):Runnable {
+    // Time fonctionne sur un thread à part et sert à update TotalTime. Totaltime[0]= minutes et Totaltime[1]= secondes
     lateinit var thread: Thread
     private var playing = true
-    private var last_time:Long = initial_time
+    private var last_time:Long = initial_time // temps de la dérnière mise à jour du temps
 
     override fun run() { while(playing){update_time()} }
 
