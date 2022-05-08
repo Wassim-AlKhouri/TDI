@@ -33,12 +33,14 @@ class Money_Tower(override val Position: List<Int>, override val view: DrawingVi
     }
 
     override fun upgrade() {
+        // la tour donne plus d'argent
         money_gen+=5
         level+=1
         upgrade_price+=25
     }
 
     override fun explode() {
+        // efface la tour et réinitialise la case qu'elle occupait
         view.Towers.remove(this)
         view.map.Cells[(view.Col * Position[1]) + Position[0]].type = 0
     }
@@ -62,12 +64,14 @@ class Sacrifice_Tower(override val Position: List<Int>, override val view: Drawi
     }
 
     override fun upgrade() {
+        // la tour a une vie en plus
         lives+=1
         level+=1
         upgrade_price+=10
     }
 
     override fun explode(){
+        // efface la tour et réinitialise la case qu'elle occupait si la tour n'a plus de vies
         lives-=1
         if(lives==0){
             view.Sacrifice_Towers.remove(this)

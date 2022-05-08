@@ -17,14 +17,14 @@ abstract class Attack_Tower(override val Position: List<Int>, override val view:
 
     override fun attack() {
         if (projectile == null && cible != null && SystemClock.elapsedRealtime() - lastattack > attack_interval){
-            // test si une projectile est dêjà lancé, si il y a une cible qui est choisi et si la tour a attendu suffisament pour lance une nouvelle projectile
+            // teste si une projectile est dêjà lancé, si il y a une cible qui est choisi et si la tour a attendu suffisament de temps que pour lance une nouvelle projectile
             projectile = Projectile(view,Position, cible!!, SystemClock.elapsedRealtime(), damage, projectile_type) // crée une nouvelle projectile
             lastattack = SystemClock.elapsedRealtime()
         }
         if (cible !=null){
             val distance = Math.sqrt(((Math.abs(((Position[0]+0.5)*Step)- cible!!.x)).pow(2)+(Math.abs(((Position[1]+0.5)*Step)-cible!!.y)).pow(2)))
             if (distance > distanceattack){
-                // test si la cible est trop éloignée, si oui la tour ne prend plus ce monstre comme cible
+                // teste si la cible est trop éloignée, si oui la tour ne prend plus ce monstre comme cible
                 cible = null
             }
         }
@@ -37,7 +37,7 @@ abstract class Attack_Tower(override val Position: List<Int>, override val view:
     }
 
     fun detect_monster(monster: Monster){
-        // test si le monstre est assez proche pour être attaqué par la tour
+        // teste si le monstre est assez proche pour être attaqué par la tour
         if(cible == null){attacking = false}
         if (!attacking) {
             // la tour ne prend pas le monstre comme cible si elle attaque dêjà un autre
@@ -53,13 +53,13 @@ abstract class Attack_Tower(override val Position: List<Int>, override val view:
 
     fun move_projectile(){
         if(cible!=null){ if(cible!!.dead){cible = null;attacking=false} } // si la cible est mort alors la tour l'efface et n'est plus en état d'attaque
-        if(projectile?.Colision == true){projectile = null} // si le projectile a touché le monstre alors la tour l'efface
+        if(projectile?.Colision == true){projectile = null} // si le projectile a touché le monstre alors la tour efface le projectile
         else{projectile?.move()} // la tour dit à son projectile de se déplacer
     }
 
     override fun upgrade() {
         if(attack_interval>100) {
-            // si l'intervalle d'attaque set plus grande que 0.1 seconde alors la tour la diminue
+            // si l'intervalle d'attaque est plus grande que 0.1 seconde alors la tour la diminue
             attack_interval -= 25
             level+=1
             upgrade_price+=15

@@ -36,8 +36,8 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     private var drawing: Boolean = true
     val Col = 7  // nombre de colonnes dans le map
     lateinit var map: Map //
-    var Step: Float = 0f  // le côté du Cell
-    var Monsters = CopyOnWriteArrayList<Monster>()  // liste de monstres vivant (CopyOnWriteList a été utilisé car il est thread-safe)
+    var Step: Float = 0f  // le côté de la case
+    var Monsters = CopyOnWriteArrayList<Monster>()  // liste de monstres vivants (CopyOnWriteList a été utilisé car il est thread-safe)
     var Towers = CopyOnWriteArrayList<Tower>()  // liste des tours
     var Sacrifice_Towers = CopyOnWriteArrayList<Tower>()  // liste des tours de sacrifice
     var tower_type = 2 // ce variable sert à savoir quel type de tour va être contruit quand on appuie sur l'écran
@@ -76,6 +76,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     }
 
     private fun draw() {
+        // dessine tout les monstres/tours/map et affichent divers information(argent,temps,...)
         if (holder.surface.isValid) {
             canvas = holder.lockCanvas()
             canvas.drawRect(
@@ -110,7 +111,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
         when (e.action) {
             MotionEvent.ACTION_DOWN -> {
                 val x = e.rawX.toInt()
-                val y = e.rawY.toInt() - 300 // le "-300" a été ajouté à cause du décalage entre les données récuppérés et la réél position d'appuie
+                val y = e.rawY.toInt() - 300 // le "-300" a été ajouté à cause du décalage entre les données récuppérées et la position réel d'appuie
                 val stepx = (x / Step).toInt()
                 val stepy = (y / Step).toInt()
                 val position: List<Int> = listOf(stepx, stepy)
@@ -118,7 +119,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                     // teste si upgrade est false et si le joueur a assez d'argent pour créer une tour
                         // get_price est une méthode que drawingView hérite de l'interface Price
                     if (((Col * stepy) + stepx) < map.Cells.size && map.Cells[(Col * stepy) + stepx].type == 0) {
-                        //teste si le joueur a appuyé sur à l'interieur du map et si la case est de type sol
+                        //teste si le joueur a appuyé à l'interieur du map et si la case est de type sol
                         player.money -= get_price(tower_type)
                         when (tower_type) {
                             2 -> Towers.add(Normal_Attack_Tower(position, this))

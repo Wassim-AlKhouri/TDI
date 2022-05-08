@@ -97,6 +97,7 @@ class Monster_Manager(val view:DrawingView):Runnable {
     }
 
     fun reset(){
+        // réinitialise les attribues de Monster-Manager pour lancer une nouvelle partie
         wave = 0
         Last_time = SystemClock.elapsedRealtime()
         monsters_created = 0
