@@ -9,33 +9,50 @@ class Monster_Manager(val view:DrawingView):Runnable {
     // les faire interagir avec les tours et les créer
     lateinit var thread: Thread
     private var playing = true
-    private var wave = 0 // la vague
+    private var wave = 0
     private val fibo_series = ArrayList<Int>()
-    private var Last_time :Long = 0 // le temps depuis la création du dernier monstre
-    private var monsters_created = 0 // nombre de monstres créés
+    private var Last_time :Long = 0
+    private var monsters_created = 0
 
     init {
-        this.fibonacci() // crée la liste de fibbonacci
+        this.fibonacci()
         Last_time = SystemClock.elapsedRealtime()
     }
 
     override fun run() {
+        //Thread.sleep(1000)
         while (playing){
             create_monsters()
             manage_monsters()
+            //delete_monsters()
         }
     }
 
+    private fun delete_monsters(){
+        val new_monsters = CopyOnWriteArrayList<Monster>()
+        var explo_monster_dead = 0
+        for(monster in view.Monsters){
+            if (monster.dead) {
+                view.Monsters.remove(monster)
+            }
+            }
+            /*
+            if(monster is Explosif_Monster && monster.dead){explo_monster_dead+=1}
+        }
+        if (new_monsters.size != view.Monsters.size ){
+            view.player.money+=(view.Monsters.size-new_monsters.size-explo_monster_dead)* monster_money
+        }
+        view.Monsters = new_monsters
+             */
+    }
+
     private fun create_monsters() {
-        val ran_monster = (1..100).random()  // le type monstre qui sera crée est choisi au hasard
+        val ran_monster = (1..100).random()
         if (monsters_created <= fibo_series[wave]) {
-            // teste si le nombre de monstres créés ne dépasse pas le nombre de monstre qui doivent être créés pendant cette vague
             if ((SystemClock.elapsedRealtime() - Last_time) >= (300..1250).random()) {
-                // crée des monstres à des intervales aléatoires qui vont de 0.3 à 1.25 secondes
                 Last_time = SystemClock.elapsedRealtime()
                 monsters_created += 1
                 when {
-                    // selon la vague où on se trouve les ratios des types de monstres crées changent
                     wave < 8 -> {
                         when (ran_monster) {
                             in (1..60) -> view.Monsters.add(Normal_Monster(view, wave))
@@ -63,7 +80,6 @@ class Monster_Manager(val view:DrawingView):Runnable {
             }
         }
         else if (monsters_created > fibo_series[wave] && (SystemClock.elapsedRealtime() - Last_time) > 15000 && view.Monsters.size == 0) {
-            // teste si un nombre suffisant de monstre a été créés, si ça fait 15 seconde depuis la création du dérnièr monstre et si tout les monstres sont morts
             monsters_created = 0
             wave += 1
             Last_time = SystemClock.elapsedRealtime()
@@ -72,10 +88,8 @@ class Monster_Manager(val view:DrawingView):Runnable {
 
     private fun manage_monsters(){
         for (monster in view.Monsters) {
-            // fait avancer les monstre
             monster.move()
             for (tower in view.Towers) {
-                // le monstre dit à toutes les tours de tester si est assez proche d'eux
                 if(tower is Attack_Tower){tower.detect_monster(monster)}
             }
         }
@@ -104,7 +118,6 @@ class Monster_Manager(val view:DrawingView):Runnable {
     }
 
     private fun fibonacci(){
-        //crée la liste de fibonacci
         var t1 = 1
         var t2 = 2
         fibo_series.add(t1)
