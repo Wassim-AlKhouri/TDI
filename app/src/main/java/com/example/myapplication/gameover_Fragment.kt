@@ -26,6 +26,7 @@ class gameover_Fragment(val score:Int) : Fragment() {
     }
 
     fun onClickN2(){
+        // lorsqu'on appuie sur le bouton new game le fragment s'efface et lance une nouvelle partie
         (activity as MainActivity).supportFragmentManager.beginTransaction().remove(this).commit()
         (activity as MainActivity).new_game()
     }

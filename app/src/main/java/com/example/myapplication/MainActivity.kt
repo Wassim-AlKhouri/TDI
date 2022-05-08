@@ -31,11 +31,9 @@ class MainActivity : AppCompatActivity(),Price {
         val btn_tower = findViewById<Button>(R.id.button)
         val btn_upgrade = findViewById<Button>(R.id.button2)
         val btn_pause = findViewById<Button>(R.id.button3)
-        val pause_fragment = Pause_fragment()
-        //val gameover_fragment = gameover_Fragment()
         btn_tower.setOnClickListener { OnClick(drawingView,btn_tower) }
         btn_upgrade.setOnClickListener { OnClick2(drawingView,btn_upgrade) }
-        btn_pause.setOnClickListener { OnClick3(pause_fragment)}
+        btn_pause.setOnClickListener { OnClick3()}
     }
 
     override fun onPause() {
@@ -54,28 +52,17 @@ class MainActivity : AppCompatActivity(),Price {
         tower_manager.resume()
     }
 
-    fun toast(text: String) {
-        Toast.makeText(this@MainActivity, text, Toast.LENGTH_LONG).show()
-    }
-
-
     fun gameover(){
+        // affiche le fragment du fin de jeu
         onPause()
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragment, gameover_Fragment(drawingView.player.score))
             commit()
         }
     }
-    /*
-    fun gameOver() {
-        onPause()
-        showGameOverDialog(R.string.lose)
-        player.gameover = false
-    }
-     */
-
 
     fun new_game(){
+        // lance une nouvelle partie
         onPause()
         drawingView.reset()
         time.reset()
@@ -90,6 +77,7 @@ class MainActivity : AppCompatActivity(),Price {
     }
 
     fun OnClick(drawingView: DrawingView, button: Button) {
+        // change le type de tour qui sera créée
         drawingView.tower_type+=1
         when(drawingView.tower_type){
             3->{button.text="MoneyTower:${get_price(3)}"}
@@ -100,49 +88,20 @@ class MainActivity : AppCompatActivity(),Price {
     }
 
     fun OnClick2(drawingView: DrawingView,button:Button) {
+        // active/désactive upgrade
         drawingView.upgrade = !drawingView.upgrade
         button.text = "Upgrade = ${drawingView.upgrade}"
     }
 
-    fun OnClick3(pause_fragment: Pause_fragment) {
+    fun OnClick3() {
+        // affiche le fragment de pause
         if (playing) {
             this.playing = false
             this.onPause()
             supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fragment, pause_fragment)
+                replace(R.id.fragment, Pause_fragment())
                 commit()
             }
         }
     }
-    /*
-    fun showGameOverDialog(messageId: Int) {
-        class GameResult: DialogFragment() {
-            override fun onCreateDialog(bundle: Bundle?): Dialog {
-                val builder = AlertDialog.Builder(getActivity())
-                builder.setTitle(resources.getString(messageId))
-                builder.setMessage("Score : ${player.score}")
-                builder.setPositiveButton("Redémarrer le jeu",
-                    DialogInterface.OnClickListener { _, _-> new_game()}
-                )
-                return builder.create()
-            }
-        }
-
-        drawingView.activity.runOnUiThread(
-            Runnable {
-                val ft = drawingView.activity.supportFragmentManager.beginTransaction()
-                val prev =
-                    drawingView.activity.supportFragmentManager.findFragmentByTag("dialog")
-                if (prev != null) {
-                    ft.remove(prev)
-                }
-                ft.addToBackStack(null)
-                val gameResult = GameResult()
-                gameResult.setCancelable(false)
-                gameResult.show(ft,"dialog")
-            }
-        )
-    }
-     */
-
 }
