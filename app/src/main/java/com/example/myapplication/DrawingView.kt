@@ -1,18 +1,13 @@
 package com.example.myapplication
 
-import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.os.Bundle
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -21,7 +16,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
 
     lateinit var canvas: Canvas
     private val backgroundPaint = Paint()
-    private val blackPaint = Paint()
+    private val whitePaint = Paint()
     lateinit var thread: Thread
     private var drawing: Boolean = true
     val Col = 7  // nombre de colonnes dans le map
@@ -37,8 +32,8 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
 
     init {
         backgroundPaint.color = Color.BLACK
-        blackPaint.color = Color.WHITE
-        blackPaint.textSize = 50f
+        whitePaint.color = Color.WHITE
+        whitePaint.textSize = 50f
 
     }
 
@@ -136,19 +131,19 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     private fun draw_time(canvas: Canvas) {
         // dessine le temps en haut à gauche
         if (TotalTime[1] < 10 && TotalTime[0] < 10) {
-            canvas.drawText(("0${TotalTime[0]}: 0${TotalTime[1]}"), 5f, 50f, blackPaint)
+            canvas.drawText(("0${TotalTime[0]}: 0${TotalTime[1]}"), 5f, 50f, whitePaint)
         } else if (TotalTime[1] < 10 && TotalTime[0] > 10) {
-            canvas.drawText(("${TotalTime[0]}: 0${TotalTime[1]}"), 5f, 50f, blackPaint)
+            canvas.drawText(("${TotalTime[0]}: 0${TotalTime[1]}"), 5f, 50f, whitePaint)
         } else if (TotalTime[1] > 10 && TotalTime[0] < 10) {
-            canvas.drawText(("0${TotalTime[0]}: ${TotalTime[1]}"), 5f, 50f, blackPaint)
+            canvas.drawText(("0${TotalTime[0]}: ${TotalTime[1]}"), 5f, 50f, whitePaint)
         } else {
-            canvas.drawText(("${TotalTime[0]}:${TotalTime[1]}"), 5f, 50f, blackPaint)
+            canvas.drawText(("${TotalTime[0]}:${TotalTime[1]}"), 5f, 50f, whitePaint)
         }
     }
 
     private fun draw_money(canvas: Canvas) {
         // dessine combien d'agent le joueur poosède
-        canvas.drawText("Money:${player.money}", 10f, (canvas.height - 200).toFloat(), blackPaint)
+        canvas.drawText("Money:${player.money}", 10f, (canvas.height - 200).toFloat(), whitePaint)
     }
 
     private fun draw_healthpoints(canvas: Canvas) {
@@ -157,7 +152,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             "Healthpoints:${player.healthpoints}",
             (canvas.width - 350).toFloat(),
             (canvas.height - 200).toFloat(),
-            blackPaint
+            whitePaint
         )
     }
 
@@ -167,7 +162,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             "Score:${player.score}",
             ((canvas.width / 2) - 150).toFloat(),
             (canvas.height - 200).toFloat(),
-            blackPaint
+            whitePaint
         )
     }
 
