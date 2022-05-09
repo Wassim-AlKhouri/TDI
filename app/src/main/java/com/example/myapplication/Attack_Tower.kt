@@ -6,8 +6,8 @@ import kotlin.math.pow
 
 abstract class Attack_Tower(override val Position: List<Int>, override val view: DrawingView):Tower(Position, view){
     // Les tours qui attaquent
-    abstract val projectile_type:Int
-    abstract val damage:Int
+    protected abstract val projectile_type:Int
+    protected abstract val damage:Int
     private var distanceattack :Float =250f
     private var cible : Monster? = null
     var projectile:Projectile? = null

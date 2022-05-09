@@ -3,7 +3,7 @@ package com.example.myapplication
 import android.os.SystemClock
 
 abstract class Utility_Tower(override val Position: List<Int>, override val view: DrawingView):Tower(Position, view){
-    abstract val specialattack_interval: Long //Intervalle entre l'utilisation de l'abilité spéciale
+    protected abstract val specialattack_interval: Long //Intervalle entre l'utilisation de l'abilité spéciale
     var last_time = SystemClock.elapsedRealtime()
     override fun attack(){
         if ((SystemClock.elapsedRealtime()-last_time) >= specialattack_interval){
@@ -16,7 +16,7 @@ abstract class Utility_Tower(override val Position: List<Int>, override val view
 
 class Money_Tower(override val Position: List<Int>, override val view: DrawingView):Utility_Tower(Position,view){
     override val Step = view.Step
-    var money_gen: Int = 5 //Argent généré par la tour
+    private var money_gen: Int = 5 //Argent généré par la tour
     override val specialattack_interval: Long = 2000
     override val type: Int = 3 //Type de la tour
     override val name ="$$"
@@ -49,7 +49,7 @@ class Sacrifice_Tower(override val Position: List<Int>, override val view: Drawi
     override val type: Int = 5
     override val name ="ST"
     override var upgrade_price = get_price(type)/2 //Prix de la tour
-    var lives = 1  // vie de la tour
+    private var lives = 1  // vie de la tour
     init {
         view.map.Cells[(view.map.Col * Position[1]) + Position[0]].type = type
     }

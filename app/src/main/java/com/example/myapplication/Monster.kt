@@ -9,22 +9,22 @@ import java.util.ArrayList
 
 abstract class Monster(open var view: DrawingView, wave: Int) {
 
-    abstract val road : ArrayList<Array<Int>>
-    abstract val Step :Float
-    abstract var health : Int
-    abstract val value:Int
-    var paint = Paint()
+    protected abstract val road : ArrayList<Array<Int>>
+    protected abstract val Step :Float
+    protected abstract var health : Int
+    protected abstract val value:Int
+    protected var paint = Paint()
     var x = 0f
     var y = 0f
     var r =RectF(0f,0f,0f,0f)
-    val radius = 40f
-    var speed = 0.08f
-    var pos = 0 // la case du chemin où se trouve le monstre
+    protected val radius = 40f
+    private var speed = 0.08f
+    private var pos = 0 // la case du chemin où se trouve le monstre
     var dead = false
-    var iced = false // si le monstre est gelé
-    var iced_time:Long = 0 // le temps où le monstre a été gelé
-    var d = 0f // distance parcouru par le monstre(expliqué dans move)
-    var ran = 0 // ran correspond au décalage du monstre par rapport au centre du chemin
+    protected var iced = false // si le monstre est gelé
+    protected var iced_time:Long = 0 // le temps où le monstre a été gelé
+    protected var d = 0f // distance parcouru par le monstre(expliqué dans move)
+    protected var ran = 0 // ran correspond au décalage du monstre par rapport au centre du chemin
     var LastMouvement = SystemClock.elapsedRealtime() // temps depuis la dérnière mouvment du monstre
 
     init {

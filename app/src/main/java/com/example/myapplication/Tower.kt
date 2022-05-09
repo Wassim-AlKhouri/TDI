@@ -8,12 +8,12 @@ import android.util.Log
 import kotlin.math.pow
 
 abstract class Tower (open val Position: List<Int>, open val view: DrawingView):Price {
-    abstract val Step:Float
-    abstract val type:Int
+    protected abstract val Step:Float
+    protected abstract val type:Int
     private val whitepaint = Paint()
-    abstract val name:String // Nom de la tour (visible en jeu)
-    abstract var upgrade_price : Int
-    var level = 1
+    protected abstract val name:String // Nom de la tour (visible en jeu)
+    protected abstract var upgrade_price : Int
+    protected var level = 1
     init {
         whitepaint.color = Color.WHITE
         whitepaint.textSize = 50f
