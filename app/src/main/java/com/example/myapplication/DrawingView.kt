@@ -98,7 +98,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
         when (e.action) {
             MotionEvent.ACTION_DOWN -> {
                 val x = e.rawX.toInt()
-                val y = e.rawY.toInt() - 300 // le "-300" a été ajouté à cause du décalage entre les données récuppérées et la position réel d'appuie
+                val y = e.rawY.toInt()-300 // le "-300" a été ajouté à cause du décalage entre les données récuppérées et la position réel d'appuie
                 val stepx = (x / Step).toInt()
                 val stepy = (y / Step).toInt()
                 val position: List<Int> = listOf(stepx, stepy)

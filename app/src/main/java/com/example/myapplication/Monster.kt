@@ -113,7 +113,7 @@ class Normal_Monster(override var view: DrawingView, val wave: Int):Monster(view
     // monstres normaux
     override val road = view.map.road
     override val Step = view.Step
-    override var health = 200 + (wave*25)
+    override var health = 200 + (wave*60)
     override val value = 10
     init {
         x=( (road[0][0]+0.5)*Step ).toFloat()
@@ -128,7 +128,7 @@ class Normal_Monster(override var view: DrawingView, val wave: Int):Monster(view
         if (health <= 0) {
             dead = true
             view.player.score+=value
-            view.player.money+=value + wave
+            view.player.money+=value + wave/2
             view.Monsters.remove(this)
         }
 
@@ -145,7 +145,7 @@ class Immune_Monster(override var view: DrawingView,val wave: Int):Monster(view,
     // monstres immunisés qui ne prennent pas de dégâts pendant un certain temps et ne peuvent pas être gelés
     override val road = view.map.road
     override val Step = view.Step
-    override var health = 300 + (wave*25)
+    override var health = 300 + (wave*60)
     override val value = 30
     private var immune:Boolean = false
     init {
@@ -168,7 +168,7 @@ class Immune_Monster(override var view: DrawingView,val wave: Int):Monster(view,
                 dead = true
                 view.player.score+=value
                 view.Monsters.remove(this)
-                view.player.money+=value + wave
+                view.player.money+=value + wave/2
             }
         }
     }
@@ -180,7 +180,7 @@ class Explosif_Monster(override var view: DrawingView, val wave: Int):Monster(vi
     override val road = view.map.road
     override val Step = view.Step
     override val value = 40
-    override var health = 100 + (wave*25)
+    override var health = 100 + (wave*60)
     private val birth_time = LastMouvement
 
     init {
@@ -195,7 +195,7 @@ class Explosif_Monster(override var view: DrawingView, val wave: Int):Monster(vi
             dead = true
             view.player.score+=value
             view.Monsters.remove(this)
-            view.player.money+=value + wave
+            view.player.money+=value + wave/2
         }
         if (ice){iced=true;iced_time=SystemClock.elapsedRealtime()}
     }
