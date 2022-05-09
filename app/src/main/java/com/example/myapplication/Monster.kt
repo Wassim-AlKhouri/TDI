@@ -128,7 +128,7 @@ class Normal_Monster(override var view: DrawingView, val wave: Int):Monster(view
         if (health <= 0) {
             dead = true
             view.player.score+=value
-            view.player.money+=value + 10*wave
+            view.player.money+=value + wave
             view.Monsters.remove(this)
         }
 
@@ -168,7 +168,7 @@ class Immune_Monster(override var view: DrawingView,val wave: Int):Monster(view,
                 dead = true
                 view.player.score+=value
                 view.Monsters.remove(this)
-                view.player.money+=value + 10*wave
+                view.player.money+=value + wave
             }
         }
     }
@@ -195,7 +195,7 @@ class Explosif_Monster(override var view: DrawingView, val wave: Int):Monster(vi
             dead = true
             view.player.score+=value
             view.Monsters.remove(this)
-            view.player.money+=value + 10*wave
+            view.player.money+=value + wave
         }
         if (ice){iced=true;iced_time=SystemClock.elapsedRealtime()}
     }

@@ -37,6 +37,7 @@
         android:id="@+id/button"
         android:layout_width="155dp"
         android:layout_height="71dp"
+        android:backgroundTint="#0D7AD1"
         android:text="AttackTower:50"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -45,7 +46,8 @@
         android:id="@+id/button2"
         android:layout_width="155dp"
         android:layout_height="71dp"
-        android:text="Upgrade = false"
+        android:backgroundTint="#0D7AD1"
+        android:text="Construction Mode"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -53,6 +55,7 @@
         android:id="@+id/button3"
         android:layout_width="45dp"
         android:layout_height="45dp"
+        android:backgroundTint="#0D7AD1"
         android:text="II"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

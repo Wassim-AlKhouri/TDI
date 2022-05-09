@@ -36,8 +36,8 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     var upgrade = false // si le bouton upgrade est active
 
     init {
-        backgroundPaint.color = Color.WHITE
-        blackPaint.color = Color.BLACK
+        backgroundPaint.color = Color.BLACK
+        blackPaint.color = Color.WHITE
         blackPaint.textSize = 50f
 
     }

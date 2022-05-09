@@ -93,7 +93,12 @@ class MainActivity : AppCompatActivity(),Price {
     fun OnClick2(drawingView: DrawingView,button:Button) {
         // active/désactive upgrade
         drawingView.upgrade = !drawingView.upgrade
-        button.text = "Upgrade = ${drawingView.upgrade}"
+        if(drawingView.upgrade) {
+            button.text = "Upgrade Mode"
+        }
+        else{
+            button.text = "Construction Mode"
+        }
     }
 
     fun OnClick3() {
