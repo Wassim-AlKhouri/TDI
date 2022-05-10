@@ -173,6 +173,8 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
         Monsters = CopyOnWriteArrayList<Monster>()
         Towers = CopyOnWriteArrayList<Tower>()
         Sacrifice_Towers = CopyOnWriteArrayList<Tower>()
+        tower_type = 2
+        upgrade = false
     }
 
     fun pause() {

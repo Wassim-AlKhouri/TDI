@@ -23,6 +23,9 @@ class MainActivity : AppCompatActivity(),Price {
     private lateinit var monster_manager: Monster_Manager
     private lateinit var tower_manager: Tower_Manager
     private var playing = true
+    lateinit var btn_tower :Button
+    lateinit var btn_upgrade :Button
+    lateinit var btn_pause :Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +34,9 @@ class MainActivity : AppCompatActivity(),Price {
         time = Time(SystemClock.elapsedRealtime())
         monster_manager = Monster_Manager(drawingView)
         tower_manager = Tower_Manager(drawingView)
-        val btn_tower = findViewById<Button>(R.id.button)
-        val btn_upgrade = findViewById<Button>(R.id.button2)
-        val btn_pause = findViewById<Button>(R.id.button3)
+        btn_tower = findViewById<Button>(R.id.button)
+        btn_upgrade = findViewById<Button>(R.id.button2)
+        btn_pause = findViewById<Button>(R.id.button3)
         btn_tower.setOnClickListener { OnClick(drawingView,btn_tower) }
         btn_upgrade.setOnClickListener { OnClick2(drawingView,btn_upgrade) }
         btn_pause.setOnClickListener { OnClick3()}
@@ -70,6 +73,8 @@ class MainActivity : AppCompatActivity(),Price {
         drawingView.reset()
         time.reset()
         monster_manager.reset()
+        btn_tower.text = "AttackTower:50"
+        btn_upgrade.text = "Construction Mode"
         onResume()
         playing = true
     }
