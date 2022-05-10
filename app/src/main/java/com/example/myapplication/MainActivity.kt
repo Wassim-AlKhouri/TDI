@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity(),Price {
     lateinit var time: Time
     private lateinit var monster_manager: Monster_Manager
     private lateinit var tower_manager: Tower_Manager
-    private var playing = true
     lateinit var btn_tower :Button
     lateinit var btn_upgrade :Button
     lateinit var btn_pause :Button
@@ -62,7 +61,7 @@ class MainActivity : AppCompatActivity(),Price {
         // affiche le fragment de fin de jeu
         onPause()
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragment, gameover_Fragment(drawingView.player.score))
+            replace(R.id.fragment, gameover_Fragment(drawingView.player.score, drawingView.wave))
             commit()
         }
     }
@@ -76,12 +75,10 @@ class MainActivity : AppCompatActivity(),Price {
         btn_tower.text = "AttackTower:50"
         btn_upgrade.text = "Construction Mode"
         onResume()
-        playing = true
     }
 
     fun resume(){
         onResume()
-        playing = true
     }
 
     fun OnClick(drawingView: DrawingView, button: Button) {
@@ -108,13 +105,19 @@ class MainActivity : AppCompatActivity(),Price {
 
     fun OnClick3() {
         // affiche le fragment de pause
-        if (playing) {
-            this.playing = false
-            this.onPause()
-            supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fragment, Pause_fragment())
-                commit()
-            }
+        this.onPause()
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment, Pause_fragment())
+            commit()
         }
+    }
+
+    fun Show_info(Title: String, Message: String){
+        //affiche les fragements d'information
+        this.onPause()
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment, Notice_fragment(Title, Message))
+            commit()}
+
     }
 }

@@ -83,8 +83,8 @@ abstract class Monster(open var view: DrawingView, wave: Int) {
         // donne la position du monstre à un certain temps donnée
         var local_d = this.d + (SystemClock.elapsedRealtime()+tf - this.LastMouvement)*speed
         var local_pos = pos
-        var local_x = 0f
-        var local_y = 0f
+        var local_x: Float
+        var local_y: Float
         if (local_d>=Step){
             local_d-=Step
             local_pos+=1
@@ -113,7 +113,7 @@ class Normal_Monster(override var view: DrawingView, val wave: Int):Monster(view
     // monstres normaux
     override val road = view.map.road
     override val Step = view.Step
-    override var health = 200 + (wave*60)
+    override var health = 200 + (wave*80)
     override val value = 10
     init {
         x=( (road[0][0]+0.5)*Step ).toFloat()
@@ -145,7 +145,7 @@ class Immune_Monster(override var view: DrawingView,val wave: Int):Monster(view,
     // monstres immunisés qui ne prennent pas de dégâts pendant un certain temps et ne peuvent pas être gelés
     override val road = view.map.road
     override val Step = view.Step
-    override var health = 300 + (wave*60)
+    override var health = 300 + (wave*80)
     override val value = 30
     private var immune:Boolean = false
     init {
@@ -180,7 +180,7 @@ class Explosif_Monster(override var view: DrawingView, val wave: Int):Monster(vi
     override val road = view.map.road
     override val Step = view.Step
     override val value = 40
-    override var health = 100 + (wave*60)
+    override var health = 100 + (wave*80)
     private val birth_time = LastMouvement
 
     init {

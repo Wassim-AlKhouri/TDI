@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.os.Message
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.SurfaceHolder
@@ -19,6 +20,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     private val whitePaint = Paint()
     lateinit var thread: Thread
     private var drawing: Boolean = true
+    var wave = 0 // Numéro de la vague d'ennemis
     val Col = 7  // nombre de colonnes dans le map
     lateinit var map: Map //
     var Step: Float = 0f  // le côté de la case
@@ -29,6 +31,8 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     val player = Player()
     private val activity = context as FragmentActivity
     var upgrade = false // si le bouton upgrade est active
+    private var immune_fragment = true
+    private var explosif_fragment = true
 
     init {
         backgroundPaint.color = Color.BLACK
@@ -75,6 +79,40 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             map.draw(canvas)
             for (monster in Monsters) {
                 monster.draw(canvas)
+                if (monster is Immune_Monster && immune_fragment){
+                    immune_fragment = false
+                    val Title = "Wave 4"
+                    val Message = """ 
+                     Be wary! Immune monsters have appeared! 
+                     They are immmune to any kind of damage when they turned grey. 
+                     They are very strong, do not underestimate them!
+                    """.trimIndent()
+
+                    activity.runOnUiThread(Runnable {
+                        /*
+                        runOnUiThread nous permet de lance ce bout de code sur le thread principale et
+                        donc de faire appel à des méthode du MainActivity
+                        */
+                        (activity as MainActivity).Show_info(Title, Message)})
+                }
+                if (monster is Explosif_Monster && explosif_fragment){
+                    explosif_fragment = false
+                    val Title = "Wave 6"
+                    val Message = """ 
+                     Caution! Explosif monsters have appeared! 
+                     If you let them live long enough, they will explode and take out one of your towers with them. 
+                     Tip : They will prioritize sacrifice tower. They don't want you to upgrade your towers.
+                    """.trimIndent()
+
+                    activity.runOnUiThread(Runnable {
+                        /*
+                        runOnUiThread nous permet de lance ce bout de code sur le thread principale et
+                        donc de faire appel à des méthode du MainActivity
+                        */
+                        (activity as MainActivity).Show_info(Title, Message)})
+                }
+
+
             }
             for (tower in Towers) {
                 tower.draw(canvas)
@@ -90,6 +128,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             draw_money(canvas)
             draw_healthpoints(canvas)
             draw_score(canvas)
+            draw_wave(canvas)
             holder.unlockCanvasAndPost(canvas)
         }
     }
@@ -143,14 +182,14 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
 
     private fun draw_money(canvas: Canvas) {
         // dessine combien d'agent le joueur poosède
-        canvas.drawText("Money:${player.money}", 10f, (canvas.height - 200).toFloat(), whitePaint)
+        canvas.drawText("MONEY : ${player.money}", 10f, (canvas.height - 200).toFloat(), whitePaint)
     }
 
     private fun draw_healthpoints(canvas: Canvas) {
         // dessine les points de vie restantes du joueur
         canvas.drawText(
-            "Healthpoints:${player.healthpoints}",
-            (canvas.width - 350).toFloat(),
+            "HP : ${player.healthpoints}",
+            (canvas.width - 150).toFloat(),
             (canvas.height - 200).toFloat(),
             whitePaint
         )
@@ -159,9 +198,18 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     private fun draw_score(canvas: Canvas) {
         // dessine le score
         canvas.drawText(
-            "Score:${player.score}",
-            ((canvas.width / 2) - 150).toFloat(),
+            "SCORE : ${player.score}",
+            ((canvas.width / 2) - 100).toFloat(),
             (canvas.height - 200).toFloat(),
+            whitePaint
+        )
+    }
+    private fun draw_wave(canvas: Canvas) {
+        // dessine le numéro de la vague
+        canvas.drawText(
+            "WAVE : ${wave}",
+            ((canvas.width / 2) - 100).toFloat(),
+            (canvas.height - 280).toFloat(),
             whitePaint
         )
     }
@@ -175,6 +223,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
         Sacrifice_Towers = CopyOnWriteArrayList<Tower>()
         tower_type = 2
         upgrade = false
+        wave = 0
     }
 
     fun pause() {
