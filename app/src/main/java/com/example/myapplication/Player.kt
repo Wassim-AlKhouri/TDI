@@ -2,7 +2,7 @@ package com.example.myapplication
 
 class Player() {
     var money = 130 // Argent du joueur
-    var healthpoints = 2 // points de vie totals du joueur
+    var healthpoints = 3 // points de vie totals du joueur
     var gameover = false
     var score = 0 // Score de la partie
 
