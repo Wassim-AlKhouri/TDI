@@ -63,7 +63,7 @@ abstract class Attack_Tower(override val Position: List<Int>, override val view:
             // si l'intervalle d'attaque set plus grande que 0.1 seconde alors la tour la diminue
             attack_interval -= 25
             level+=1
-            upgrade_price+=15
+            upgrade_price+=50
         }
     }
 
