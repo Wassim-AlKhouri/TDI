@@ -22,7 +22,7 @@ abstract class Tower (open val Position: List<Int>, open val view: DrawingView):
     abstract fun upgrade()//Détermine comment la tour va s'améliorer
     abstract fun explode()//Détermine l'explosion de la tour
     fun ask_for_upgrade(){
-        //Test si le joueur a assez d'argent pour améliorer sa tour et si oui l'améliore
+        //Teste si le joueur a assez d'argent pour améliorer sa tour et si oui l'améliore
         if (view.player.afford(upgrade_price)){
             view.player.money -= upgrade_price
             this.upgrade()

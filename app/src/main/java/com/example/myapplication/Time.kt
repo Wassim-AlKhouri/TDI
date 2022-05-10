@@ -6,7 +6,7 @@ import android.widget.TextView
 class Time( initial_time:Long):Runnable {
     lateinit var thread: Thread
     private var playing = true
-    private var last_time:Long = initial_time
+    private var last_time:Long = initial_time // temps de la dernière mise à jour du temps
 
     override fun run() { while(playing){update_time()}}
 

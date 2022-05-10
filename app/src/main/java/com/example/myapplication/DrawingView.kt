@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.os.Message
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.SurfaceHolder
@@ -22,17 +21,18 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     private var drawing: Boolean = true
     var wave = 0 // Numéro de la vague d'ennemis
     val Col = 7  // nombre de colonnes dans le map
-    lateinit var map: Map //
-    var Step: Float = 0f  // le côté de la case
+    lateinit var map: Map
+    var Step: Float = 0f  // la longueur du côté de la case
     var Monsters = CopyOnWriteArrayList<Monster>()  // liste de monstres vivants (CopyOnWriteList a été utilisé car il est thread-safe)
     var Towers = CopyOnWriteArrayList<Tower>()  // liste des tours
-    var Sacrifice_Towers = CopyOnWriteArrayList<Tower>()  // liste des tours de sacrifice
+    var Upgrade_Towers = CopyOnWriteArrayList<Tower>()  // liste des tours d'amélioration
     var tower_type = 2 // ce variable sert à savoir quel type de tour va être contruit quand on appuie sur l'écran
     val player = Player()
     private val activity = context as FragmentActivity
     var upgrade = false // si le bouton upgrade est active
     private var immune_fragment = true
     private var explosif_fragment = true
+    var High_Score : Int = 0 // le high score sera redéfinit dans le MainActivity
 
     init {
         backgroundPaint.color = Color.BLACK
@@ -46,6 +46,9 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
             draw()
             if (player.gameover) {
                 player.gameover = false
+                if(player.score > High_Score){
+                    High_Score = player.score
+                }
                 activity.runOnUiThread(Runnable {
                     /*
                     runOnUiThread nous permet de lance ce bout de code sur le thread principale et
@@ -59,7 +62,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        // onSizeChanged nous donne les dimensions de l'écran avec les quels on crée Step et map
+        // onSizeChanged nous donne les dimensions de l'écran avec lesquels on crée Step et map
         this.Step = (w / Col).toFloat()
         val Li = ((h/this.Step)).toInt() - 2 // nombre de lignes dans le map qui dépend de la taille de l'ècran
         this.map = Map(Col, Li, this)
@@ -84,16 +87,10 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                     val Title = "Wave 4"
                     val Message = """ 
                      Be wary! Immune monsters have appeared! 
-                     They are immmune to any kind of damage when they turned grey. 
+                     They are immmune to any kind of damage when they turn grey. 
                      They are very strong, do not underestimate them!
                     """.trimIndent()
-
-                    activity.runOnUiThread(Runnable {
-                        /*
-                        runOnUiThread nous permet de lance ce bout de code sur le thread principale et
-                        donc de faire appel à des méthode du MainActivity
-                        */
-                        (activity as MainActivity).Show_info(Title, Message)})
+                    activity.runOnUiThread(Runnable { (activity as MainActivity).Show_info(Title, Message)})
                 }
                 if (monster is Explosif_Monster && explosif_fragment){
                     explosif_fragment = false
@@ -101,18 +98,10 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                     val Message = """ 
                      Caution! Explosif monsters have appeared! 
                      If you let them live long enough, they will explode and take out one of your towers with them. 
-                     Tip : They will prioritize sacrifice tower. They don't want you to upgrade your towers.
+                     Tip : They will prioritize upgrade towers.
                     """.trimIndent()
-
-                    activity.runOnUiThread(Runnable {
-                        /*
-                        runOnUiThread nous permet de lance ce bout de code sur le thread principale et
-                        donc de faire appel à des méthode du MainActivity
-                        */
-                        (activity as MainActivity).Show_info(Title, Message)})
+                    activity.runOnUiThread(Runnable { (activity as MainActivity).Show_info(Title, Message)})
                 }
-
-
             }
             for (tower in Towers) {
                 tower.draw(canvas)
@@ -120,10 +109,9 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                     tower.draw_projectile(canvas)
                 }
             }
-            for (tower in Sacrifice_Towers) {
+            for (tower in Upgrade_Towers) {
                 tower.draw(canvas)
             }
-
             draw_time(canvas)
             draw_money(canvas)
             draw_healthpoints(canvas)
@@ -143,19 +131,19 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
                 val position: List<Int> = listOf(stepx, stepy)
                 if (!upgrade && player.afford(get_price(tower_type))) {
                     // teste si upgrade est false et si le joueur a assez d'argent pour créer une tour
-                        // get_price est une méthode que drawingView hérite de l'interface Price
+                        // get_price est une méthode que drawingView implémente de l'interface Price
                     if (((Col * stepy) + stepx) < map.Cells.size && map.Cells[(Col * stepy) + stepx].type == 0) {
-                        //teste si le joueur a appuyé à l'interieur du map et si la case est de type sol
-                        player.money -= get_price(tower_type)
+                        //teste si le joueur a appuyé à l'interieur de la map et si la case est de type sol
+                        player.money -= get_price(tower_type) // le joueur paye le prix de construction de la tour
                         when (tower_type) {
                             2 -> Towers.add(Normal_Attack_Tower(position, this))
                             3 -> Towers.add(Money_Tower(position, this))
                             4 -> Towers.add(Ice_Tower(position, this))
-                            5 -> Sacrifice_Towers.add(Sacrifice_Tower(position, this))
+                            5 -> Upgrade_Towers.add(Upgrade_Tower(position, this))
                         }
                     }
                 } else if (upgrade) {
-                    for (tower in Towers.plus(Sacrifice_Towers)) {
+                    for (tower in Towers.plus(Upgrade_Towers)) {
                         // le "for" cherche la tour dont la position correspond à celle de l'appuie
                         if (position == tower.Position) {
                             tower.ask_for_upgrade()
@@ -186,7 +174,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
     }
 
     private fun draw_healthpoints(canvas: Canvas) {
-        // dessine les points de vie restantes du joueur
+        // dessine les points de vie restants du joueur
         canvas.drawText(
             "HP : ${player.healthpoints}",
             (canvas.width - 150).toFloat(),
@@ -220,7 +208,7 @@ constructor (context: Context, attributes: AttributeSet? = null, defStyleAttr: I
         player.reset()
         Monsters = CopyOnWriteArrayList<Monster>()
         Towers = CopyOnWriteArrayList<Tower>()
-        Sacrifice_Towers = CopyOnWriteArrayList<Tower>()
+        Upgrade_Towers = CopyOnWriteArrayList<Tower>()
         tower_type = 2
         upgrade = false
         wave = 0

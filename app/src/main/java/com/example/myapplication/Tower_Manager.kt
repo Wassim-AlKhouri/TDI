@@ -19,7 +19,7 @@ class Tower_Manager(val view: DrawingView):Runnable {
                 tower.attack()
                 if(tower is Attack_Tower){tower.move_projectile()}
         }
-        for (tower in view.Sacrifice_Towers){
+        for (tower in view.Upgrade_Towers){
             tower.attack()
         }
     }

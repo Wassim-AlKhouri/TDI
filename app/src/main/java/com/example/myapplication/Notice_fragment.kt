@@ -9,12 +9,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 
 class Notice_fragment(val Title: String, val message : String): Fragment() {
-
-    // fragment qui apparait quand on met le jeu en pause
+    // fragment qui affiche divers informations concernant les monstres
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.notice_fragment, container, false)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val btn_continue = view.findViewById<Button>(R.id.btncontinue)
@@ -24,10 +22,8 @@ class Notice_fragment(val Title: String, val message : String): Fragment() {
         titleviewN.text = Title
         btn_continue.setOnClickListener { OnClickN() }
     }
-
     fun OnClickN(){
         (activity as MainActivity).supportFragmentManager.beginTransaction().remove(this).commit()
         (activity as MainActivity).resume()
     }
-
 }

@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity(),Price {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         drawingView = findViewById(R.id.MainView)
+        loadData()
         time = Time(SystemClock.elapsedRealtime())
         monster_manager = Monster_Manager(drawingView)
         tower_manager = Tower_Manager(drawingView)
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity(),Price {
         // affiche le fragment de fin de jeu
         onPause()
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragment, gameover_Fragment(drawingView.player.score, drawingView.wave))
+            replace(R.id.fragment, gameover_Fragment(drawingView.player.score, drawingView.wave, drawingView.High_Score))
             commit()
         }
     }
@@ -74,7 +75,33 @@ class MainActivity : AppCompatActivity(),Price {
         monster_manager.reset()
         btn_tower.text = "AttackTower:50"
         btn_upgrade.text = "Construction Mode"
+        saveData()
         onResume()
+    }
+
+    fun Show_info(Title: String, Message: String){
+        //affiche les fragements d'informations
+        this.onPause()
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment, Notice_fragment(Title, Message))
+            commit()}
+
+    }
+
+    private fun saveData(){
+        // permet de sauvegarder le plus haut score entre toutes les parties
+        val sharedPreferences = getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.apply{
+            putInt("High Score", drawingView.High_Score)
+        }.apply()
+    }
+
+    private fun loadData(){
+        // permet de retrouver le meilleur score
+        val sharedPreferences = getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+        val savedHighScore = sharedPreferences.getInt("High Score", 0)
+        drawingView.High_Score = savedHighScore
     }
 
     fun resume(){
@@ -87,13 +114,13 @@ class MainActivity : AppCompatActivity(),Price {
         when(drawingView.tower_type){
             3->{button.text="MoneyTower:${get_price(3)}"}
             4->{button.text="IceTower:${get_price(4)}"}
-            5->{drawingView.tower_type=5;button.text="SacrificeTower:${get_price(5)}"}
+            5->{drawingView.tower_type=5;button.text="UpgradeTower:${get_price(5)}"}
             6->{drawingView.tower_type=2;button.text="AttackTower:${get_price(2)}"}
         }
     }
 
     fun OnClick2(drawingView: DrawingView,button:Button) {
-        // active/désactive upgrade
+        // change de mode (construction et amélioration)
         drawingView.upgrade = !drawingView.upgrade
         if(drawingView.upgrade) {
             button.text = "Upgrade Mode"
@@ -110,14 +137,5 @@ class MainActivity : AppCompatActivity(),Price {
             replace(R.id.fragment, Pause_fragment())
             commit()
         }
-    }
-
-    fun Show_info(Title: String, Message: String){
-        //affiche les fragements d'information
-        this.onPause()
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragment, Notice_fragment(Title, Message))
-            commit()}
-
     }
 }

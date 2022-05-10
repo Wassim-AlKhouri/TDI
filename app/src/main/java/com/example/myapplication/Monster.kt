@@ -25,17 +25,18 @@ abstract class Monster(open var view: DrawingView, wave: Int) {
     protected var iced_time:Long = 0 // le temps où le monstre a été gelé
     protected var d = 0f // distance parcouru par le monstre(expliqué dans move)
     protected var ran = 0 // ran correspond au décalage du monstre par rapport au centre du chemin
-    var LastMouvement = SystemClock.elapsedRealtime() // temps depuis la dérnière mouvment du monstre
+    var LastMouvement = SystemClock.elapsedRealtime() // temps du dernier mouvment du monstre
 
     init {
         val r = ((Step/2)-radius).toInt()
         this.ran = (r..-r).random()
     }
 
-    abstract fun special_move() // dedans on définira la couleur du monstre et ce qui le rend spéciale
-    abstract fun attacked(damage:Int,ice:Boolean)
+    abstract fun special_move() // on définira la couleur du monstre et ce qui le rend spécial
+    abstract fun attacked(damage:Int,ice:Boolean) // le monstre est attaqué
 
     fun draw(canvas: Canvas){
+        // dessine le monstre
         if (!dead) {
                 canvas.drawRect(r,paint)
             }
@@ -47,20 +48,20 @@ abstract class Monster(open var view: DrawingView, wave: Int) {
         this.LastMouvement = SystemClock.elapsedRealtime() // on redéfinit le temps du dernier mouvement
         if (d>=Step){
             /*
-            si d est plus grand que la côté de la case alors on place le monstre sur la prochaine case du chemin
-            et on retranche la côté de "d"
+            si d est plus grand que la longueur du côté de la case alors on place le monstre sur la prochaine case du chemin
+            et on retranche cette longueur de "d"
             */
             d-=Step
             pos+=1
         }
         if (iced) { if ((SystemClock.elapsedRealtime() - iced_time) <= 2000) { this.speed=0.03f } }
         if (pos < (road.size - 1)) {
-            // test si on est pas à la fin du chemin
+            // teste si on est pas à la fin du chemin
             x = ((road[pos][0] + 0.5)*Step).toFloat()
             y = ((road[pos][1] + 0.5)*Step).toFloat()
             /*
             on commence par placer le monstre au milieu de la case du chemin où il se trouve
-            puis on ajout/enlève "d" de "x" ou "y" par rapport à la prochaine case de chemin
+            puis on ajoute/enlève "d" de "x" ou "y" par rapport à la prochaine case du chemin
             */
             if (road[pos][0] - road[pos+1][0] > 0) {
                 x -= d
@@ -72,7 +73,7 @@ abstract class Monster(open var view: DrawingView, wave: Int) {
             this.r = RectF(x-(radius/2)+ran,y-(radius/2)+ran,x+(radius/2)+ran,y+(radius/2)+ran)
         }
         if(pos == (road.size - 1)){
-            // test si on est à la fin du chemin, si oui on attaque le joueur et le monstre meurt
+            // teste si on est à la fin du chemin, si oui on attaque le joueur et le monstre meurt
             view.player.lose_healthpoints()
             this.dead = true
             view.Monsters.remove(this) // le monstre s'enlève de la liste des monstres
@@ -80,7 +81,7 @@ abstract class Monster(open var view: DrawingView, wave: Int) {
     }
 
     fun get_pos(tf:Int): Array<Float> {
-        // donne la position du monstre à un certain temps donnée
+        // prédit la position du monstre à un certain temps donné
         var local_d = this.d + (SystemClock.elapsedRealtime()+tf - this.LastMouvement)*speed
         var local_pos = pos
         var local_x: Float
@@ -121,7 +122,7 @@ class Normal_Monster(override var view: DrawingView, val wave: Int):Monster(view
         this.ran = (-r..r).random()
     }
 
-    override fun special_move() {paint.color = Color.BLACK} // le monstre n'a rien de spéciale
+    override fun special_move() {paint.color = Color.BLACK} // le monstre n'a rien de spécial
 
     override fun attacked(damage: Int, ice: Boolean) {
         health -= damage
@@ -172,11 +173,10 @@ class Immune_Monster(override var view: DrawingView,val wave: Int):Monster(view,
             }
         }
     }
-
 }
 
 class Explosif_Monster(override var view: DrawingView, val wave: Int):Monster(view, wave){
-    // monstres explosives qui après un certain temps explosent et détruit une tour en mourant
+    // monstres explosifs qui après un certain temps explosent et détruit une tour en mourant
     override val road = view.map.road
     override val Step = view.Step
     override val value = 40
@@ -203,16 +203,16 @@ class Explosif_Monster(override var view: DrawingView, val wave: Int):Monster(vi
     override fun special_move() {
         paint.color = Color.RED
         if((SystemClock.elapsedRealtime()- birth_time) >= 5000){
-            // test si le monstre est resté en vie pendant plus que 5 secondes
-            if(view.Sacrifice_Towers.size !=0){
-                // si il existe des tours de sacrifice alors le monstre en attaque une
-                val tower = view.Sacrifice_Towers.random()
+            // teste si le monstre est resté en vie pendant plus de 5 secondes
+            if(view.Upgrade_Towers.size !=0){
+                // si il existe des tours d'amélioration alors le monstre en attaque une
+                val tower = view.Upgrade_Towers.random()
                 tower.explode()
                 this.dead = true
                 view.Monsters.remove(this)
             }
             else if(view.Towers.size !=0) {
-                // si il n'existe pas de tour de sacrifice alros le monstre attque une tours au hasard
+                // si il n'y a pas de tour d'amélioration alors le monstre attaque une tour au hasard
                 val tower = view.Towers.random()
                 tower.explode()
                 this.dead = true

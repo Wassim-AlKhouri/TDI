@@ -2,12 +2,12 @@ package com.example.myapplication
 
 class Player() {
     var money = 130 // Argent du joueur
-    var healthpoints = 3 // Vie totale du joueur
+    var healthpoints = 2 // points de vie totals du joueur
     var gameover = false
     var score = 0 // Score de la partie
 
     fun afford (price:Int): Boolean {
-        //Test si le joueur peut acheter l'objet sélectionner
+        //Teste si le joueur peut acheter l'objet sélectionné
         var res = false
         if (money-price >=0){
             res = true
@@ -16,7 +16,7 @@ class Player() {
     }
 
     fun lose_healthpoints(){
-        //Retire les points de vie lorsque les monstres arrivennt au bout du chemin
+        //Retire un point de vie lorsque un monstre arrive au bout du chemin
         healthpoints-=1
         if(healthpoints<=0){gameover = true}
     }

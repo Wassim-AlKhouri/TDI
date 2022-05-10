@@ -14,7 +14,6 @@ class Pause_fragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.pause_fragment, container, false)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val btn_resume = view.findViewById<Button>(R.id.btn_resume)
@@ -22,7 +21,6 @@ class Pause_fragment : Fragment() {
         btn_resume.setOnClickListener { OnClickR() }
         btn_newgame.setOnClickListener { onClickN() }
     }
-
     fun OnClickR(){
         (activity as MainActivity).supportFragmentManager.beginTransaction().remove(this).commit()
         (activity as MainActivity).resume()

@@ -12,13 +12,13 @@ class Map(val Col: Int, val Li: Int, var view: DrawingView)  {
     var road =ArrayList<Array<Int>>() // une liste avec le chemin à suivre pour atteindre la fin
 
     init {
-        // à la création d'un objet map, il génére une nouvelle carte et crée les case
+        // à la création d'un objet Map, il génére une nouvelle carte et crée les cases
         map_generate()
         creat_Cells()
     }
 
     private fun creat_Cells(){
-        // crée les case du map
+        // crée les cases de la map
         for (y in 0 until Li){
             for(x in 0 until Col){
                 val cell = Cell(x,y,this.Step,this.map[y][x])
@@ -28,7 +28,7 @@ class Map(val Col: Int, val Li: Int, var view: DrawingView)  {
     }
 
     private fun map_generate() {
-        //génère un map aléatoirement
+        //génère une map aléatoirement
         val height: Int = this.map.size
         val width: Int = this.map[0].size
         var x= 3
@@ -64,7 +64,7 @@ class Map(val Col: Int, val Li: Int, var view: DrawingView)  {
     }
 
     fun reset(){
-        // réinitialise le map
+        // réinitialise la map
         Cells = ArrayList<Cell>()
         road = ArrayList<Array<Int>>()
         map = Array(Li) {IntArray(Col)}

@@ -3,7 +3,7 @@ package com.example.myapplication
 import android.os.SystemClock
 
 abstract class Utility_Tower(override val Position: List<Int>, override val view: DrawingView):Tower(Position, view){
-    protected abstract val specialattack_interval: Long //Intervalle entre l'utilisation de l'abilité spéciale
+    protected abstract val specialattack_interval: Long //Intervalle de temps entre l'utilisation de l'abilité spéciale
     var last_time = SystemClock.elapsedRealtime()
     override fun attack(){
         if ((SystemClock.elapsedRealtime()-last_time) >= specialattack_interval){
@@ -11,7 +11,7 @@ abstract class Utility_Tower(override val Position: List<Int>, override val view
             special_ability()
         }
     }
-    abstract fun special_ability()
+    abstract fun special_ability() // Abilité spéciale de la tour
 }
 
 class Money_Tower(override val Position: List<Int>, override val view: DrawingView):Utility_Tower(Position,view){
@@ -20,7 +20,7 @@ class Money_Tower(override val Position: List<Int>, override val view: DrawingVi
     override val specialattack_interval: Long = 2000
     override val type: Int = 3 //Type de la tour
     override val name ="$$"
-    override var upgrade_price = get_price(type)/2 + level*30 //prix tour
+    override var upgrade_price = get_price(type)/2 + level*30 //prix de la tour
     init {
         view.map.Cells[(view.map.Col * Position[1]) + Position[0]].type = type
     }
@@ -43,11 +43,11 @@ class Money_Tower(override val Position: List<Int>, override val view: DrawingVi
 
 }
 
-class Sacrifice_Tower(override val Position: List<Int>, override val view: DrawingView):Utility_Tower(Position,view){
+class Upgrade_Tower(override val Position: List<Int>, override val view: DrawingView):Utility_Tower(Position,view){
     override val Step = view.Step
     override val specialattack_interval: Long = 50000
     override val type: Int = 5
-    override val name ="ST"
+    override val name ="UPG"
     override var upgrade_price = get_price(type)/2 //Prix de la tour
     private var lives = 1  // vie de la tour
     init {
@@ -56,7 +56,7 @@ class Sacrifice_Tower(override val Position: List<Int>, override val view: Drawi
 
     override fun special_ability() {
         //La tour permet d'améliorer les autres tours et est choisi en premier par les montres explosifs
-        (view.Towers.plus(view.Sacrifice_Towers)).random().upgrade()
+        (view.Towers.plus(view.Upgrade_Towers)).random().upgrade()
     }
 
     override fun upgrade() {
@@ -68,7 +68,7 @@ class Sacrifice_Tower(override val Position: List<Int>, override val view: Drawi
     override fun explode(){
         lives-=1
         if(lives==0){
-            view.Sacrifice_Towers.remove(this)
+            view.Upgrade_Towers.remove(this)
             view.map.Cells[(view.Col * Position[1]) + Position[0]].type = 0
         }
     }
